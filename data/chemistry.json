@@ -1,0 +1,345 @@
+{
+  "subject": "Chemistry",
+  "topics": [
+    {
+      "id": "chem-01",
+      "order": 1,
+      "name": "Separation of Mixtures and Purification",
+      "questions": [
+        { "q": "Which of the following is a pure substance?", "options": ["Air", "Sea water", "Distilled water", "Soil"], "answer": 2, "explanation": "Distilled water contains only H₂O molecules." },
+        { "q": "The best method for separating a mixture of sand and water is:", "options": ["Distillation", "Filtration", "Evaporation", "Sublimation"], "answer": 1, "explanation": "Sand is insoluble; filtration separates it from water." },
+        { "q": "Which separation technique is used to separate a mixture of two miscible liquids with different boiling points?", "options": ["Filtration", "Fractional distillation", "Sublimation", "Decantation"], "answer": 1, "explanation": "Fractional distillation separates liquids by boiling point difference." },
+        { "q": "A mixture of iodine and sodium chloride can be separated by:", "options": ["Filtration", "Sublimation", "Decantation", "Magnetic separation"], "answer": 1, "explanation": "Iodine sublimes on heating; NaCl does not." },
+        { "q": "Chromatography is best used to separate:", "options": ["Two solids", "Coloured pigments in a mixture", "Two gases", "Two immiscible liquids"], "answer": 1, "explanation": "Chromatography separates dissolved substances based on different mobilities." },
+        { "q": "Which of the following is a chemical change?", "options": ["Melting of ice", "Dissolving sugar in water", "Rusting of iron", "Evaporation of alcohol"], "answer": 2, "explanation": "Rusting produces a new substance (iron oxide)." },
+        { "q": "The boiling point of a liquid is the temperature at which its vapour pressure equals:", "options": ["1 atm", "0 atm", "The volume of the liquid", "The mass of the liquid"], "answer": 0, "explanation": "Normal boiling point: vapour pressure = 1 atmosphere." },
+        { "q": "Which of the following is NOT a method of separating mixtures?", "options": ["Distillation", "Filtration", "Combustion", "Evaporation"], "answer": 2, "explanation": "Combustion is a chemical reaction, not a separation method." },
+        { "q": "Hard water can be softened by:", "options": ["Filtration", "Adding washing soda", "Decantation", "Sublimation"], "answer": 1, "explanation": "Washing soda (Na₂CO₃) precipitates Ca²⁺ and Mg²⁺ ions." },
+        { "q": "A solid that changes directly to gas on heating is said to:", "options": ["Melt", "Sublime", "Condense", "Dissolve"], "answer": 1, "explanation": "Sublimation = solid → gas without liquid phase." }
+      ]
+    },
+    {
+      "id": "chem-02",
+      "order": 2,
+      "name": "Chemical Combination",
+      "questions": [
+        { "q": "The law of conservation of mass states that:", "options": ["Mass can be created", "Mass can be destroyed", "Mass is neither created nor destroyed in a chemical reaction", "Mass increases during reactions"], "answer": 2, "explanation": "Total mass of reactants equals total mass of products." },
+        { "q": "The law of definite proportions states that a chemical compound always contains the same elements in:", "options": ["Any ratio", "Fixed ratio by mass", "Variable ratio", "Equal masses"], "answer": 1, "explanation": "Fixed composition by mass." },
+        { "q": "Avogadro's number is approximately:", "options": ["6.02 × 10²³", "3.14 × 10²³", "1.6 × 10¹⁹", "9.8 × 10²³"], "answer": 0, "explanation": "One mole contains 6.02 × 10²³ particles." },
+        { "q": "The molar mass of H₂SO₄ is: (H=1, S=32, O=16)", "options": ["96 g/mol", "98 g/mol", "100 g/mol", "102 g/mol"], "answer": 1, "explanation": "2(1) + 32 + 4(16) = 98 g/mol." },
+        { "q": "How many moles are in 36 g of water? (H=1, O=16)", "options": ["1", "2", "3", "4"], "answer": 1, "explanation": "Molar mass of H₂O = 18 g/mol; 36/18 = 2 moles." },
+        { "q": "The empirical formula of a compound is CH₂. If its molar mass is 42 g/mol, its molecular formula is:", "options": ["CH₂", "C₂H₄", "C₃H₆", "C₄H₈"], "answer": 2, "explanation": "n = 42/14 = 3; molecular formula = (CH₂)₃ = C₃H₆." },
+        { "q": "Which of the following is a balanced chemical equation?", "options": ["H₂ + O₂ → H₂O", "2H₂ + O₂ → 2H₂O", "H₂ + O₂ → 2H₂O", "2H₂ + 2O₂ → 2H₂O"], "answer": 1, "explanation": "4 H atoms and 2 O atoms on each side." },
+        { "q": "In the reaction 2H₂ + O₂ → 2H₂O, how many moles of water are produced from 4 moles of H₂?", "options": ["2", "3", "4", "8"], "answer": 2, "explanation": "2 moles H₂ → 2 moles H₂O; so 4 moles H₂ → 4 moles H₂O." },
+        { "q": "The percentage by mass of oxygen in H₂O is approximately: (H=1, O=16)", "options": ["11%", "50%", "89%", "75%"], "answer": 2, "explanation": "16/18 × 100 ≈ 88.9%." },
+        { "q": "Which of the following represents the correct stoichiometric ratio in 2H₂ + O₂ → 2H₂O?", "options": ["2:1:2", "1:2:1", "2:2:1", "1:1:2"], "answer": 0, "explanation": "2 moles H₂ : 1 mole O₂ : 2 moles H₂O." }
+      ]
+    },
+    {
+      "id": "chem-03",
+      "order": 3,
+      "name": "Kinetic Theory and Gas Laws",
+      "questions": [
+        { "q": "According to the kinetic theory, gas pressure is due to:", "options": ["Attractive forces between molecules", "Collisions of gas molecules with container walls", "Weight of the gas", "Vibrations of molecules"], "answer": 1, "explanation": "Pressure results from molecular collisions with walls." },
+        { "q": "Boyle's law states that at constant temperature:", "options": ["P ∝ V", "P ∝ 1/V", "V ∝ T", "P ∝ T"], "answer": 1, "explanation": "P₁V₁ = P₂V₂." },
+        { "q": "Charles' law states that at constant pressure:", "options": ["V ∝ 1/T", "V ∝ T", "P ∝ T", "P ∝ 1/V"], "answer": 1, "explanation": "V/T = constant." },
+        { "q": "A gas occupies 2 L at 1 atm. What volume will it occupy at 2 atm (constant T)?", "options": ["1 L", "2 L", "4 L", "0.5 L"], "answer": 0, "explanation": "P₁V₁ = P₂V₂ → 2 = 2V₂ → V₂ = 1 L." },
+        { "q": "The ideal gas equation is:", "options": ["PV = nRT", "P/V = nRT", "PV² = nRT", "P + V = nRT"], "answer": 0, "explanation": "Ideal gas equation." },
+        { "q": "Dalton's law of partial pressures states that the total pressure of a mixture of gases is:", "options": ["The product of partial pressures", "The sum of partial pressures", "The average of partial pressures", "The difference of partial pressures"], "answer": 1, "explanation": "P_total = P₁ + P₂ + P₃ ..." },
+        { "q": "Graham's law relates the rate of diffusion of a gas to its:", "options": ["Volume", "Pressure", "Molar mass", "Temperature"], "answer": 2, "explanation": "Rate ∝ 1/√M." },
+        { "q": "At absolute zero, the volume of an ideal gas is:", "options": ["Infinite", "Zero", "Constant", "Undefined"], "answer": 1, "explanation": "Theoretically V = 0 at 0 K." },
+        { "q": "Which gas diffuses fastest?", "options": ["O₂ (M=32)", "N₂ (M=28)", "H₂ (M=2)", "CO₂ (M=44)"], "answer": 2, "explanation": "Lower molar mass = faster diffusion." },
+        { "q": "A gas at 27°C is heated to 327°C at constant pressure. The ratio of final to initial volume is:", "options": ["1:2", "2:1", "1:1", "4:1"], "answer": 1, "explanation": "V₁/T₁ = V₂/T₂ → 300 K → 600 K → V₂/V₁ = 2." }
+      ]
+    },
+    {
+      "id": "chem-04",
+      "order": 4,
+      "name": "Atomic Structure and Bonding",
+      "questions": [
+        { "q": "The atomic number of an element is the number of:", "options": ["Neutrons", "Protons", "Electrons plus neutrons", "Nucleons"], "answer": 1, "explanation": "Atomic number = number of protons." },
+        { "q": "Isotopes are atoms of the same element with:", "options": ["Same mass number, different atomic number", "Same atomic number, different mass number", "Same number of neutrons", "Different number of protons"], "answer": 1, "explanation": "Isotopes differ in neutron number." },
+        { "q": "The electronic configuration of sodium (Na, atomic number 11) is:", "options": ["2, 8, 1", "2, 9", "2, 8, 3", "2, 6, 3"], "answer": 0, "explanation": "11 electrons: 2, 8, 1." },
+        { "q": "Which of the following has a tetrahedral shape?", "options": ["Methane (CH₄)", "Water (H₂O)", "Ammonia (NH₃)", "Carbon dioxide (CO₂)"], "answer": 0, "explanation": "CH₄ has 4 bond pairs, no lone pairs → tetrahedral." },
+        { "q": "An ionic bond is formed by:", "options": ["Sharing electrons", "Transfer of electrons", "Overlap of orbitals", "Metallic attraction"], "answer": 1, "explanation": "Ionic bond = transfer of electrons from metal to non-metal." },
+        { "q": "A covalent bond is formed by:", "options": ["Transfer of electrons", "Sharing of electron pairs", "Ionic attraction", "Metallic bonding"], "answer": 1, "explanation": "Covalent bond = sharing of electron pairs." },
+        { "q": "Elements in the same group of the periodic table have the same number of:", "options": ["Neutrons", "Electron shells", "Valence electrons", "Mass number"], "answer": 2, "explanation": "Same group = same valence electrons." },
+        { "q": "Which of the following is a noble gas?", "options": ["Chlorine", "Argon", "Nitrogen", "Hydrogen"], "answer": 1, "explanation": "Argon is in Group 0 (noble gases)." },
+        { "q": "Across a period from left to right, atomic radius generally:", "options": ["Increases", "Decreases", "Remains constant", "Fluctuates"], "answer": 1, "explanation": "Nuclear charge increases, pulling electrons closer." },
+        { "q": "The bond in NaCl is:", "options": ["Covalent", "Ionic", "Metallic", "Hydrogen"], "answer": 1, "explanation": "Na transfers electron to Cl → ionic bond." }
+      ]
+    },
+    {
+      "id": "chem-05",
+      "order": 5,
+      "name": "Air and Water",
+      "questions": [
+        { "q": "The most abundant gas in air is:", "options": ["Oxygen", "Nitrogen", "Carbon dioxide", "Argon"], "answer": 1, "explanation": "Nitrogen makes up about 78% of air." },
+        { "q": "The percentage of oxygen in air is approximately:", "options": ["78%", "21%", "0.03%", "1%"], "answer": 1, "explanation": "Oxygen ≈ 21% of air." },
+        { "q": "Which gas turns limewater milky?", "options": ["CO", "CO₂", "SO₂", "O₂"], "answer": 1, "explanation": "CO₂ forms insoluble CaCO₃ with limewater." },
+        { "q": "Temporary hardness of water is caused by:", "options": ["Calcium sulphate", "Calcium hydrogen carbonate", "Sodium chloride", "Magnesium sulphate"], "answer": 1, "explanation": "Ca(HCO₃)₂ causes temporary hardness." },
+        { "q": "Temporary hardness can be removed by:", "options": ["Filtration", "Boiling", "Chlorination", "Decantation"], "answer": 1, "explanation": "Boiling decomposes Ca(HCO₃)₂." },
+        { "q": "Permanent hardness of water is caused by:", "options": ["Calcium hydrogen carbonate", "Calcium and magnesium sulphates", "Sodium chloride", "Potassium chloride"], "answer": 1, "explanation": "Sulphates and chlorides of Ca/Mg cause permanent hardness." },
+        { "q": "Which of the following is used to sterilize water?", "options": ["Chlorine", "Oxygen", "Nitrogen", "Hydrogen"], "answer": 0, "explanation": "Chlorine kills microorganisms." },
+        { "q": "The greenhouse gas primarily responsible for global warming is:", "options": ["Oxygen", "Nitrogen", "Carbon dioxide", "Argon"], "answer": 2, "explanation": "CO₂ traps heat in the atmosphere." },
+        { "q": "Ozone layer depletion is mainly caused by:", "options": ["CO₂", "CFCs", "SO₂", "NO"], "answer": 1, "explanation": "Chlorofluorocarbons release chlorine radicals." },
+        { "q": "Water that contains dissolved salts of calcium and magnesium is called:", "options": ["Soft water", "Hard water", "Distilled water", "Pure water"], "answer": 1, "explanation": "Hard water contains Ca²⁺ and Mg²⁺ ions." }
+      ]
+    },
+    {
+      "id": "chem-06",
+      "order": 6,
+      "name": "Solubility",
+      "questions": [
+        { "q": "Solubility is defined as the maximum mass of a solute that dissolves in:", "options": ["100 g of solvent at a given temperature", "1 L of solvent", "1 kg of solution", "100 mL of solution"], "answer": 0, "explanation": "Solubility is expressed per 100 g of solvent at a specific temperature." },
+        { "q": "For most solids, solubility in water ______ with increasing temperature.", "options": ["Decreases", "Increases", "Remains constant", "Becomes zero"], "answer": 1, "explanation": "Most solids dissolve more at higher temperatures." },
+        { "q": "For gases, solubility in water ______ with increasing temperature.", "options": ["Increases", "Decreases", "Remains constant", "Doubles"], "answer": 1, "explanation": "Gases become less soluble as temperature rises." },
+        { "q": "A saturated solution is one that:", "options": ["Contains no solute", "Contains the maximum solute at a given temperature", "Contains less solute than possible", "Contains only gas"], "answer": 1, "explanation": "Saturated = maximum solute dissolved at that temperature." },
+        { "q": "A solution that contains more solute than it can normally dissolve at a given temperature is:", "options": ["Saturated", "Unsaturated", "Supersaturated", "Dilute"], "answer": 2, "explanation": "Supersaturated solutions contain excess solute." },
+        { "q": "The solubility of KCl at 20°C is 34 g/100 g of water. How much KCl will dissolve in 200 g of water at 20°C?", "options": ["34 g", "68 g", "17 g", "136 g"], "answer": 1, "explanation": "34 × 2 = 68 g." },
+        { "q": "The solubility curve of KNO₃ rises steeply with temperature. This means:", "options": ["KNO₃ is insoluble", "Solubility increases rapidly with temperature", "Solubility decreases with temperature", "Solubility is constant"], "answer": 1, "explanation": "Steep curve = rapid increase." },
+        { "q": "Which factor does NOT affect the solubility of a solid in water?", "options": ["Temperature", "Nature of solute", "Nature of solvent", "Volume of water"], "answer": 3, "explanation": "Volume of solvent affects total dissolved, not solubility per 100 g." },
+        { "q": "Crystallization is used to:", "options": ["Separate solids from gases", "Purify solids from their saturated solutions", "Filter liquids", "Neutralise acids"], "answer": 1, "explanation": "Crystallization purifies solids." },
+        { "q": "Hard water forms scum with soap because of the presence of:", "options": ["Na⁺ and K⁺", "Ca²⁺ and Mg²⁺", "H⁺ and OH⁻", "Cl⁻ and Br⁻"], "answer": 1, "explanation": "Ca²⁺ and Mg²⁺ form insoluble scum with soap." }
+      ]
+    },
+    {
+      "id": "chem-07",
+      "order": 7,
+      "name": "Acids, Bases and Salts",
+      "questions": [
+        { "q": "According to Arrhenius, an acid is a substance that produces:", "options": ["OH⁻ ions in water", "H⁺ ions in water", "Na⁺ ions in water", "Cl⁻ ions in water"], "answer": 1, "explanation": "Arrhenius acid produces H⁺ (H₃O⁺) in water." },
+        { "q": "A base is a substance that:", "options": ["Donates protons", "Accepts protons", "Donates electrons", "Accepts electrons"], "answer": 1, "explanation": "Brønsted-Lowry base accepts protons." },
+        { "q": "Which of the following is a strong acid?", "options": ["Acetic acid", "Carbonic acid", "Hydrochloric acid", "Citric acid"], "answer": 2, "explanation": "HCl ionises completely in water." },
+        { "q": "The pH of a neutral solution at 25°C is:", "options": ["0", "7", "14", "1"], "answer": 1, "explanation": "Neutral pH = 7." },
+        { "q": "Which of the following is a salt?", "options": ["HCl", "NaOH", "NaCl", "H₂O"], "answer": 2, "explanation": "NaCl is formed from acid + base." },
+        { "q": "A solution with pH 2 is:", "options": ["Basic", "Neutral", "Strongly acidic", "Weakly acidic"], "answer": 2, "explanation": "pH 2 is strongly acidic." },
+        { "q": "The reaction between an acid and a base to form salt and water is called:", "options": ["Oxidation", "Reduction", "Neutralisation", "Combustion"], "answer": 2, "explanation": "Neutralisation = acid + base → salt + water." },
+        { "q": "Which indicator turns red in acid and blue in base?", "options": ["Methyl orange", "Litmus", "Phenolphthalein", "Universal indicator"], "answer": 1, "explanation": "Litmus: red in acid, blue in base." },
+        { "q": "The salt formed when HCl reacts with NaOH is:", "options": ["NaCl", "Na₂SO₄", "Na₂CO₃", "NaNO₃"], "answer": 0, "explanation": "HCl + NaOH → NaCl + H₂O." },
+        { "q": "Which of the following is a basic oxide?", "options": ["CO₂", "SO₂", "Na₂O", "NO₂"], "answer": 2, "explanation": "Metal oxides like Na₂O are basic." }
+      ]
+    },
+    {
+      "id": "chem-08",
+      "order": 8,
+      "name": "Oxidation and Reduction (Redox)",
+      "questions": [
+        { "q": "Oxidation is defined as:", "options": ["Gain of electrons", "Loss of electrons", "Gain of protons", "Loss of neutrons"], "answer": 1, "explanation": "OIL RIG: Oxidation Is Loss." },
+        { "q": "Reduction is defined as:", "options": ["Gain of electrons", "Loss of electrons", "Gain of protons", "Loss of neutrons"], "answer": 0, "explanation": "Reduction Is Gain." },
+        { "q": "An oxidising agent:", "options": ["Loses electrons", "Gains electrons", "Gains protons", "Loses protons"], "answer": 1, "explanation": "Oxidising agent accepts electrons." },
+        { "q": "The oxidation number of an element in its free state is:", "options": ["1", "0", "−1", "+2"], "answer": 1, "explanation": "Free elements have oxidation number 0." },
+        { "q": "The oxidation number of oxygen in most compounds is:", "options": ["+2", "−2", "+1", "−1"], "answer": 1, "explanation": "Oxygen is usually −2." },
+        { "q": "In the reaction 2Mg + O₂ → 2MgO, magnesium is:", "options": ["Reduced", "Oxidised", "Neutralised", "Unchanged"], "answer": 1, "explanation": "Mg loses electrons → oxidised." },
+        { "q": "The oxidation number of Mn in KMnO₄ is:", "options": ["+2", "+5", "+7", "+4"], "answer": 2, "explanation": "+1 + 7 + 4(−2) = 0 → Mn = +7." },
+        { "q": "Which of the following is a redox reaction?", "options": ["HCl + NaOH → NaCl + H₂O", "Zn + CuSO₄ → ZnSO₄ + Cu", "CaO + H₂O → Ca(OH)₂", "AgNO₃ + NaCl → AgCl + NaNO₃"], "answer": 1, "explanation": "Electron transfer occurs between Zn and Cu²⁺." },
+        { "q": "In the reaction Cl₂ + 2KI → 2KCl + I₂, chlorine acts as:", "options": ["Reducing agent", "Oxidising agent", "Catalyst", "Solvent"], "answer": 1, "explanation": "Cl₂ is reduced; it oxidises I⁻ to I₂." },
+        { "q": "Which of the following is a reducing agent?", "options": ["Cl₂", "O₂", "H₂", "F₂"], "answer": 2, "explanation": "H₂ donates electrons → reducing agent." }
+      ]
+    },
+    {
+      "id": "chem-09",
+      "order": 9,
+      "name": "Electrolysis",
+      "questions": [
+        { "q": "Electrolysis is the decomposition of a compound by:", "options": ["Heat", "Light", "Electric current", "Sound"], "answer": 2, "explanation": "Electrolysis uses electric current." },
+        { "q": "The electrode at which oxidation occurs is:", "options": ["Cathode", "Anode", "Salt bridge", "Terminal"], "answer": 1, "explanation": "Oxidation occurs at the anode." },
+        { "q": "The electrode at which reduction occurs is:", "options": ["Cathode", "Anode", "Salt bridge", "Terminal"], "answer": 0, "explanation": "Reduction occurs at the cathode." },
+        { "q": "During electrolysis of molten NaCl, the product at the cathode is:", "options": ["Chlorine", "Sodium", "Hydrogen", "Oxygen"], "answer": 1, "explanation": "Na⁺ + e⁻ → Na at cathode." },
+        { "q": "Electrolysis of concentrated NaCl solution (brine) produces:", "options": ["Na and Cl₂", "H₂ and Cl₂", "O₂ and H₂", "Na and O₂"], "answer": 1, "explanation": "H₂ at cathode, Cl₂ at anode." },
+        { "q": "An electrolyte is a substance that:", "options": ["Does not conduct electricity", "Conducts electricity in molten or aqueous state", "Is always solid", "Is always a gas"], "answer": 1, "explanation": "Electrolytes conduct in solution or molten state." },
+        { "q": "Which is a non-electrolyte?", "options": ["NaCl solution", "Dilute HCl", "Sugar solution", "KOH solution"], "answer": 2, "explanation": "Sugar does not dissociate into ions." },
+        { "q": "Faraday's first law of electrolysis states that the mass deposited is proportional to:", "options": ["Time only", "Quantity of charge passed", "Temperature", "Volume of solution"], "answer": 1, "explanation": "m ∝ Q = It." },
+        { "q": "The quantity of electricity required to deposit 1 mole of Ag is:", "options": ["1 faraday", "2 faradays", "0.5 faradays", "3 faradays"], "answer": 0, "explanation": "Ag⁺ + e⁻ → Ag; 1 mol e⁻ = 1 F = 96500 C." },
+        { "q": "In electroplating with silver, the object to be plated is made the:", "options": ["Anode", "Cathode", "Electrolyte", "Salt bridge"], "answer": 1, "explanation": "Object is cathode; silver deposits on it." }
+      ]
+    },
+    {
+      "id": "chem-10",
+      "order": 10,
+      "name": "Energy Changes and Rates of Reaction",
+      "questions": [
+        { "q": "An exothermic reaction is one that:", "options": ["Absorbs heat", "Releases heat", "Has no heat change", "Freezes"], "answer": 1, "explanation": "Exothermic = releases heat (ΔH negative)." },
+        { "q": "An endothermic reaction is one that:", "options": ["Releases heat", "Absorbs heat", "Has no heat change", "Boils"], "answer": 1, "explanation": "Endothermic = absorbs heat (ΔH positive)." },
+        { "q": "Which of these is an exothermic process?", "options": ["Melting of ice", "Combustion of methane", "Evaporation of water", "Photosynthesis"], "answer": 1, "explanation": "Combustion releases heat." },
+        { "q": "The enthalpy change of a reaction is measured in:", "options": ["J or kJ", "N", "°C", "mol"], "answer": 0, "explanation": "Enthalpy is measured in J or kJ." },
+        { "q": "The rate of a chemical reaction increases with:", "options": ["Lower temperature", "Higher temperature", "Larger particle size", "Lower concentration"], "answer": 1, "explanation": "Higher temperature → faster reaction." },
+        { "q": "A catalyst is a substance that:", "options": ["Is consumed in the reaction", "Speeds up a reaction without being consumed", "Slows down reactions only", "Changes the products"], "answer": 1, "explanation": "Catalysts lower activation energy, not consumed." },
+        { "q": "Powdered calcium carbonate reacts faster with acid than a lump because:", "options": ["It has larger surface area", "It is heavier", "It is denser", "It contains more CaCO₃"], "answer": 0, "explanation": "Greater surface area → faster reaction." },
+        { "q": "Increasing the concentration of reactants generally:", "options": ["Slows the reaction", "Speeds up the reaction", "Has no effect", "Stops the reaction"], "answer": 1, "explanation": "More collisions → faster rate." },
+        { "q": "The minimum energy needed for a reaction to occur is called:", "options": ["Bond energy", "Activation energy", "Enthalpy", "Kinetic energy"], "answer": 1, "explanation": "Activation energy = minimum energy for reaction." },
+        { "q": "Which of the following will NOT affect the rate of a reaction?", "options": ["Temperature", "Concentration", "Catalyst", "Colour of reactants"], "answer": 3, "explanation": "Colour has no effect on reaction rate." }
+      ]
+    },
+    {
+      "id": "chem-11",
+      "order": 11,
+      "name": "Chemical Equilibrium",
+      "questions": [
+        { "q": "A reversible reaction is one in which:", "options": ["Reactants are completely converted to products", "Products can react to reform reactants", "No reaction occurs", "Heat is always released"], "answer": 1, "explanation": "Both forward and backward reactions occur." },
+        { "q": "Chemical equilibrium is reached when:", "options": ["Reactants are used up", "Forward and backward reaction rates are equal", "The reaction stops", "Only products remain"], "answer": 1, "explanation": "Dynamic equilibrium: forward rate = backward rate." },
+        { "q": "Le Chatelier's principle states that when a system at equilibrium is disturbed, the system will:", "options": ["Stop reacting", "Shift to oppose the disturbance", "Shift to amplify the disturbance", "Remain unchanged"], "answer": 1, "explanation": "Equilibrium shifts to counteract the change." },
+        { "q": "For the reaction N₂ + 3H₂ ⇌ 2NH₃ (exothermic), increasing temperature shifts equilibrium:", "options": ["To the right", "To the left", "No change", "Stops reaction"], "answer": 1, "explanation": "Exothermic reaction → heating shifts to the left." },
+        { "q": "For N₂ + 3H₂ ⇌ 2NH₃, increasing pressure shifts equilibrium:", "options": ["To the left", "To the right", "No change", "Stops reaction"], "answer": 1, "explanation": "Fewer gas moles on right → higher pressure favours right." },
+        { "q": "The equilibrium constant Kc is defined as:", "options": ["Rate of forward reaction", "Ratio of product to reactant concentrations at equilibrium", "Rate of backward reaction", "Number of moles"], "answer": 1, "explanation": "Kc = [products]^n / [reactants]^m at equilibrium." },
+        { "q": "Adding a catalyst to a system at equilibrium:", "options": ["Shifts equilibrium to the right", "Shifts equilibrium to the left", "Has no effect on position of equilibrium", "Stops the reaction"], "answer": 2, "explanation": "Catalyst speeds up both directions equally." },
+        { "q": "For the reaction A + B ⇌ C + D (all gases), Kc = 1. If [A]=[B]=[C]=[D]=1 M, the reaction is:", "options": ["At equilibrium", "Shifting right", "Shifting left", "Not occurring"], "answer": 0, "explanation": "Q = 1 = Kc → at equilibrium." },
+        { "q": "Haber process for ammonia production uses:", "options": ["Low pressure and high temperature", "High pressure and moderate temperature", "Low pressure and low temperature", "No catalyst"], "answer": 1, "explanation": "High P favours NH₃; moderate T optimises yield vs rate." },
+        { "q": "Which factor does NOT affect the position of equilibrium?", "options": ["Temperature", "Pressure", "Concentration", "Catalyst"], "answer": 3, "explanation": "Catalyst affects rate, not position." }
+      ]
+    },
+    {
+      "id": "chem-12",
+      "order": 12,
+      "name": "Non-metals and Their Compounds",
+      "questions": [
+        { "q": "Which of the following is a halogen?", "options": ["Oxygen", "Chlorine", "Nitrogen", "Sulphur"], "answer": 1, "explanation": "Group 17 elements are halogens." },
+        { "q": "The most electronegative element is:", "options": ["Oxygen", "Chlorine", "Fluorine", "Nitrogen"], "answer": 2, "explanation": "Fluorine has the highest electronegativity." },
+        { "q": "Which gas is produced when dilute HCl reacts with zinc?", "options": ["Oxygen", "Hydrogen", "Chlorine", "Nitrogen"], "answer": 1, "explanation": "Zn + 2HCl → ZnCl₂ + H₂." },
+        { "q": "The bleaching action of chlorine is due to:", "options": ["Reduction", "Oxidation", "Neutralisation", "Precipitation"], "answer": 1, "explanation": "Chlorine oxidises dyes to colourless products." },
+        { "q": "Concentrated sulphuric acid is used as a:", "options": ["Reducing agent only", "Dehydrating agent", "Solvent", "Base"], "answer": 1, "explanation": "Conc. H₂SO₄ removes water from substances." },
+        { "q": "Which of the following is a property of ammonia?", "options": ["Sweet smell", "Pungent smell", "Colourless and odourless", "Brown colour"], "answer": 1, "explanation": "Ammonia has a pungent smell." },
+        { "q": "Ammonia is produced industrially by the:", "options": ["Contact process", "Haber process", "Ostwald process", "Solvay process"], "answer": 1, "explanation": "Haber process: N₂ + 3H₂ → 2NH₃." },
+        { "q": "Sulphur(IV) oxide is produced by burning:", "options": ["Carbon", "Sulphur", "Phosphorus", "Nitrogen"], "answer": 1, "explanation": "S + O₂ → SO₂." },
+        { "q": "The oxidation state of sulphur in H₂SO₄ is:", "options": ["+2", "+4", "+6", "−2"], "answer": 2, "explanation": "2(+1) + S + 4(−2) = 0 → S = +6." },
+        { "q": "Which of these is used as a fertiliser?", "options": ["NaCl", "NH₄NO₃", "CaCO₃", "SiO₂"], "answer": 1, "explanation": "Ammonium nitrate is a nitrogen fertiliser." }
+      ]
+    },
+    {
+      "id": "chem-13",
+      "order": 13,
+      "name": "Metals and Their Compounds",
+      "questions": [
+        { "q": "The most reactive metal among the following is:", "options": ["Copper", "Iron", "Sodium", "Gold"], "answer": 2, "explanation": "Sodium reacts vigorously with water." },
+        { "q": "Which metal is extracted by electrolysis of its molten oxide?", "options": ["Iron", "Aluminium", "Copper", "Zinc"], "answer": 1, "explanation": "Al is extracted from molten Al₂O₃ (Hall-Héroult process)." },
+        { "q": "Rusting of iron requires:", "options": ["Oxygen only", "Water only", "Oxygen and water", "Nitrogen and water"], "answer": 2, "explanation": "Rusting needs both O₂ and moisture." },
+        { "q": "Galvanisation is the coating of iron with:", "options": ["Tin", "Zinc", "Copper", "Silver"], "answer": 1, "explanation": "Galvanisation = zinc coating." },
+        { "q": "Which of the following is an alloy?", "options": ["Copper", "Brass", "Iron", "Aluminium"], "answer": 1, "explanation": "Brass = Cu + Zn alloy." },
+        { "q": "The chemical formula of rust is:", "options": ["FeO", "Fe₂O₃·xH₂O", "Fe₃O₄", "FeS"], "answer": 1, "explanation": "Hydrated iron(III) oxide." },
+        { "q": "Which metal is liquid at room temperature?", "options": ["Mercury", "Sodium", "Lead", "Zinc"], "answer": 0, "explanation": "Mercury is liquid at room temperature." },
+        { "q": "The reactivity series arranges metals in order of:", "options": ["Density", "Atomic mass", "Reactivity with oxygen/water", "Melting point"], "answer": 2, "explanation": "Reactivity series = order of chemical reactivity." },
+        { "q": "Which of the following metals will displace copper from copper(II) sulphate solution?", "options": ["Silver", "Gold", "Zinc", "Platinum"], "answer": 2, "explanation": "Zn is more reactive than Cu." },
+        { "q": "The extraction of iron from haematite uses:", "options": ["Electrolysis", "Reduction with carbon in a blast furnace", "Distillation", "Filtration"], "answer": 1, "explanation": "Blast furnace uses coke (C) as reducing agent." }
+      ]
+    },
+    {
+      "id": "chem-14",
+      "order": 14,
+      "name": "Organic Chemistry (Hydrocarbons)",
+      "questions": [
+        { "q": "Hydrocarbons are compounds containing only:", "options": ["Carbon and oxygen", "Carbon and hydrogen", "Carbon and nitrogen", "Hydrogen and oxygen"], "answer": 1, "explanation": "Hydrocarbons = C and H only." },
+        { "q": "The general formula of alkanes is:", "options": ["CnH2n", "CnH2n+2", "CnH2n−2", "CnHn"], "answer": 1, "explanation": "Alkanes are saturated: CnH2n+2." },
+        { "q": "The general formula of alkenes is:", "options": ["CnH2n+2", "CnH2n", "CnH2n−2", "CnHn"], "answer": 1, "explanation": "Alkenes have one C=C: CnH2n." },
+        { "q": "Which of these is an alkane?", "options": ["Ethene", "Ethyne", "Ethane", "Ethanol"], "answer": 2, "explanation": "Ethane (C₂H₆) is an alkane." },
+        { "q": "The IUPAC name of CH₃CH₂CH₃ is:", "options": ["Methane", "Ethane", "Propane", "Butane"], "answer": 2, "explanation": "3 carbons → propane." },
+        { "q": "Alkenes undergo addition reactions because of:", "options": ["Single bonds", "Double bonds", "Triple bonds", "Ionic bonds"], "answer": 1, "explanation": "C=C double bond enables addition." },
+        { "q": "The process of joining many small molecules to form a large molecule is:", "options": ["Cracking", "Polymerisation", "Distillation", "Isomerism"], "answer": 1, "explanation": "Polymerisation = monomers → polymer." },
+        { "q": "Which of the following is a saturated hydrocarbon?", "options": ["Ethene", "Ethyne", "Methane", "Butene"], "answer": 2, "explanation": "Methane has only single bonds." },
+        { "q": "Benzene has the molecular formula:", "options": ["C₆H₆", "C₆H₁₂", "C₆H₁₄", "C₅H₁₀"], "answer": 0, "explanation": "Benzene = C₆H₆." },
+        { "q": "Natural gas is mainly composed of:", "options": ["Ethane", "Methane", "Propane", "Butane"], "answer": 1, "explanation": "Natural gas ≈ 90% methane." }
+      ]
+    },
+    {
+      "id": "chem-15",
+      "order": 15,
+      "name": "Functional Groups (Alcohols, Aldehydes, Ketones, Acids)",
+      "questions": [
+        { "q": "The functional group of alcohols is:", "options": ["−CHO", "−OH", "−COOH", "−CO−"], "answer": 1, "explanation": "Alcohols contain the hydroxyl group (OH)." },
+        { "q": "The functional group of aldehydes is:", "options": ["−OH", "−CHO", "−COOH", "−CO−"], "answer": 1, "explanation": "Aldehydes contain −CHO." },
+        { "q": "The functional group of carboxylic acids is:", "options": ["−OH", "−CHO", "−COOH", "−CO−"], "answer": 2, "explanation": "Carboxylic acids contain −COOH." },
+        { "q": "Ethanol is produced industrially by:", "options": ["Oxidation of ethane", "Fermentation of sugars", "Reduction of ethene", "Combustion of methane"], "answer": 1, "explanation": "Fermentation of glucose gives ethanol." },
+        { "q": "Which reagent is used to distinguish aldehydes from ketones?", "options": ["NaOH", "Fehling's solution", "HCl", "H₂O"], "answer": 1, "explanation": "Fehling's solution reduces aldehydes only." },
+        { "q": "The oxidation of a primary alcohol gives:", "options": ["A ketone", "An aldehyde", "A carboxylic acid", "An ether"], "answer": 1, "explanation": "Primary alcohol → aldehyde → acid." },
+        { "q": "The oxidation of a secondary alcohol gives:", "options": ["An aldehyde", "A ketone", "An acid", "An ester"], "answer": 1, "explanation": "Secondary alcohol → ketone." },
+        { "q": "Vinegar contains:", "options": ["Citric acid", "Acetic acid", "Lactic acid", "Sulphuric acid"], "answer": 1, "explanation": "Vinegar ≈ 5% acetic acid." },
+        { "q": "The reaction between an alcohol and a carboxylic acid produces:", "options": ["An ester", "An aldehyde", "A ketone", "An ether"], "answer": 0, "explanation": "Esterification: alcohol + acid → ester + water." },
+        { "q": "Which of the following will give a positive iodoform test?", "options": ["Methanol", "Ethanol", "Propan-1-ol", "Butan-1-ol"], "answer": 1, "explanation": "Ethanol and methyl ketones give iodoform." }
+      ]
+    },
+    {
+      "id": "chem-16",
+      "order": 16,
+      "name": "Polymers",
+      "questions": [
+        { "q": "A polymer is a large molecule made up of repeating units called:", "options": ["Monomers", "Dimers", "Isomers", "Isotopes"], "answer": 0, "explanation": "Polymers are formed from monomers." },
+        { "q": "Which of the following is a natural polymer?", "options": ["Nylon", "Polythene", "Cellulose", "PVC"], "answer": 2, "explanation": "Cellulose is a natural polymer found in plants." },
+        { "q": "Addition polymerisation involves:", "options": ["Loss of water", "Monomers with double bonds joining without loss of small molecules", "Loss of ammonia", "Loss of CO₂"], "answer": 1, "explanation": "Unsaturated monomers join without loss." },
+        { "q": "Condensation polymerisation involves:", "options": ["Loss of a small molecule like water", "Simple addition only", "No loss of molecules", "Ionic bonding"], "answer": 0, "explanation": "Condensation releases small molecules (H₂O, HCl, etc.)." },
+        { "q": "The monomer of polythene is:", "options": ["Ethane", "Ethene", "Ethyne", "Ethanol"], "answer": 1, "explanation": "Ethene (C₂H₄) polymerises to polythene." },
+        { "q": "Nylon is a:", "options": ["Polyamide", "Polyester", "Polyalkene", "Polyether"], "answer": 0, "explanation": "Nylon contains amide linkages." },
+        { "q": "Terylene is an example of a:", "options": ["Polyamide", "Polyester", "Polyalkene", "Polyether"], "answer": 1, "explanation": "Terylene is a polyester." },
+        { "q": "Which of the following is a thermosetting plastic?", "options": ["Polythene", "PVC", "Bakelite", "Polypropene"], "answer": 2, "explanation": "Bakelite cannot be remelted once set." },
+        { "q": "Proteins are polymers of:", "options": ["Glucose", "Amino acids", "Fatty acids", "Nucleotides"], "answer": 1, "explanation": "Proteins = polymerised amino acids." },
+        { "q": "Starch is a polymer of:", "options": ["Fructose", "Glucose", "Sucrose", "Lactose"], "answer": 1, "explanation": "Starch = glucose polymer." }
+      ]
+    },
+    {
+      "id": "chem-17",
+      "order": 17,
+      "name": "Carbohydrates and Proteins",
+      "questions": [
+        { "q": "Carbohydrates contain the elements:", "options": ["C, H, O", "C, H, N", "C, H, O, N", "C, O, S"], "answer": 0, "explanation": "Carbohydrates = C, H, O." },
+        { "q": "The general formula of monosaccharides is:", "options": ["Cₙ(H₂O)ₙ", "CₙH₂ₙ", "CₙH₂ₙ₊₂", "CₙH₂ₙO"], "answer": 0, "explanation": "Monosaccharides: Cₙ(H₂O)ₙ." },
+        { "q": "Glucose and fructose are examples of:", "options": ["Disaccharides", "Monosaccharides", "Polysaccharides", "Lipids"], "answer": 1, "explanation": "Both are simple sugars (monosaccharides)." },
+        { "q": "Sucrose is a:", "options": ["Monosaccharide", "Disaccharide", "Polysaccharide", "Fat"], "answer": 1, "explanation": "Sucrose = glucose + fructose." },
+        { "q": "Which reagent tests for reducing sugars?", "options": ["Fehling's solution", "Iodine", "Bromine water", "Limewater"], "answer": 0, "explanation": "Reducing sugars reduce Fehling's solution to red Cu₂O." },
+        { "q": "Proteins are made up of:", "options": ["Fatty acids", "Amino acids", "Glucose units", "Nucleotides"], "answer": 1, "explanation": "Amino acids link via peptide bonds." },
+        { "q": "The bond linking amino acids in a protein is:", "options": ["Ionic", "Peptide", "Glycosidic", "Ester"], "answer": 1, "explanation": "Peptide bond (−CO−NH−)." },
+        { "q": "The biuret test is used to detect:", "options": ["Starch", "Protein", "Fat", "Sugar"], "answer": 1, "explanation": "Biuret test → violet colour with protein." },
+        { "q": "Fats and oils are esters of:", "options": ["Amino acids", "Fatty acids and glycerol", "Glucose", "Nucleotides"], "answer": 1, "explanation": "Triglycerides = glycerol + 3 fatty acids." },
+        { "q": "Which of the following is a polysaccharide?", "options": ["Glucose", "Fructose", "Cellulose", "Sucrose"], "answer": 2, "explanation": "Cellulose = long-chain glucose polymer." }
+      ]
+    },
+    {
+      "id": "chem-18",
+      "order": 18,
+      "name": "Chemistry and Industry",
+      "questions": [
+        { "q": "The Haber process is used to manufacture:", "options": ["H₂SO₄", "NH₃", "HNO₃", "NaOH"], "answer": 1, "explanation": "Haber: N₂ + 3H₂ → 2NH₃." },
+        { "q": "The Contact process is used to manufacture:", "options": ["Ammonia", "Sulphuric acid", "Nitric acid", "Sodium hydroxide"], "answer": 1, "explanation": "Contact process = H₂SO₄ production." },
+        { "q": "The Ostwald process manufactures:", "options": ["NH₃", "H₂SO₄", "HNO₃", "NaOH"], "answer": 2, "explanation": "Ostwald = oxidation of NH₃ to HNO₃." },
+        { "q": "The raw materials for the Solvay process are:", "options": ["NaCl, NH₃, CO₂, CaCO₃", "N₂, H₂", "S, O₂", "Fe, C"], "answer": 0, "explanation": "Solvay produces Na₂CO₃ from brine and limestone." },
+        { "q": "Which catalyst is used in the Haber process?", "options": ["Vanadium pentoxide", "Iron with promoters", "Platinum", "Nickel"], "answer": 1, "explanation": "Iron catalyst with K₂O/Al₂O₃ promoters." },
+        { "q": "The catalyst in the Contact process is:", "options": ["Iron", "Vanadium(V) oxide", "Nickel", "Platinum"], "answer": 1, "explanation": "V₂O₅ catalyses SO₂ → SO₃." },
+        { "q": "The industrial preparation of soap is called:", "options": ["Esterification", "Saponification", "Hydrolysis", "Distillation"], "answer": 1, "explanation": "Saponification = fat + NaOH → soap + glycerol." },
+        { "q": "Which of the following is used as a fertiliser?", "options": ["NaCl", "Urea", "CaCO₃", "SiO₂"], "answer": 1, "explanation": "Urea is a high-nitrogen fertiliser." },
+        { "q": "Cement is made mainly from:", "options": ["Limestone and clay", "Sand and salt", "Iron and coal", "Copper and zinc"], "answer": 0, "explanation": "Cement: CaCO₃ + clay, heated in a kiln." },
+        { "q": "Glass is made mainly from:", "options": ["Sand, soda, limestone", "Iron, carbon", "Clay, water", "Copper, zinc"], "answer": 0, "explanation": "Glass: SiO₂ + Na₂CO₃ + CaCO₃." }
+      ]
+    },
+    {
+      "id": "chem-19",
+      "order": 19,
+      "name": "Environmental Chemistry",
+      "questions": [
+        { "q": "The main greenhouse gas is:", "options": ["O₂", "N₂", "CO₂", "Ar"], "answer": 2, "explanation": "CO₂ contributes most to the greenhouse effect." },
+        { "q": "Acid rain is mainly caused by:", "options": ["CO₂ and O₂", "SO₂ and NO₂", "N₂ and O₂", "CH₄ and H₂"], "answer": 1, "explanation": "SO₂ and NO₂ form H₂SO₄ and HNO₃." },
+        { "q": "The ozone layer is depleted mainly by:", "options": ["CO₂", "CFCs", "SO₂", "CH₄"], "answer": 1, "explanation": "CFCs release chlorine radicals." },
+        { "q": "Which gas is the main cause of global warming?", "options": ["CO₂", "O₂", "N₂", "He"], "answer": 0, "explanation": "CO₂ traps infrared radiation." },
+        { "q": "Water pollution by sewage is mainly due to:", "options": ["High oxygen content", "High BOD", "Low temperature", "Low salinity"], "answer": 1, "explanation": "Sewage increases BOD, depleting O₂." },
+        { "q": "Oil spillage in water is dangerous because it:", "options": ["Increases O₂", "Prevents O₂ dissolution", "Cools the water", "Adds nutrients"], "answer": 1, "explanation": "Oil films block O₂ transfer." },
+        { "q": "Which of these is a biodegradable pollutant?", "options": ["Plastic", "DDT", "Sewage", "Mercury"], "answer": 2, "explanation": "Sewage is broken down by microorganisms." },
+        { "q": "Eutrophication of water bodies is caused by:", "options": ["Excess nutrients (N, P)", "Excess salt", "Excess acid", "Excess O₂"], "answer": 0, "explanation": "Nutrients cause algal blooms." },
+        { "q": "The main source of carbon monoxide in cities is:", "options": ["Volcanoes", "Incomplete combustion of fuels", "Photosynthesis", "Respiration"], "answer": 1, "explanation": "Incomplete combustion produces CO." },
+        { "q": "Which of the following is NOT a major air pollutant?", "options": ["SO₂", "NO₂", "CO", "N₂"], "answer": 3, "explanation": "N₂ is naturally abundant in air." }
+      ]
+    },
+    {
+      "id": "chem-20",
+      "order": 20,
+      "name": "Analytical Chemistry",
+      "questions": [
+        { "q": "Qualitative analysis is used to determine:", "options": ["The amount of a substance", "The identity of a substance", "The molar mass", "The boiling point"], "answer": 1, "explanation": "Qualitative = identity; quantitative = amount." },
+        { "q": "Quantitative analysis is used to determine:", "options": ["The identity of a substance", "The amount of a substance present", "The colour", "The smell"], "answer": 1, "explanation": "Quantitative = how much." },
+        { "q": "A flame test that gives a golden-yellow colour indicates:", "options": ["Potassium", "Sodium", "Calcium", "Copper"], "answer": 1, "explanation": "Na⁺ gives a golden-yellow flame." },
+        { "q": "A flame test that gives a lilac colour indicates:", "options": ["Sodium", "Potassium", "Calcium", "Barium"], "answer": 1, "explanation": "K⁺ gives a lilac (pale violet) flame." },
+        { "q": "A flame test that gives a brick-red colour indicates:", "options": ["Sodium", "Potassium", "Calcium", "Copper"], "answer": 2, "explanation": "Ca²⁺ gives a brick-red flame." },
+        { "q": "A flame test with a blue-green colour indicates:", "options": ["Sodium", "Potassium", "Calcium", "Copper"], "answer": 3, "explanation": "Cu²⁺ gives a blue-green flame." },
+        { "q": "Adding BaCl₂ to a solution gives a white precipitate insoluble in dilute HCl. The anion is:", "options": ["Cl⁻", "SO₄²⁻", "CO₃²⁻", "NO₃⁻"], "answer": 1, "explanation": "BaSO₄ is white, insoluble in dilute HCl." },
+        { "q": "Addition of dilute HCl to a solution produces a gas that turns limewater milky. The anion is:", "options": ["SO₄²⁻", "Cl⁻", "CO₃²⁻", "NO₃⁻"], "answer": 2, "explanation": "CO₂ is released from carbonate." },
+        { "q": "Titration is used to determine:", "options": ["Flame colour", "Concentration of a solution", "Gas volume", "Melting point"], "answer": 1, "explanation": "Titration determines concentration." },
+        { "q": "In a titration, the end point is best detected using:", "options": ["A thermometer", "An indicator", "A balance", "A barometer"], "answer": 1, "explanation": "Indicators change colour at the end point." }
+      ]
+    }
+  ]
+}

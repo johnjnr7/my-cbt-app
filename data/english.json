@@ -1,0 +1,277 @@
+{
+  "subject": "English",
+  "topics": [
+    {
+      "id": "eng-01",
+      "order": 1,
+      "name": "Comprehension Passages",
+      "questions": [
+        { "q": "In comprehension, the 'main idea' of a passage refers to:", "options": ["The first sentence", "The central point the writer is making", "The longest paragraph", "The title"], "answer": 1, "explanation": "The main idea is the central point or thesis of the passage." },
+        { "q": "When a question asks for the writer's 'tone', it wants to know:", "options": ["The length of the passage", "The attitude or mood conveyed", "The number of paragraphs", "The setting"], "answer": 1, "explanation": "Tone refers to the writer's attitude (e.g., sarcastic, formal, ironic)." },
+        { "q": "An 'inference' question requires you to:", "options": ["Copy a line from the passage", "Read between the lines to draw a logical conclusion", "Count the words", "Identify the title"], "answer": 1, "explanation": "Inference = reading between the lines." },
+        { "q": "The phrase 'the writer's purpose' refers to:", "options": ["What the writer was paid", "Why the writer wrote the passage — to inform, persuade, entertain, etc.", "The length of the passage", "The title of the passage"], "answer": 1, "explanation": "Purpose = intent (inform, persuade, entertain, etc.)." },
+        { "q": "Which of the following is NOT a typical passage type in JAMB comprehension?", "options": ["Narration", "Exposition", "Argumentation", "Prescription"], "answer": 3, "explanation": "Passage types include narration, exposition, argumentation, and description." },
+        { "q": "The phrase 'the passage suggests that' means the answer is:", "options": ["Stated directly in one sentence", "Implied rather than stated directly", "In the first paragraph", "In the title"], "answer": 1, "explanation": "Suggestions are implied, not stated directly." },
+        { "q": "When asked about a word's meaning 'as used in the passage', you should:", "options": ["Give its dictionary meaning", "Give its contextual meaning in that passage", "Give its opposite", "Give its origin"], "answer": 1, "explanation": "Contextual meaning is what matters." },
+        { "q": "The setting of a passage refers to:", "options": ["The number of characters", "The time and place in which the events occur", "The writer's age", "The moral of the passage"], "answer": 1, "explanation": "Setting = time and place." },
+        { "q": "A 'cloze test' passage requires you to:", "options": ["Write a summary", "Fill in missing words from the options provided", "Memorise the passage", "Recite it"], "answer": 1, "explanation": "Cloze test = fill in blanks from given options." },
+        { "q": "Which of the following best describes 'argumentative' writing?", "options": ["It tells a story", "It describes something", "It presents reasons for or against a position", "It lists items"], "answer": 2, "explanation": "Argumentative writing argues a position." }
+      ]
+    },
+    {
+      "id": "eng-02",
+      "order": 2,
+      "name": "Cloze Test",
+      "questions": [
+        { "q": "The students were _____ to submit their assignments before Friday.", "options": ["expected", "expecting", "expectation", "expects"], "answer": 0, "explanation": "Passive voice: 'were expected'." },
+        { "q": "She is regarded _____ the best candidate for the position.", "options": ["as", "for", "with", "to"], "answer": 0, "explanation": "Fixed phrase: 'regarded as'." },
+        { "q": "The committee has _____ its final report.", "options": ["submit", "submitted", "submitting", "submits"], "answer": 1, "explanation": "Present perfect: 'has submitted'." },
+        { "q": "Hardly had he arrived _____ the meeting started.", "options": ["than", "when", "then", "that"], "answer": 1, "explanation": "Fixed structure: 'Hardly had ... when ...'." },
+        { "q": "No sooner had she left _____ the rain started.", "options": ["when", "than", "then", "that"], "answer": 1, "explanation": "Fixed structure: 'No sooner ... than ...'." },
+        { "q": "The new policy was introduced _____ improving productivity.", "options": ["for", "to", "with a view to", "of"], "answer": 2, "explanation": "'With a view to' + gerund." },
+        { "q": "He was accused _____ stealing the money.", "options": ["for", "of", "with", "on"], "answer": 1, "explanation": "Fixed phrase: 'accused of'." },
+        { "q": "The manager is not _____ to attending the meeting.", "options": ["averse", "adverse", "inverse", "reverse"], "answer": 0, "explanation": "'Averse to' means opposed to." },
+        { "q": "The two brothers share the money _____ themselves.", "options": ["among", "between", "within", "with"], "answer": 1, "explanation": "'Between' is used for two." },
+        { "q": "This book is _____ to the one I read last year.", "options": ["superior", "superior than", "superior to", "superior over"], "answer": 2, "explanation": "'Superior to' — Latin comparatives take 'to'." }
+      ]
+    },
+    {
+      "id": "eng-03",
+      "order": 3,
+      "name": "The Lekki Headmaster",
+      "questions": [
+        { "q": "Who is the author of 'The Lekki Headmaster'?", "options": ["Wole Soyinka", "Kabir Alabi Garba", "Chinua Achebe", "Ngugi wa Thiong'o"], "answer": 1, "explanation": "Written by Kabir Alabi Garba." },
+        { "q": "Who is the protagonist of the novel?", "options": ["Mrs. Gloss", "Mr. Alabi", "Bepo (Adewale Adebepo)", "Banky"], "answer": 2, "explanation": "Bepo is the headmaster and protagonist." },
+        { "q": "What position does the protagonist hold?", "options": ["Teacher", "Headmaster", "Chairman", "Principal"], "answer": 1, "explanation": "He is the headmaster of Stardom Schools, Lekki." },
+        { "q": "Where is the novel primarily set?", "options": ["Abuja", "Ibadan", "Lekki, Lagos", "Kano"], "answer": 2, "explanation": "The novel is set in Lekki, Lagos." },
+        { "q": "What is the central theme of the novel?", "options": ["War and peace", "Discipline and integrity in education", "Romance", "Science fiction"], "answer": 1, "explanation": "Discipline, integrity, and moral education." },
+        { "q": "Who is Mrs. Ibidun Gloss?", "options": ["A student", "The MD", "The headmaster", "A parent"], "answer": 1, "explanation": "She is the Managing Director." },
+        { "q": "What does the term 'Japa' refer to in the novel's context?", "options": ["A dance", "The trend of Nigerians emigrating abroad", "A local dish", "A school name"], "answer": 1, "explanation": "'Japa' = the emigration trend." },
+        { "q": "Which character represents resistance to change?", "options": ["Bepo", "Mrs. Gloss", "Mr. Alabi", "Banky"], "answer": 2, "explanation": "Mr. Alabi resists Bepo's reforms." },
+        { "q": "The name of the school in the novel is:", "options": ["Lekki High", "Stardom Schools", "Excellence Academy", "Bright Future College"], "answer": 1, "explanation": "Stardom Schools, Lekki." },
+        { "q": "What literary device is heavily used in the novel?", "options": ["Satire", "Epic simile", "Soliloquy", "Tragic flaw"], "answer": 0, "explanation": "The novel uses satire to critique social issues." }
+      ]
+    },
+    {
+      "id": "eng-04",
+      "order": 4,
+      "name": "Synonyms",
+      "questions": [
+        { "q": "Choose the option nearest in meaning: The chairman was **candid** in his remarks.", "options": ["Rude", "Frank", "Careful", "Bitter"], "answer": 1, "explanation": "'Candid' means honest and straightforward." },
+        { "q": "Choose the option nearest in meaning: The manager's response was **ambiguous**.", "options": ["Clear", "Vague", "Angry", "Brief"], "answer": 1, "explanation": "'Ambiguous' = open to more than one interpretation." },
+        { "q": "Choose the option nearest in meaning: The company's success was **phenomenal**.", "options": ["Ordinary", "Extraordinary", "Slow", "Predictable"], "answer": 1, "explanation": "'Phenomenal' = remarkable, extraordinary." },
+        { "q": "Choose the option nearest in meaning: Her remarks were **caustic**.", "options": ["Soothing", "Bitter and sarcastic", "Gentle", "Flattering"], "answer": 1, "explanation": "'Caustic' = sarcastic, corrosive." },
+        { "q": "Choose the option nearest in meaning: The politician gave a **verbose** speech.", "options": ["Short", "Wordy", "Silent", "Confused"], "answer": 1, "explanation": "'Verbose' = using more words than needed." },
+        { "q": "Choose the option nearest in meaning: He was **obstinate** in his refusal.", "options": ["Flexible", "Stubborn", "Polite", "Careless"], "answer": 1, "explanation": "'Obstinate' = stubbornly refusing to change." },
+        { "q": "Choose the option nearest in meaning: The clerk's behaviour was **impeccable**.", "options": ["Faulty", "Perfect", "Rude", "Slow"], "answer": 1, "explanation": "'Impeccable' = flawless." },
+        { "q": "Choose the option nearest in meaning: The evidence was **incontrovertible**.", "options": ["Questionable", "Indisputable", "Weak", "Ambiguous"], "answer": 1, "explanation": "'Incontrovertible' = cannot be disputed." },
+        { "q": "Choose the option nearest in meaning: His **tenacious** grip on the rope saved him.", "options": ["Weak", "Firm", "Loose", "Careless"], "answer": 1, "explanation": "'Tenacious' = holding firmly." },
+        { "q": "Choose the option nearest in meaning: The professor was known for his **erudite** lectures.", "options": ["Ignorant", "Scholarly", "Boring", "Short"], "answer": 1, "explanation": "'Erudite' = showing great knowledge." }
+      ]
+    },
+    {
+      "id": "eng-05",
+      "order": 5,
+      "name": "Antonyms",
+      "questions": [
+        { "q": "Choose the option opposite in meaning: The new policy was **detrimental** to the economy.", "options": ["Beneficial", "Harmful", "Neutral", "Ambiguous"], "answer": 0, "explanation": "'Detrimental' = harmful, so opposite is beneficial." },
+        { "q": "Choose the option opposite in meaning: His **miserly** attitude surprised everyone.", "options": ["Generous", "Stingy", "Kind", "Rich"], "answer": 0, "explanation": "'Miserly' = stingy, so opposite is generous." },
+        { "q": "Choose the option opposite in meaning: The path was **treacherous**.", "options": ["Safe", "Dangerous", "Rough", "Narrow"], "answer": 0, "explanation": "'Treacherous' = dangerous, so opposite is safe." },
+        { "q": "Choose the option opposite in meaning: Her remarks were **benevolent**.", "options": ["Malevolent", "Kind", "Gentle", "Friendly"], "answer": 0, "explanation": "'Benevolent' = kind, so opposite is malevolent." },
+        { "q": "Choose the option opposite in meaning: The soil is **arid**.", "options": ["Fertile", "Dry", "Sandy", "Rocky"], "answer": 0, "explanation": "'Arid' = dry, so opposite is fertile." },
+        { "q": "Choose the option opposite in meaning: The judge was **lenient** with the offender.", "options": ["Severe", "Kind", "Fair", "Patient"], "answer": 0, "explanation": "'Lenient' = merciful, so opposite is severe." },
+        { "q": "Choose the option opposite in meaning: He gave a **terse** reply.", "options": ["Long-winded", "Brief", "Rude", "Sharp"], "answer": 0, "explanation": "'Terse' = brief, so opposite is long-winded." },
+        { "q": "Choose the option opposite in meaning: The team was **unanimous** in its decision.", "options": ["Divided", "United", "Agreed", "Confident"], "answer": 0, "explanation": "'Unanimous' = fully agreed, so opposite is divided." },
+        { "q": "Choose the option opposite in meaning: The medicine was **potent**.", "options": ["Weak", "Strong", "Effective", "Bitter"], "answer": 0, "explanation": "'Potent' = powerful, so opposite is weak." },
+        { "q": "Choose the option opposite in meaning: His **frugal** habits helped him save.", "options": ["Extravagant", "Thrifty", "Careful", "Modest"], "answer": 0, "explanation": "'Frugal' = thrifty, so opposite is extravagant." }
+      ]
+    },
+    {
+      "id": "eng-06",
+      "order": 6,
+      "name": "Homonyms",
+      "questions": [
+        { "q": "Choose the word that has the same pronunciation as 'SEA'.", "options": ["See", "Say", "She", "Sew"], "answer": 0, "explanation": "'Sea' and 'see' are homophones." },
+        { "q": "Which word is a homophone of 'WRITE'?", "options": ["Right", "Rite", "Both A and B", "Writ"], "answer": 2, "explanation": "Both 'right' and 'rite' sound like 'write'." },
+        { "q": "Choose the option that is a homophone of 'FLOUR'.", "options": ["Floor", "Flow", "Flower", "Flew"], "answer": 0, "explanation": "'Flour' and 'floor' sound alike." },
+        { "q": "Which pair are homophones?", "options": ["Bear / Beer", "Sun / Son", "Bit / Beat", "Cart / Card"], "answer": 1, "explanation": "'Sun' and 'son' sound identical." },
+        { "q": "Choose the word pronounced the same as 'PEAR'.", "options": ["Pair", "Peer", "Pure", "Poor"], "answer": 0, "explanation": "'Pear' and 'pair' are homophones." },
+        { "q": "Which of these is a homophone of 'KNIGHT'?", "options": ["Night", "Nite", "Both A and B", "Knit"], "answer": 2, "explanation": "Both 'night' and 'nite' sound like 'knight'." },
+        { "q": "Choose the pair of homophones.", "options": ["Sew / So", "Saw / Sow", "So / Sow", "See / Say"], "answer": 0, "explanation": "'Sew' and 'so' sound the same." },
+        { "q": "Which word sounds the same as 'WASTE'?", "options": ["Waist", "Wrist", "Worse", "West"], "answer": 0, "explanation": "'Waste' and 'waist' are homophones." },
+        { "q": "Which of the following words is a homophone of 'MEAT'?", "options": ["Meet", "Met", "Mate", "Mite"], "answer": 0, "explanation": "'Meat' and 'meet' sound identical." },
+        { "q": "Which pair is NOT a homophone?", "options": ["Hear / Here", "Bear / Bare", "Break / Brake", "Bread / Breadth"], "answer": 3, "explanation": "'Bread' and 'breadth' are pronounced differently." }
+      ]
+    },
+    {
+      "id": "eng-07",
+      "order": 7,
+      "name": "Sentence Interpretation",
+      "questions": [
+        { "q": "The expression 'to bury the hatchet' means:", "options": ["To hide a weapon", "To make peace", "To dig a hole", "To start a fight"], "answer": 1, "explanation": "Idiom = to end a quarrel." },
+        { "q": "The expression 'to let the cat out of the bag' means:", "options": ["To free an animal", "To reveal a secret", "To make a mistake", "To tell a lie"], "answer": 1, "explanation": "Idiom = to reveal a secret." },
+        { "q": "If someone says 'the ball is in your court', they mean:", "options": ["You must decide", "You must play", "You must rest", "You must watch"], "answer": 0, "explanation": "Idiom = the decision is now yours." },
+        { "q": "'He is a wolf in sheep's clothing' means he is:", "options": ["A farmer", "A dangerous person pretending to be harmless", "A shepherd", "A hunter"], "answer": 1, "explanation": "A deceptive person hiding bad intent." },
+        { "q": "'To beat about the bush' means:", "options": ["To fight in the bush", "To avoid the main point", "To hunt animals", "To take a shortcut"], "answer": 1, "explanation": "Idiom = to avoid the main subject." },
+        { "q": "'He has an axe to grind' means he:", "options": ["Has a personal interest", "Is a carpenter", "Is angry", "Is tired"], "answer": 0, "explanation": "Idiom = has a personal motive." },
+        { "q": "'To be in hot water' means:", "options": ["To be in trouble", "To bathe with hot water", "To be warm", "To be relaxed"], "answer": 0, "explanation": "Idiom = to be in trouble." },
+        { "q": "'A bird in the hand is worth two in the bush' teaches:", "options": ["Don't be greedy", "Hunting is fun", "Birds are valuable", "Take risks"], "answer": 0, "explanation": "Value what you have over uncertain gains." },
+        { "q": "'To bury one's head in the sand' means:", "options": ["To refuse to face reality", "To sleep", "To hide from enemies", "To play a game"], "answer": 0, "explanation": "Idiom = to ignore an obvious problem." },
+        { "q": "'Once bitten, twice shy' means:", "options": ["Bad experiences make one cautious", "Biting is dangerous", "One should always be shy", "Shyness is a virtue"], "answer": 0, "explanation": "Past pain makes one careful." }
+      ]
+    },
+    {
+      "id": "eng-08",
+      "order": 8,
+      "name": "Sentence Completion",
+      "questions": [
+        { "q": "Choose the correct option: If I _____ you, I would accept the offer.", "options": ["am", "was", "were", "be"], "answer": 2, "explanation": "Subjunctive: 'If I were you'." },
+        { "q": "Choose the correct option: The teacher asked the students _____ quiet.", "options": ["to keep", "keeping", "keep", "kept"], "answer": 0, "explanation": "Infinitive after 'ask'." },
+        { "q": "Choose the correct option: He is used to _____ early.", "options": ["wake up", "waking up", "woke up", "woken up"], "answer": 1, "explanation": "'Used to' + gerund." },
+        { "q": "Choose the correct option: Hardly had we arrived _____ it started to rain.", "options": ["than", "when", "that", "then"], "answer": 1, "explanation": "'Hardly ... when' construction." },
+        { "q": "Choose the correct option: She is the kind of person who _____ always ready to help.", "options": ["is", "are", "were", "be"], "answer": 0, "explanation": "Singular subject 'who' → 'is'." },
+        { "q": "Choose the correct option: Neither John nor his brothers _____ coming.", "options": ["is", "are", "was", "has"], "answer": 1, "explanation": "Proximity rule: nearest subject 'brothers' is plural." },
+        { "q": "Choose the correct option: I wish I _____ more time to study.", "options": ["have", "had", "has", "having"], "answer": 1, "explanation": "'Wish' + past subjunctive." },
+        { "q": "Choose the correct option: It is high time we _____ the meeting.", "options": ["start", "started", "starting", "starts"], "answer": 1, "explanation": "'It is high time' + past tense." },
+        { "q": "Choose the correct option: He insisted on _____ the bill himself.", "options": ["pay", "paying", "paid", "pays"], "answer": 1, "explanation": "Preposition + gerund." },
+        { "q": "Choose the correct option: The principal, along with his staff, _____ arrived.", "options": ["have", "has", "are", "were"], "answer": 1, "explanation": "'Along with' does not change singular subject." }
+      ]
+    },
+    {
+      "id": "eng-09",
+      "order": 9,
+      "name": "Tenses & Concord",
+      "questions": [
+        { "q": "By the time we arrived, the meeting _____ already started.", "options": ["has", "had", "have", "having"], "answer": 1, "explanation": "Past perfect: 'had started'." },
+        { "q": "She _____ in Lagos for ten years before she moved to Abuja.", "options": ["lives", "lived", "has lived", "had lived"], "answer": 3, "explanation": "Past perfect: 'had lived'." },
+        { "q": "Neither the teacher nor the students _____ present.", "options": ["is", "was", "were", "be"], "answer": 2, "explanation": "Proximity rule: nearest subject 'students' is plural." },
+        { "q": "Each of the boys _____ given a gift.", "options": ["were", "was", "have", "are"], "answer": 1, "explanation": "'Each' takes singular verb." },
+        { "q": "The news _____ very disturbing.", "options": ["are", "were", "is", "have"], "answer": 2, "explanation": "'News' is singular." },
+        { "q": "Mathematics _____ my favourite subject.", "options": ["are", "is", "were", "have"], "answer": 1, "explanation": "Subjects ending in -s (mathematics, physics) take singular verbs." },
+        { "q": "He _____ to school every day.", "options": ["go", "goes", "going", "gone"], "answer": 1, "explanation": "Third person singular: 'goes'." },
+        { "q": "The committee _____ divided in their opinions.", "options": ["is", "are", "was", "has"], "answer": 1, "explanation": "When members disagree, collective noun takes plural verb." },
+        { "q": "I _____ him yesterday at the market.", "options": ["see", "saw", "seen", "seeing"], "answer": 1, "explanation": "Simple past: 'saw'." },
+        { "q": "She has been working here _____ 2015.", "options": ["for", "since", "from", "at"], "answer": 1, "explanation": "'Since' + specific point in time." }
+      ]
+    },
+    {
+      "id": "eng-10",
+      "order": 10,
+      "name": "Question Tags",
+      "questions": [
+        { "q": "Complete with the correct tag: She is coming, _____?", "options": ["is she", "isn't she", "does she", "doesn't she"], "answer": 1, "explanation": "Positive statement → negative tag." },
+        { "q": "Complete with the correct tag: They have finished, _____?", "options": ["have they", "haven't they", "did they", "didn't they"], "answer": 1, "explanation": "Present perfect → 'haven't they'." },
+        { "q": "Complete with the correct tag: You don't like coffee, _____?", "options": ["do you", "don't you", "are you", "aren't you"], "answer": 0, "explanation": "Negative statement → positive tag." },
+        { "q": "Complete with the correct tag: Let's go now, _____?", "options": ["shall we", "will we", "do we", "don't we"], "answer": 0, "explanation": "'Let's' takes 'shall we'." },
+        { "q": "Complete with the correct tag: Nobody came, _____?", "options": ["did they", "didn't they", "did he", "didn't he"], "answer": 0, "explanation": "'Nobody' takes plural pronoun 'they'." },
+        { "q": "Complete with the correct tag: I am invited, _____?", "options": ["am I", "aren't I", "amn't I", "isn't I"], "answer": 1, "explanation": "Tag for 'I am' is 'aren't I'." },
+        { "q": "Complete with the correct tag: He can swim, _____?", "options": ["can he", "can't he", "does he", "doesn't he"], "answer": 1, "explanation": "Modal verb tag uses same modal." },
+        { "q": "Complete with the correct tag: Close the door, _____?", "options": ["will you", "won't you", "shall you", "do you"], "answer": 0, "explanation": "Imperative takes 'will you'." },
+        { "q": "Complete with the correct tag: She hardly speaks, _____?", "options": ["does she", "doesn't she", "is she", "isn't she"], "answer": 0, "explanation": "'Hardly' has negative force → positive tag." },
+        { "q": "Complete with the correct tag: They'd better leave now, _____?", "options": ["hadn't they", "wouldn't they", "shouldn't they", "didn't they"], "answer": 0, "explanation": "'Had better' → 'hadn't they'." }
+      ]
+    },
+    {
+      "id": "eng-11",
+      "order": 11,
+      "name": "Punctuation & Spelling",
+      "questions": [
+        { "q": "Which sentence is correctly punctuated?", "options": ["The boys, who came late, missed the bus.", "The boys who came late, missed the bus.", "The boys who came late missed, the bus.", "The boys, who came late missed the bus."], "answer": 0, "explanation": "Non-restrictive clause is set off by commas on both sides." },
+        { "q": "Choose the correctly spelt word.", "options": ["Occassion", "Ocassion", "Occasion", "Occasionn"], "answer": 2, "explanation": "Correct spelling: O-C-C-A-S-I-O-N." },
+        { "q": "Choose the correctly spelt word.", "options": ["Embarrass", "Embarass", "Embbarass", "Embaras"], "answer": 0, "explanation": "Two R's and two S's." },
+        { "q": "Which sentence uses the apostrophe correctly?", "options": ["The students' books are new.", "The student's books are new.", "Both A and B depending on meaning.", "The studentss books are new."], "answer": 2, "explanation": "Singular possessive = student's; plural possessive = students'." },
+        { "q": "Identify the correctly punctuated sentence.", "options": ["He asked, \"Where are you going?\"", "He asked \"where are you going?\"", "He asked, where are you going?", "He asked; \"Where are you going?\""], "answer": 0, "explanation": "Quotation marks + comma before the quote." },
+        { "q": "Choose the correctly spelt word.", "options": ["Neccessary", "Necessary", "Necesary", "Neccesary"], "answer": 1, "explanation": "One C, two S's." },
+        { "q": "Which of these uses the semicolon correctly?", "options": ["I came; I saw; I conquered.", "I came, I saw; I conquered.", "I came; I saw, I conquered.", "I came I saw; I conquered."], "answer": 0, "explanation": "Semicolons separate independent clauses." },
+        { "q": "Choose the correctly spelt word.", "options": ["Seperate", "Separate", "Separete", "Seperete"], "answer": 1, "explanation": "S-E-P-A-R-A-T-E." },
+        { "q": "Which is correct?", "options": ["Its a beautiful day.", "It's a beautiful day.", "Its' a beautiful day.", "Itss a beautiful day."], "answer": 1, "explanation": "'It's' = it is." },
+        { "q": "Choose the correctly spelt word.", "options": ["Recieve", "Receive", "Receeve", "Receave"], "answer": 1, "explanation": "Rule: I before E except after C." }
+      ]
+    },
+    {
+      "id": "eng-12",
+      "order": 12,
+      "name": "Vowels & Diphthongs",
+      "questions": [
+        { "q": "Which word contains the vowel sound /i:/ as in 'see'?", "options": ["Bit", "Beat", "Bet", "Bat"], "answer": 1, "explanation": "'Beat' has /i:/." },
+        { "q": "Which word contains the vowel sound /æ/ as in 'cat'?", "options": ["Cart", "Cat", "Caught", "Coat"], "answer": 1, "explanation": "'Cat' has /æ/." },
+        { "q": "Which word contains the diphthong /aɪ/ as in 'my'?", "options": ["Me", "My", "Mow", "Moo"], "answer": 1, "explanation": "'My' has /aɪ/." },
+        { "q": "Which word contains the vowel sound /ʊ/ as in 'put'?", "options": ["Pool", "Put", "Pot", "Pat"], "answer": 1, "explanation": "'Put' has /ʊ/." },
+        { "q": "Which of these is a diphthong?", "options": ["/i:/", "/eɪ/", "/u:/", "/æ/"], "answer": 1, "explanation": "/eɪ/ is a diphthong (as in 'day')." },
+        { "q": "How many monophthongs does English have?", "options": ["8", "10", "12", "20"], "answer": 2, "explanation": "English has 12 monophthongs." },
+        { "q": "How many diphthongs does English have?", "options": ["5", "8", "10", "12"], "answer": 1, "explanation": "English has 8 diphthongs." },
+        { "q": "Which word contains the vowel /ɒ/ as in 'hot'?", "options": ["Hot", "Hoot", "Hate", "Hat"], "answer": 0, "explanation": "'Hot' has /ɒ/." },
+        { "q": "Which word contains the vowel /u:/ as in 'food'?", "options": ["Full", "Food", "Foot", "Fought"], "answer": 1, "explanation": "'Food' has /u:/." },
+        { "q": "The vowel sound in 'bird' is:", "options": ["/ɜ:/", "/i:/", "/u:/", "/ɔ:/"], "answer": 0, "explanation": "'Bird' has /ɜ:/." }
+      ]
+    },
+    {
+      "id": "eng-13",
+      "order": 13,
+      "name": "Consonants & Clusters",
+      "questions": [
+        { "q": "Which word begins with the consonant sound /θ/ as in 'think'?", "options": ["This", "Thin", "Then", "The"], "answer": 1, "explanation": "'Thin' starts with /θ/ (voiceless)." },
+        { "q": "Which word begins with /ð/ as in 'this'?", "options": ["Thin", "Thick", "This", "Think"], "answer": 2, "explanation": "'This' starts with /ð/ (voiced)." },
+        { "q": "Which word has the consonant sound /ʃ/ as in 'she'?", "options": ["Sip", "Ship", "Zip", "Chip"], "answer": 1, "explanation": "'Ship' has /ʃ/." },
+        { "q": "Which word has the consonant sound /tʃ/ as in 'church'?", "options": ["Shut", "Church", "Sheet", "Just"], "answer": 1, "explanation": "'Church' has /tʃ/." },
+        { "q": "Which word has the consonant sound /dʒ/ as in 'judge'?", "options": ["Joke", "Choke", "Shoke", "Yoke"], "answer": 0, "explanation": "'Joke' has /dʒ/." },
+        { "q": "Which word begins with a consonant cluster?", "options": ["Sing", "Strength", "Sit", "Sun"], "answer": 1, "explanation": "'Strength' starts with /str/ cluster." },
+        { "q": "Which word begins with the consonant /j/ as in 'yes'?", "options": ["Yet", "Jet", "Get", "Set"], "answer": 0, "explanation": "'Yet' starts with /j/." },
+        { "q": "How many consonant sounds does English have?", "options": ["20", "22", "24", "26"], "answer": 2, "explanation": "English has 24 consonant sounds." },
+        { "q": "Which word contains the /ŋ/ sound?", "options": ["Sin", "Sing", "Sip", "Sit"], "answer": 1, "explanation": "'Sing' has /ŋ/." },
+        { "q": "Which word begins with the consonant /ʒ/ as in 'measure'?", "options": ["Sip", "Genre", "Chef", "Chip"], "answer": 1, "explanation": "'Genre' starts with /ʒ/." }
+      ]
+    },
+    {
+      "id": "eng-14",
+      "order": 14,
+      "name": "Rhymes & Homophones",
+      "questions": [
+        { "q": "Which word rhymes with 'light'?", "options": ["Lit", "Late", "Kite", "Loot"], "answer": 2, "explanation": "'Kite' rhymes with 'light'." },
+        { "q": "Which word rhymes with 'rain'?", "options": ["Ran", "Ruin", "Reign", "Run"], "answer": 2, "explanation": "'Reign' rhymes with 'rain'." },
+        { "q": "Which word rhymes with 'moon'?", "options": ["Man", "Soon", "Main", "Men"], "answer": 1, "explanation": "'Soon' rhymes with 'moon'." },
+        { "q": "Which word rhymes with 'flow'?", "options": ["Floor", "Flew", "Below", "Flat"], "answer": 2, "explanation": "'Below' rhymes with 'flow'." },
+        { "q": "Which word rhymes with 'heart'?", "options": ["Hurt", "Hot", "Part", "Hit"], "answer": 2, "explanation": "'Part' rhymes with 'heart'." },
+        { "q": "Which word rhymes with 'though'?", "options": ["Through", "Throw", "Tough", "Thought"], "answer": 1, "explanation": "'Throw' rhymes with 'though'." },
+        { "q": "Which word rhymes with 'beard'?", "options": ["Bird", "Weird", "Bored", "Blood"], "answer": 1, "explanation": "'Weird' rhymes with 'beard'." },
+        { "q": "Which word rhymes with 'cream'?", "options": ["Clam", "Climb", "Dream", "Cram"], "answer": 2, "explanation": "'Dream' rhymes with 'cream'." },
+        { "q": "Which word rhymes with 'blue'?", "options": ["Blow", "Blew", "Bell", "Ball"], "answer": 1, "explanation": "'Blew' rhymes with 'blue'." },
+        { "q": "Which word rhymes with 'noise'?", "options": ["Nose", "Choice", "Nice", "News"], "answer": 1, "explanation": "'Choice' rhymes with 'noise'." }
+      ]
+    },
+    {
+      "id": "eng-15",
+      "order": 15,
+      "name": "Word Stress",
+      "questions": [
+        { "q": "In which syllable is the stress in 'PHOtograph'?", "options": ["First", "Second", "Third", "None"], "answer": 0, "explanation": "PHO-to-graph — stress on first." },
+        { "q": "In which syllable is the stress in 'phoTOgraphy'?", "options": ["First", "Second", "Third", "Fourth"], "answer": 1, "explanation": "pho-TOG-ra-phy — stress on second." },
+        { "q": "In which syllable is the stress in 'photoGRAPHic'?", "options": ["First", "Second", "Third", "Fourth"], "answer": 2, "explanation": "pho-to-GRAPH-ic — stress on third." },
+        { "q": "In which syllable is the stress in 'COMfortable'?", "options": ["First", "Second", "Third", "Fourth"], "answer": 0, "explanation": "COM-fort-a-ble — stress on first." },
+        { "q": "In which syllable is the stress in 'mainTAIN'?", "options": ["First", "Second", "Third", "None"], "answer": 1, "explanation": "main-TAIN — stress on second." },
+        { "q": "In which syllable is the stress in 'NECessary'?", "options": ["First", "Second", "Third", "Fourth"], "answer": 0, "explanation": "NEC-es-sa-ry — stress on first." },
+        { "q": "Where is the stress in 'inTELligent'?", "options": ["First", "Second", "Third", "Fourth"], "answer": 1, "explanation": "in-TEL-li-gent — stress on second." },
+        { "q": "Where is the stress in 'PHOtography' if pronounced as a 4-syllable word in British English?", "options": ["First", "Second", "Third", "Fourth"], "answer": 1, "explanation": "In standard British, stress is on the second syllable of 'photography'." },
+        { "q": "Where is the stress in 'aGREE'?", "options": ["First", "Second", "Third", "None"], "answer": 1, "explanation": "a-GREE — stress on second." },
+        { "q": "Where is the stress in 'BEAUtiful'?", "options": ["First", "Second", "Third", "Fourth"], "answer": 0, "explanation": "BEAU-ti-ful — stress on first." }
+      ]
+    },
+    {
+      "id": "eng-16",
+      "order": 16,
+      "name": "Intonation & Emphatic Stress",
+      "questions": [
+        { "q": "Falling intonation is used in:", "options": ["Yes/No questions", "Wh-questions", "Tag questions", "List items"], "answer": 1, "explanation": "Wh-questions typically use falling intonation." },
+        { "q": "Rising intonation is used in:", "options": ["Statements", "Yes/No questions", "Commands", "Wh-questions"], "answer": 1, "explanation": "Yes/No questions use rising intonation." },
+        { "q": "Which word is emphasised in: 'I said JOHN stole the book'?", "options": ["I", "said", "JOHN", "stole"], "answer": 2, "explanation": "'JOHN' is the stressed word." },
+        { "q": "In 'She bought a RED car', the emphatic stress is on:", "options": ["She", "bought", "RED", "car"], "answer": 2, "explanation": "'RED' receives emphatic stress." },
+        { "q": "The function of emphatic stress is to:", "options": ["Confuse the listener", "Highlight a specific word for contrast", "Shorten the sentence", "Add punctuation"], "answer": 1, "explanation": "Emphatic stress highlights a specific word." },
+        { "q": "In 'HE is my brother', the stress on 'HE' contrasts with:", "options": ["A sister", "Another person", "A friend", "A teacher"], "answer": 1, "explanation": "Stressing 'HE' contrasts him with another person." },
+        { "q": "A question like 'You are coming, aren't you?' typically uses:", "options": ["Falling intonation", "Rising intonation", "Flat intonation", "No intonation"], "answer": 1, "explanation": "Tag questions often rise." },
+        { "q": "In 'I said the RED one', the speaker is correcting a misunderstanding about:", "options": ["The colour", "The size", "The shape", "The price"], "answer": 0, "explanation": "Emphasis on 'RED' corrects a colour mistake." },
+        { "q": "Statements in English usually end with:", "options": ["Rising intonation", "Falling intonation", "Flat tone", "High tone"], "answer": 1, "explanation": "Statements typically fall." },
+        { "q": "In 'I want COFFEE, not tea', the contrast is between:", "options": ["Coffee and tea", "I and you", "Want and need", "Hot and cold"], "answer": 0, "explanation": "Emphasis creates a coffee-vs-tea contrast." }
+      ]
+    }
+  ]
+}

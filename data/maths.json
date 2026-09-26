@@ -1,0 +1,345 @@
+{
+  "subject": "Mathematics",
+  "topics": [
+    {
+      "id": "math-01",
+      "order": 1,
+      "name": "Number Bases",
+      "questions": [
+        { "q": "Convert 1101₂ to base 10.", "options": ["11", "13", "14", "9"], "answer": 1, "explanation": "1×8 + 1×4 + 0×2 + 1×1 = 13." },
+        { "q": "Convert 25₁₀ to base 2.", "options": ["11001", "11011", "10101", "11101"], "answer": 0, "explanation": "25 = 16 + 8 + 1 = 11001₂." },
+        { "q": "Evaluate 101₂ + 11₂.", "options": ["1000₂", "1001₂", "110₂", "111₂"], "answer": 0, "explanation": "5 + 3 = 8 = 1000₂." },
+        { "q": "Convert 47₁₀ to base 8.", "options": ["57₈", "67₈", "75₈", "77₈"], "answer": 0, "explanation": "47 ÷ 8 = 5 r 7 → 57₈." },
+        { "q": "What is 3A₁₆ in base 10?", "options": ["52", "58", "60", "62"], "answer": 1, "explanation": "3×16 + 10 = 58." },
+        { "q": "Convert 0.5₁₀ to base 2.", "options": ["0.1₂", "0.01₂", "0.11₂", "0.101₂"], "answer": 0, "explanation": "0.5 × 2 = 1.0 → 0.1₂." },
+        { "q": "Evaluate 111₂ × 10₂.", "options": ["1110₂", "1101₂", "1000₂", "1111₂"], "answer": 0, "explanation": "7 × 2 = 14 = 1110₂." },
+        { "q": "Convert 63₁₀ to base 7.", "options": ["120₇", "121₇", "122₇", "123₇"], "answer": 0, "explanation": "63 = 1×49 + 2×7 + 0 = 120₇." },
+        { "q": "What is 1010₂ ÷ 10₂?", "options": ["101₂", "100₂", "110₂", "111₂"], "answer": 0, "explanation": "10 ÷ 2 = 5 = 101₂." },
+        { "q": "Convert 2B₁₆ to base 10.", "options": ["41", "43", "45", "47"], "answer": 1, "explanation": "2×16 + 11 = 43." }
+      ]
+    },
+    {
+      "id": "math-02",
+      "order": 2,
+      "name": "Fractions, Decimals, Approximations & Percentages",
+      "questions": [
+        { "q": "Express 0.75 as a fraction in lowest terms.", "options": ["3/4", "7/10", "15/20", "75/100"], "answer": 0, "explanation": "0.75 = 75/100 = 3/4." },
+        { "q": "Round 3.8461 to 2 decimal places.", "options": ["3.84", "3.85", "3.846", "3.8"], "answer": 1, "explanation": "Third decimal is 6, round up: 3.85." },
+        { "q": "Calculate 15% of 240.", "options": ["30", "36", "24", "40"], "answer": 1, "explanation": "0.15 × 240 = 36." },
+        { "q": "A trader buys an item for ₦2,000 and sells for ₦2,500. Find the profit percent.", "options": ["20%", "25%", "30%", "15%"], "answer": 1, "explanation": "Profit = 500; 500/2000 × 100 = 25%." },
+        { "q": "Find the simple interest on ₦5,000 for 3 years at 4% per annum.", "options": ["₦400", "₦600", "₦500", "₦700"], "answer": 1, "explanation": "I = PRT/100 = 5000×4×3/100 = 600." },
+        { "q": "Express 0.000456 in standard form.", "options": ["4.56×10⁻⁴", "4.56×10⁻³", "45.6×10⁻⁵", "4.56×10⁴"], "answer": 0, "explanation": "Move decimal 4 places right → 4.56×10⁻⁴." },
+        { "q": "What is 15/8 as a decimal?", "options": ["1.875", "1.75", "1.625", "1.5"], "answer": 0, "explanation": "15 ÷ 8 = 1.875." },
+        { "q": "VAT is 7.5%. Find VAT on a ₦8,000 item.", "options": ["₦600", "₦500", "₦700", "₦450"], "answer": 0, "explanation": "0.075 × 8000 = 600." },
+        { "q": "Round 2.347 to 2 significant figures.", "options": ["2.3", "2.4", "2.35", "2.34"], "answer": 0, "explanation": "Third digit is 4 (less than 5), so 2.3." },
+        { "q": "Divide ₦120 in ratio 2:3.", "options": ["₦48 and ₦72", "₦50 and ₦70", "₦40 and ₦80", "₦45 and ₦75"], "answer": 0, "explanation": "2+3=5; 120/5=24; 2×24=48, 3×24=72." }
+      ]
+    },
+    {
+      "id": "math-03",
+      "order": 3,
+      "name": "Indices, Logarithms & Surds",
+      "questions": [
+        { "q": "Simplify: 2³ × 2⁴.", "options": ["2⁷", "2¹²", "4⁷", "2¹"], "answer": 0, "explanation": "Same base, add powers: 2^(3+4) = 2⁷." },
+        { "q": "If log₁₀ 2 = 0.3010, find log₁₀ 8.", "options": ["0.6020", "0.9030", "1.2040", "2.4080"], "answer": 1, "explanation": "log 8 = log 2³ = 3 log 2 = 0.9030." },
+        { "q": "Simplify: 5⁰.", "options": ["0", "1", "5", "Undefined"], "answer": 1, "explanation": "Any non-zero number to power 0 = 1." },
+        { "q": "Solve: 2^x = 32.", "options": ["4", "5", "6", "3"], "answer": 1, "explanation": "2⁵ = 32, so x = 5." },
+        { "q": "Simplify √50.", "options": ["5√2", "2√5", "10√5", "25√2"], "answer": 0, "explanation": "√50 = √(25×2) = 5√2." },
+        { "q": "Evaluate log₂ 16.", "options": ["2", "3", "4", "5"], "answer": 2, "explanation": "2⁴ = 16, so log₂ 16 = 4." },
+        { "q": "Simplify: (3²)³.", "options": ["3⁵", "3⁶", "3⁹", "9³"], "answer": 1, "explanation": "Multiply powers: 3^(2×3) = 3⁶." },
+        { "q": "Rationalise: 1/√3.", "options": ["√3/3", "3/√3", "√3", "3√3"], "answer": 0, "explanation": "Multiply by √3/√3: √3/3." },
+        { "q": "If log₃ x = 2, find x.", "options": ["6", "9", "8", "3"], "answer": 1, "explanation": "3² = 9, so x = 9." },
+        { "q": "Simplify: (2√3)(3√2).", "options": ["6√6", "5√5", "6√5", "12√6"], "answer": 0, "explanation": "2×3×√(3×2) = 6√6." }
+      ]
+    },
+    {
+      "id": "math-04",
+      "order": 4,
+      "name": "Sets",
+      "questions": [
+        { "q": "If A = {1,2,3} and B = {3,4,5}, find A ∪ B.", "options": ["{1,2,3,4,5}", "{3}", "{1,2}", "{4,5}"], "answer": 0, "explanation": "Union = all elements in either set." },
+        { "q": "If A = {1,2,3} and B = {3,4,5}, find A ∩ B.", "options": ["{3}", "{1,2,4,5}", "{1,2,3}", "{4,5}"], "answer": 0, "explanation": "Intersection = common elements." },
+        { "q": "If n(A) = 10, n(B) = 8, n(A∩B) = 3, find n(A∪B).", "options": ["15", "18", "21", "5"], "answer": 0, "explanation": "10 + 8 − 3 = 15." },
+        { "q": "A set with no elements is called:", "options": ["Universal", "Empty", "Finite", "Infinite"], "answer": 1, "explanation": "Empty or null set." },
+        { "q": "If ξ = {1,2,3,4,5} and A = {1,3,5}, find A′.", "options": ["{2,4}", "{1,3,5}", "{1,2,3}", "{4,5}"], "answer": 0, "explanation": "Complement = elements in ξ not in A." },
+        { "q": "Two sets with no common elements are called:", "options": ["Equal", "Equivalent", "Disjoint", "Subsets"], "answer": 2, "explanation": "Disjoint sets have no intersection." },
+        { "q": "If A = {a,b,c}, how many subsets does A have?", "options": ["3", "6", "8", "9"], "answer": 2, "explanation": "2³ = 8 subsets." },
+        { "q": "In a class of 30, 18 like Maths, 12 like Physics, 5 like both. How many like neither?", "options": ["5", "10", "15", "3"], "answer": 0, "explanation": "18+12−5=25; 30−25=5." },
+        { "q": "If n(A) = 12, n(A∪B) = 20, n(A∩B) = 4, find n(B).", "options": ["12", "16", "8", "20"], "answer": 0, "explanation": "12 + n(B) − 4 = 20 → n(B) = 12." },
+        { "q": "Which is a subset of {1,2,3}?", "options": ["{1,4}", "{2,3}", "{4,5}", "{1,5}"], "answer": 1, "explanation": "{2,3} contains only elements from the set." }
+      ]
+    },
+    {
+      "id": "math-05",
+      "order": 5,
+      "name": "Polynomials",
+      "questions": [
+        { "q": "Factorise x² − 5x + 6.", "options": ["(x−2)(x−3)", "(x+2)(x+3)", "(x−1)(x−6)", "(x+1)(x+6)"], "answer": 0, "explanation": "−2 and −3 add to −5, multiply to 6." },
+        { "q": "Find the remainder when x³ − 2x + 1 is divided by (x−1).", "options": ["0", "1", "2", "−1"], "answer": 0, "explanation": "P(1) = 1−2+1 = 0." },
+        { "q": "If (x−2) is a factor of x³ − 8, find the other factor.", "options": ["x²+2x+4", "x²−2x+4", "x²+4", "x²−4"], "answer": 0, "explanation": "Difference of cubes." },
+        { "q": "Expand (x+3)².", "options": ["x²+6x+9", "x²+9", "x²+3x+9", "x²+6x+6"], "answer": 0, "explanation": "(a+b)² = a²+2ab+b²." },
+        { "q": "Find the roots of x² − 7x + 12 = 0.", "options": ["3,4", "2,6", "1,12", "−3,−4"], "answer": 0, "explanation": "(x−3)(x−4)=0." },
+        { "q": "If P(x) = 2x³ + ax² − 3x + 4 and P(1) = 0, find a.", "options": ["−3", "3", "−5", "5"], "answer": 0, "explanation": "2+a−3+4=0 → a=−3." },
+        { "q": "Factorise 2x² − 8.", "options": ["2(x−2)(x+2)", "2(x−4)(x+4)", "(2x−4)(x+2)", "(x−2)(x+4)"], "answer": 0, "explanation": "2(x²−4) = 2(x−2)(x+2)." },
+        { "q": "Find the remainder when x² + 3x − 5 is divided by (x+2).", "options": ["−7", "7", "−3", "3"], "answer": 0, "explanation": "P(−2) = 4 − 6 − 5 = −7." },
+        { "q": "Solve x² = 9.", "options": ["±3", "3 only", "−3 only", "±9"], "answer": 0, "explanation": "x = ±√9 = ±3." },
+        { "q": "If f(x) = x³ + 2x² − x + 5, find f(−1).", "options": ["7", "−3", "5", "3"], "answer": 0, "explanation": "−1 + 2 + 1 + 5 = 7." }
+      ]
+    },
+    {
+      "id": "math-06",
+      "order": 6,
+      "name": "Variation",
+      "questions": [
+        { "q": "If y varies directly as x and y=8 when x=2, find y when x=5.", "options": ["20", "16", "10", "25"], "answer": 0, "explanation": "y=kx; k=4; y=20." },
+        { "q": "If y varies inversely as x and y=6 when x=3, find y when x=9.", "options": ["2", "3", "18", "4"], "answer": 0, "explanation": "y=k/x; k=18; y=2." },
+        { "q": "If y varies directly as x² and y=12 when x=2, find y when x=3.", "options": ["27", "18", "36", "9"], "answer": 0, "explanation": "y=kx²; k=3; y=27." },
+        { "q": "If z varies jointly as x and y, z=24 when x=2, y=3. Find z when x=4, y=5.", "options": ["80", "40", "60", "100"], "answer": 0, "explanation": "z=kxy; k=4; z=80." },
+        { "q": "If y varies inversely as √x and y=4 when x=9, find y when x=16.", "options": ["3", "4", "5", "6"], "answer": 0, "explanation": "y=k/√x; k=12; y=3." },
+        { "q": "If x varies directly as y² and x=4 when y=2, find x when y=3.", "options": ["9", "6", "12", "8"], "answer": 0, "explanation": "x=ky²; k=1; x=9." },
+        { "q": "If p varies partly as q and partly as r, and p=10 when q=2, r=3. Find p when q=4, r=5 (k1=k2=1).", "options": ["9", "10", "11", "12"], "answer": 0, "explanation": "p = q + r = 9." },
+        { "q": "If y ∝ x and x increases by 20%, what is the percentage increase in y?", "options": ["20%", "40%", "10%", "25%"], "answer": 0, "explanation": "Direct variation → same % change." },
+        { "q": "If y varies inversely as x, and x doubles, what happens to y?", "options": ["Halves", "Doubles", "Remains same", "Quadruples"], "answer": 0, "explanation": "Inverse → one doubles, other halves." },
+        { "q": "The time T varies inversely as speed S. If T=4 when S=30, find T when S=40.", "options": ["3", "5", "6", "2"], "answer": 0, "explanation": "T=k/S; k=120; T=3." }
+      ]
+    },
+    {
+      "id": "math-07",
+      "order": 7,
+      "name": "Inequalities",
+      "questions": [
+        { "q": "Solve: 2x + 3 > 9.", "options": ["x > 3", "x < 3", "x > 6", "x < 6"], "answer": 0, "explanation": "2x > 6 → x > 3." },
+        { "q": "Solve: 3x − 5 ≤ 7.", "options": ["x ≤ 4", "x ≥ 4", "x ≤ 12", "x ≥ 12"], "answer": 0, "explanation": "3x ≤ 12 → x ≤ 4." },
+        { "q": "Solve: −2x > 8.", "options": ["x < −4", "x > −4", "x < 4", "x > 4"], "answer": 0, "explanation": "Divide by negative, flip sign: x < −4." },
+        { "q": "Solve: x² − 4 ≤ 0.", "options": ["−2 ≤ x ≤ 2", "x ≤ 2", "x ≥ −2", "x ≤ −2 or x ≥ 2"], "answer": 0, "explanation": "(x−2)(x+2)≤0 → between roots." },
+        { "q": "Solve: 5 − x ≥ 2.", "options": ["x ≤ 3", "x ≥ 3", "x ≤ 7", "x ≥ 7"], "answer": 0, "explanation": "−x ≥ −3 → x ≤ 3." },
+        { "q": "Which is a solution of 2x + 1 < 5?", "options": ["1", "2", "3", "4"], "answer": 0, "explanation": "x < 2, so 1 works." },
+        { "q": "Solve: 4x + 7 > 2x + 15.", "options": ["x > 4", "x < 4", "x > 8", "x < 8"], "answer": 0, "explanation": "2x > 8 → x > 4." },
+        { "q": "Solve: x/2 + 3 ≥ 5.", "options": ["x ≥ 4", "x ≤ 4", "x ≥ 2", "x ≤ 2"], "answer": 0, "explanation": "x/2 ≥ 2 → x ≥ 4." },
+        { "q": "Solve: x² − x − 6 > 0.", "options": ["x < −2 or x > 3", "−2 < x < 3", "x > 3 only", "x < −2 only"], "answer": 0, "explanation": "(x−3)(x+2)>0 → outside roots." },
+        { "q": "If 3 ≤ x ≤ 7, what is the range of 2x + 1?", "options": ["7 ≤ 2x+1 ≤ 15", "6 ≤ 2x+1 ≤ 14", "3 ≤ 2x+1 ≤ 7", "5 ≤ 2x+1 ≤ 15"], "answer": 0, "explanation": "2(3)+1=7; 2(7)+1=15." }
+      ]
+    },
+    {
+      "id": "math-08",
+      "order": 8,
+      "name": "Progression (AP & GP)",
+      "questions": [
+        { "q": "Find the 10th term of AP: 3, 7, 11, ...", "options": ["39", "43", "35", "47"], "answer": 0, "explanation": "a=3, d=4; T₁₀ = 3 + 9×4 = 39." },
+        { "q": "Sum of first 20 terms of AP: 2, 5, 8, ...", "options": ["610", "590", "620", "600"], "answer": 0, "explanation": "S = 20/2[2(2)+19(3)] = 10×61 = 610." },
+        { "q": "Find the 6th term of GP: 2, 6, 18, ...", "options": ["486", "162", "54", "1458"], "answer": 0, "explanation": "a=2, r=3; T₆ = 2×3⁵ = 486." },
+        { "q": "Sum to infinity of GP with a=4, r=1/2.", "options": ["8", "6", "4", "12"], "answer": 0, "explanation": "S∞ = a/(1−r) = 4/(1/2) = 8." },
+        { "q": "If 5, x, 11 are in AP, find x.", "options": ["8", "6", "7", "9"], "answer": 0, "explanation": "x = (5+11)/2 = 8." },
+        { "q": "Find the common ratio of GP: 3, 6, 12, ...", "options": ["2", "3", "1/2", "4"], "answer": 0, "explanation": "6/3 = 2." },
+        { "q": "How many terms in AP: 2, 5, 8, ..., 29?", "options": ["10", "9", "11", "12"], "answer": 0, "explanation": "29 = 2+(n−1)3 → n = 10." },
+        { "q": "Sum of first 10 terms of GP: 1, 2, 4, ...", "options": ["1023", "1024", "512", "2047"], "answer": 0, "explanation": "S = 1(2¹⁰−1)/(2−1) = 1023." },
+        { "q": "If 2, y, 18 are in GP, find y (positive).", "options": ["6", "9", "4", "12"], "answer": 0, "explanation": "y² = 36 → y = 6." },
+        { "q": "Sum to infinity of GP with a=9, r=1/3.", "options": ["13.5", "12", "9", "27"], "answer": 0, "explanation": "S∞ = 9/(1−1/3) = 9/(2/3) = 13.5." }
+      ]
+    },
+    {
+      "id": "math-09",
+      "order": 9,
+      "name": "Binary Operations",
+      "questions": [
+        { "q": "If a * b = a + b + ab, find 2 * 3.", "options": ["11", "10", "9", "12"], "answer": 0, "explanation": "2+3+6 = 11." },
+        { "q": "If a * b = a² − b, find 4 * 5.", "options": ["11", "21", "9", "16"], "answer": 0, "explanation": "16−5 = 11." },
+        { "q": "If a * b = 2a + b, find 3 * 4.", "options": ["10", "11", "12", "9"], "answer": 0, "explanation": "6+4 = 10." },
+        { "q": "If a * b = ab + a, find 5 * 2.", "options": ["15", "12", "10", "20"], "answer": 0, "explanation": "10+5 = 15." },
+        { "q": "If a * b = a + b, find the identity element.", "options": ["0", "1", "a", "b"], "answer": 0, "explanation": "a + e = a → e = 0." },
+        { "q": "If a * b = ab, find the inverse of 2.", "options": ["1/2", "2", "−2", "0"], "answer": 0, "explanation": "2 × x = 1 → x = 1/2." },
+        { "q": "If a * b = a − b, is * commutative?", "options": ["No", "Yes", "Sometimes", "Cannot tell"], "answer": 0, "explanation": "a−b ≠ b−a in general." },
+        { "q": "If a * b = a + b + 2, find 1 * 2.", "options": ["5", "4", "3", "6"], "answer": 0, "explanation": "1+2+2 = 5." },
+        { "q": "If a * b = 3a − b, find 2 * 7.", "options": ["−1", "1", "13", "−13"], "answer": 0, "explanation": "6−7 = −1." },
+        { "q": "If a * b = ab/2, find 4 * 6.", "options": ["12", "24", "10", "8"], "answer": 0, "explanation": "24/2 = 12." }
+      ]
+    },
+    {
+      "id": "math-10",
+      "order": 10,
+      "name": "Matrices and Determinants",
+      "questions": [
+        { "q": "Find the determinant of [[2,3],[1,4]].", "options": ["5", "8", "11", "−5"], "answer": 0, "explanation": "2×4 − 3×1 = 5." },
+        { "q": "If A = [[1,2],[3,4]], find A + A.", "options": ["[[2,4],[6,8]]", "[[1,2],[3,4]]", "[[2,2],[6,4]]", "[[1,4],[3,8]]"], "answer": 0, "explanation": "Add corresponding entries." },
+        { "q": "Find the inverse of [[1,0],[0,1]].", "options": ["[[1,0],[0,1]]", "[[0,1],[1,0]]", "[[−1,0],[0,−1]]", "[[1,1],[1,1]]"], "answer": 0, "explanation": "Identity matrix is its own inverse." },
+        { "q": "If A = [[2,0],[0,3]], find det(A).", "options": ["6", "5", "0", "1"], "answer": 0, "explanation": "2×3 − 0×0 = 6." },
+        { "q": "Find the determinant of [[1,2,3],[0,1,4],[5,6,0]].", "options": ["1", "0", "−1", "2"], "answer": 0, "explanation": "1(0−24) − 2(0−20) + 3(0−5) = −24+40−15 = 1." },
+        { "q": "If A = [[1,2],[3,4]], find det(A).", "options": ["−2", "2", "10", "−10"], "answer": 0, "explanation": "4−6 = −2." },
+        { "q": "A matrix with determinant 0 is called:", "options": ["Singular", "Non-singular", "Identity", "Inverse"], "answer": 0, "explanation": "Singular matrices have no inverse." },
+        { "q": "Find the inverse of [[2,1],[1,1]].", "options": ["[[1,−1],[−1,2]]", "[[1,1],[1,2]]", "[[−1,1],[1,−2]]", "[[2,−1],[−1,1]]"], "answer": 0, "explanation": "det=1; adj = [[1,−1],[−1,2]]." },
+        { "q": "If A = [[1,2],[3,4]] and B = [[1,0],[0,1]], find AB.", "options": ["[[1,2],[3,4]]", "[[1,0],[0,1]]", "[[2,4],[6,8]]", "[[1,3],[2,4]]"], "answer": 0, "explanation": "Identity multiplication gives same matrix." },
+        { "q": "Find the determinant of [[3,0],[0,3]].", "options": ["9", "6", "3", "0"], "answer": 0, "explanation": "3×3 − 0×0 = 9." }
+      ]
+    },
+    {
+      "id": "math-11",
+      "order": 11,
+      "name": "Euclidean Geometry",
+      "questions": [
+        { "q": "The sum of angles in a triangle is:", "options": ["180°", "90°", "360°", "270°"], "answer": 0, "explanation": "Triangle angles sum to 180°." },
+        { "q": "An angle greater than 90° but less than 180° is:", "options": ["Obtuse", "Acute", "Reflex", "Right"], "answer": 0, "explanation": "Obtuse = between 90° and 180°." },
+        { "q": "In a regular hexagon, each interior angle is:", "options": ["120°", "108°", "135°", "144°"], "answer": 0, "explanation": "(6−2)×180/6 = 120°." },
+        { "q": "The angle in a semicircle is:", "options": ["90°", "60°", "45°", "180°"], "answer": 0, "explanation": "Angle in a semicircle is a right angle." },
+        { "q": "Sum of interior angles of an octagon:", "options": ["1080°", "900°", "720°", "1260°"], "answer": 0, "explanation": "(8−2)×180 = 1080°." },
+        { "q": "A polygon with 5 sides is called:", "options": ["Pentagon", "Hexagon", "Heptagon", "Octagon"], "answer": 0, "explanation": "Penta = 5." },
+        { "q": "In a parallelogram, opposite angles are:", "options": ["Equal", "Supplementary", "Complementary", "Unequal"], "answer": 0, "explanation": "Opposite angles in a parallelogram are equal." },
+        { "q": "The exterior angle of a triangle equals:", "options": ["Sum of the two opposite interior angles", "Difference of two interior angles", "90°", "180°"], "answer": 0, "explanation": "Exterior angle theorem." },
+        { "q": "A line that touches a circle at exactly one point is a:", "options": ["Tangent", "Chord", "Secant", "Diameter"], "answer": 0, "explanation": "Tangent touches at one point." },
+        { "q": "Angles on a straight line sum to:", "options": ["180°", "90°", "360°", "270°"], "answer": 0, "explanation": "Linear pair = 180°." }
+      ]
+    },
+    {
+      "id": "math-12",
+      "order": 12,
+      "name": "Mensuration",
+      "questions": [
+        { "q": "Area of a circle with radius 7 cm (π = 22/7):", "options": ["154 cm²", "44 cm²", "49 cm²", "22 cm²"], "answer": 0, "explanation": "πr² = (22/7)×49 = 154." },
+        { "q": "Volume of a cube with side 4 cm:", "options": ["64 cm³", "16 cm³", "12 cm³", "48 cm³"], "answer": 0, "explanation": "4³ = 64." },
+        { "q": "Area of a triangle with base 10 cm and height 6 cm:", "options": ["30 cm²", "60 cm²", "16 cm²", "20 cm²"], "answer": 0, "explanation": "½ × 10 × 6 = 30." },
+        { "q": "Circumference of a circle with diameter 14 cm (π = 22/7):", "options": ["44 cm", "22 cm", "154 cm", "88 cm"], "answer": 0, "explanation": "πd = (22/7)×14 = 44." },
+        { "q": "Volume of a cylinder r=7 cm, h=10 cm (π=22/7):", "options": ["1540 cm³", "440 cm³", "770 cm³", "220 cm³"], "answer": 0, "explanation": "πr²h = (22/7)×49×10 = 1540." },
+        { "q": "Surface area of a sphere with radius 7 cm (π=22/7):", "options": ["616 cm²", "154 cm²", "308 cm²", "1232 cm²"], "answer": 0, "explanation": "4πr² = 4×(22/7)×49 = 616." },
+        { "q": "Volume of a cone r=3 cm, h=7 cm (π=22/7):", "options": ["66 cm³", "198 cm³", "33 cm³", "132 cm³"], "answer": 0, "explanation": "⅓πr²h = ⅓×(22/7)×9×7 = 66." },
+        { "q": "Perimeter of a rectangle 8 cm × 5 cm:", "options": ["26 cm", "40 cm", "13 cm", "21 cm"], "answer": 0, "explanation": "2(8+5) = 26." },
+        { "q": "Volume of a sphere with radius 3 cm (π=22/7):", "options": ["113.14 cm³", "339.43 cm³", "84.86 cm³", "28.29 cm³"], "answer": 0, "explanation": "(4/3)πr³ = (4/3)×(22/7)×27 ≈ 113.14." },
+        { "q": "Area of a trapezium with parallel sides 8 cm, 12 cm and height 5 cm:", "options": ["50 cm²", "100 cm²", "60 cm²", "40 cm²"], "answer": 0, "explanation": "½(a+b)h = ½(20)(5) = 50." }
+      ]
+    },
+    {
+      "id": "math-13",
+      "order": 13,
+      "name": "Locus",
+      "questions": [
+        { "q": "The locus of points equidistant from two fixed points is:", "options": ["Perpendicular bisector", "Circle", "Straight line", "Parallel line"], "answer": 0, "explanation": "Perpendicular bisector of the segment." },
+        { "q": "The locus of points at a fixed distance from a point is:", "options": ["Circle", "Line", "Ellipse", "Parabola"], "answer": 0, "explanation": "Circle of that radius." },
+        { "q": "The locus of points equidistant from two intersecting lines is:", "options": ["Angle bisector", "Circle", "Line parallel to one", "Parabola"], "answer": 0, "explanation": "Angle bisector(s)." },
+        { "q": "The locus of points at a fixed distance from a given line is:", "options": ["Two parallel lines", "Circle", "Ellipse", "Parabola"], "answer": 0, "explanation": "Two parallel lines on either side." },
+        { "q": "The locus of a point equidistant from two parallel lines is:", "options": ["A line midway between them", "A circle", "A perpendicular line", "An ellipse"], "answer": 0, "explanation": "Mid-parallel line." },
+        { "q": "The locus of a point P moving so that its distance from a fixed point O is constant is:", "options": ["Circle", "Square", "Triangle", "Line"], "answer": 0, "explanation": "Circle centred at O." },
+        { "q": "The locus of a point whose distance from two perpendicular lines is equal is:", "options": ["The angle bisectors", "The axes", "The origin", "A circle"], "answer": 0, "explanation": "45° lines — angle bisectors." },
+        { "q": "The locus of a point equidistant from the three vertices of a triangle is:", "options": ["Circumcentre", "Incentre", "Orthocentre", "Centroid"], "answer": 0, "explanation": "Circumcentre (intersection of perpendicular bisectors)." },
+        { "q": "The locus of a point equidistant from the three sides of a triangle is:", "options": ["Incentre", "Circumcentre", "Centroid", "Orthocentre"], "answer": 0, "explanation": "Incentre (intersection of angle bisectors)." },
+        { "q": "The locus of a point whose sum of distances from two fixed points is constant is:", "options": ["Ellipse", "Circle", "Parabola", "Hyperbola"], "answer": 0, "explanation": "Definition of an ellipse." }
+      ]
+    },
+    {
+      "id": "math-14",
+      "order": 14,
+      "name": "Coordinate Geometry",
+      "questions": [
+        { "q": "Find the distance between (3,4) and (0,0).", "options": ["5", "7", "4", "3"], "answer": 0, "explanation": "√(9+16) = 5." },
+        { "q": "Find the midpoint of (2,4) and (6,10).", "options": ["(4,7)", "(3,5)", "(8,14)", "(2,6)"], "answer": 0, "explanation": "((2+6)/2, (4+10)/2) = (4,7)." },
+        { "q": "Find the slope of the line through (1,2) and (4,8).", "options": ["2", "1/2", "3", "6"], "answer": 0, "explanation": "(8−2)/(4−1) = 2." },
+        { "q": "Equation of a line with slope 2 passing through (0,3):", "options": ["y = 2x + 3", "y = 3x + 2", "y = 2x − 3", "y = −2x + 3"], "answer": 0, "explanation": "y = mx + c." },
+        { "q": "Find the slope of a line perpendicular to y = 2x + 1.", "options": ["−1/2", "2", "1/2", "−2"], "answer": 0, "explanation": "Perpendicular slope = −1/m." },
+        { "q": "Find the equation of a horizontal line through (3,5).", "options": ["y = 5", "x = 3", "y = 3", "x = 5"], "answer": 0, "explanation": "Horizontal line has y = constant." },
+        { "q": "Distance between (1,2) and (4,6):", "options": ["5", "7", "3", "4"], "answer": 0, "explanation": "√(9+16) = 5." },
+        { "q": "The point where the graph crosses the x-axis is called:", "options": ["x-intercept", "y-intercept", "Origin", "Slope"], "answer": 0, "explanation": "x-intercept." },
+        { "q": "Slope of the line 2x + 3y = 6:", "options": ["−2/3", "2/3", "−3/2", "3/2"], "answer": 0, "explanation": "y = −(2/3)x + 2." },
+        { "q": "Are the lines y = 3x + 1 and y = 3x − 4 parallel?", "options": ["Yes", "No", "Perpendicular", "Cannot tell"], "answer": 0, "explanation": "Same slope = parallel." }
+      ]
+    },
+    {
+      "id": "math-15",
+      "order": 15,
+      "name": "Trigonometry",
+      "questions": [
+        { "q": "If sin θ = 0.6, find cos θ (θ acute).", "options": ["0.8", "0.6", "1.0", "0.4"], "answer": 0, "explanation": "cos²θ = 1 − 0.36 = 0.64 → 0.8." },
+        { "q": "Value of sin 30°:", "options": ["1/2", "√3/2", "1", "1/√2"], "answer": 0, "explanation": "sin 30° = 0.5." },
+        { "q": "Value of cos 60°:", "options": ["1/2", "√3/2", "1", "1/√2"], "answer": 0, "explanation": "cos 60° = 0.5." },
+        { "q": "Value of tan 45°:", "options": ["1", "0", "√3", "1/√3"], "answer": 0, "explanation": "tan 45° = 1." },
+        { "q": "In a right triangle with opposite = 3, hypotenuse = 5, sin θ =", "options": ["3/5", "4/5", "5/3", "3/4"], "answer": 0, "explanation": "sin θ = opposite/hypotenuse." },
+        { "q": "Simplify sin²θ + cos²θ:", "options": ["1", "0", "2", "tan²θ"], "answer": 0, "explanation": "Pythagorean identity." },
+        { "q": "Value of sin 90°:", "options": ["1", "0", "−1", "1/2"], "answer": 0, "explanation": "sin 90° = 1." },
+        { "q": "Given tan θ = 3/4, find sin θ (θ acute):", "options": ["3/5", "4/5", "5/3", "4/3"], "answer": 0, "explanation": "3-4-5 triangle → sin = 3/5." },
+        { "q": "Value of cos 0°:", "options": ["1", "0", "−1", "1/2"], "answer": 0, "explanation": "cos 0° = 1." },
+        { "q": "The angle of elevation from a point 20 m from a tower to its top (height 20 m) is:", "options": ["45°", "30°", "60°", "90°"], "answer": 0, "explanation": "tan θ = 20/20 = 1 → θ = 45°." }
+      ]
+    },
+    {
+      "id": "math-16",
+      "order": 16,
+      "name": "Differentiation",
+      "questions": [
+        { "q": "Differentiate y = x³.", "options": ["3x²", "x²", "3x", "x⁴/4"], "answer": 0, "explanation": "Power rule: nx^(n−1)." },
+        { "q": "Differentiate y = 5x² + 3x.", "options": ["10x + 3", "5x + 3", "10x", "15x²"], "answer": 0, "explanation": "10x + 3." },
+        { "q": "Differentiate y = sin x.", "options": ["cos x", "−cos x", "−sin x", "tan x"], "answer": 0, "explanation": "d/dx(sin x) = cos x." },
+        { "q": "Differentiate y = cos x.", "options": ["−sin x", "sin x", "−cos x", "tan x"], "answer": 0, "explanation": "d/dx(cos x) = −sin x." },
+        { "q": "Differentiate y = e^x.", "options": ["e^x", "xe^x", "e^(x−1)", "1"], "answer": 0, "explanation": "d/dx(e^x) = e^x." },
+        { "q": "Differentiate y = ln x.", "options": ["1/x", "x", "ln x", "−1/x²"], "answer": 0, "explanation": "d/dx(ln x) = 1/x." },
+        { "q": "Find dy/dx of y = 7 (constant).", "options": ["0", "7", "1", "7x"], "answer": 0, "explanation": "Derivative of a constant is 0." },
+        { "q": "Differentiate y = 1/x.", "options": ["−1/x²", "1/x²", "ln x", "−x"], "answer": 0, "explanation": "Rewrite as x⁻¹." },
+        { "q": "Differentiate y = √x.", "options": ["1/(2√x)", "2√x", "√x/2", "1/√x"], "answer": 0, "explanation": "Rewrite as x^(1/2)." },
+        { "q": "Differentiate y = x⁴ − 2x + 1.", "options": ["4x³ − 2", "4x³", "3x² − 2", "4x − 2"], "answer": 0, "explanation": "Term by term." }
+      ]
+    },
+    {
+      "id": "math-17",
+      "order": 17,
+      "name": "Application of Differentiation",
+      "questions": [
+        { "q": "Find the gradient of y = x² at x = 3.", "options": ["6", "9", "3", "12"], "answer": 0, "explanation": "dy/dx = 2x = 6." },
+        { "q": "Find the turning point of y = x² − 4x + 5.", "options": ["(2,1)", "(0,5)", "(4,5)", "(1,2)"], "answer": 0, "explanation": "dy/dx = 2x − 4 = 0 → x = 2, y = 1." },
+        { "q": "If y = x³ − 3x, at what x is dy/dx = 0?", "options": ["x = ±1", "x = 0", "x = 3", "x = ±3"], "answer": 0, "explanation": "3x² − 3 = 0 → x² = 1." },
+        { "q": "The velocity of a particle with displacement s = t² is:", "options": ["2t", "t", "t²/2", "2"], "answer": 0, "explanation": "v = ds/dt = 2t." },
+        { "q": "The acceleration of a particle with velocity v = 3t² is:", "options": ["6t", "3t", "t³", "6"], "answer": 0, "explanation": "a = dv/dt = 6t." },
+        { "q": "Find the maximum value of y = 4x − x².", "options": ["4", "2", "8", "0"], "answer": 0, "explanation": "dy/dx = 4 − 2x = 0 → x = 2, y = 4." },
+        { "q": "The rate of change of y = x³ with respect to x is:", "options": ["3x²", "x²", "3x", "x⁴/4"], "answer": 0, "explanation": "Power rule." },
+        { "q": "If y = x² + 2x, find the gradient at x = 1.", "options": ["4", "2", "3", "5"], "answer": 0, "explanation": "dy/dx = 2x + 2 = 4." },
+        { "q": "Stationary points occur where:", "options": ["dy/dx = 0", "dy/dx = 1", "y = 0", "x = 0"], "answer": 0, "explanation": "Derivative = 0." },
+        { "q": "The slope of a curve at a minimum point is:", "options": ["0", "1", "−1", "Undefined"], "answer": 0, "explanation": "Minimum points have zero slope." }
+      ]
+    },
+    {
+      "id": "math-18",
+      "order": 18,
+      "name": "Integration",
+      "questions": [
+        { "q": "∫ x² dx", "options": ["x³/3 + C", "2x + C", "x³ + C", "3x² + C"], "answer": 0, "explanation": "Power rule for integration." },
+        { "q": "∫ 2x dx", "options": ["x² + C", "2x² + C", "x²/2 + C", "2x + C"], "answer": 0, "explanation": "x² + C." },
+        { "q": "∫ cos x dx", "options": ["sin x + C", "−sin x + C", "cos x + C", "tan x + C"], "answer": 0, "explanation": "d/dx(sin x) = cos x." },
+        { "q": "∫ sin x dx", "options": ["−cos x + C", "cos x + C", "sin x + C", "−sin x + C"], "answer": 0, "explanation": "Derivative of −cos x = sin x." },
+        { "q": "∫ 1/x dx", "options": ["ln|x| + C", "1/x² + C", "x + C", "−1/x² + C"], "answer": 0, "explanation": "Standard integral." },
+        { "q": "∫ e^x dx", "options": ["e^x + C", "xe^x + C", "e^x/x + C", "ln x + C"], "answer": 0, "explanation": "e^x is its own integral." },
+        { "q": "∫₀¹ x dx", "options": ["1/2", "1", "0", "2"], "answer": 0, "explanation": "[x²/2]₀¹ = 1/2." },
+        { "q": "∫₀² 3x² dx", "options": ["8", "6", "12", "4"], "answer": 0, "explanation": "[x³]₀² = 8." },
+        { "q": "∫ 5 dx", "options": ["5x + C", "5 + C", "x + C", "5x² + C"], "answer": 0, "explanation": "Constant integration." },
+        { "q": "∫ (2x + 1) dx", "options": ["x² + x + C", "2x² + x + C", "x² + C", "2x + C"], "answer": 0, "explanation": "Integrate term by term." }
+      ]
+    },
+    {
+      "id": "math-19",
+      "order": 19,
+      "name": "Representation of Data",
+      "questions": [
+        { "q": "A pie chart represents data using:", "options": ["Sectors of a circle", "Bars", "Points", "Lines"], "answer": 0, "explanation": "Each sector = proportion." },
+        { "q": "A histogram is used for:", "options": ["Continuous data", "Discrete data", "Categorical data", "Nominal data"], "answer": 0, "explanation": "Continuous grouped data." },
+        { "q": "In a bar chart, bars are:", "options": ["Separated", "Joined", "Overlapping", "Curved"], "answer": 0, "explanation": "Bars are separated for discrete categories." },
+        { "q": "A frequency polygon is drawn using:", "options": ["Midpoints of classes", "Endpoints", "Random points", "Only maximum values"], "answer": 0, "explanation": "Plot midpoints vs frequency." },
+        { "q": "A cumulative frequency curve is also called:", "options": ["Ogive", "Pie chart", "Histogram", "Pictogram"], "answer": 0, "explanation": "Ogive = cumulative frequency curve." },
+        { "q": "The modal class in a histogram is the one with:", "options": ["Highest frequency", "Lowest frequency", "Middle frequency", "Zero frequency"], "answer": 0, "explanation": "Mode = most frequent." },
+        { "q": "A pictogram uses:", "options": ["Pictures/symbols", "Bars", "Lines", "Points"], "answer": 0, "explanation": "Pictorial symbols." },
+        { "q": "A line graph is best for showing:", "options": ["Trend over time", "Comparison of categories", "Proportions", "Frequency"], "answer": 0, "explanation": "Trends and changes." },
+        { "q": "A stem-and-leaf plot is useful because it:", "options": ["Preserves original data", "Loses data", "Only shows totals", "Groups randomly"], "answer": 0, "explanation": "Keeps actual values visible." },
+        { "q": "In a pie chart, a sector of 90° represents:", "options": ["25%", "50%", "75%", "90%"], "answer": 0, "explanation": "90/360 × 100 = 25%." }
+      ]
+    },
+    {
+      "id": "math-20",
+      "order": 20,
+      "name": "Measures of Location & Probability",
+      "questions": [
+        { "q": "Find the mean of 2, 4, 6, 8, 10.", "options": ["6", "5", "7", "8"], "answer": 0, "explanation": "30/5 = 6." },
+        { "q": "Find the median of 3, 7, 1, 9, 5.", "options": ["5", "7", "3", "9"], "answer": 0, "explanation": "Sorted: 1,3,5,7,9 → 5." },
+        { "q": "Find the mode of 2, 3, 3, 5, 7.", "options": ["3", "2", "5", "7"], "answer": 0, "explanation": "Most frequent = 3." },
+        { "q": "Probability of getting a head in one coin toss:", "options": ["1/2", "1", "0", "1/4"], "answer": 0, "explanation": "Two equally likely outcomes." },
+        { "q": "Probability of rolling a 3 on a fair die:", "options": ["1/6", "1/3", "1/2", "3/6"], "answer": 0, "explanation": "One of six faces." },
+        { "q": "Range of 4, 8, 15, 16, 23, 42:", "options": ["38", "42", "4", "23"], "answer": 0, "explanation": "42 − 4 = 38." },
+        { "q": "Probability of drawing a red card from a standard deck:", "options": ["1/2", "1/4", "1/13", "1/26"], "answer": 0, "explanation": "26 red / 52 total." },
+        { "q": "Mean of 5 numbers is 12. Sum of the numbers is:", "options": ["60", "17", "24", "120"], "answer": 0, "explanation": "5 × 12 = 60." },
+        { "q": "If P(A) = 0.3, find P(not A).", "options": ["0.7", "0.3", "1.3", "0"], "answer": 0, "explanation": "1 − 0.3 = 0.7." },
+        { "q": "Probability of rolling an even number on a fair die:", "options": ["1/2", "1/3", "1/6", "2/3"], "answer": 0, "explanation": "3 even numbers out of 6." }
+      ]
+    }
+  ]
+}

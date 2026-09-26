@@ -1,0 +1,345 @@
+{
+  "subject": "Physics",
+  "topics": [
+    {
+      "id": "phys-01",
+      "order": 1,
+      "name": "Measurements and Units",
+      "questions": [
+        { "q": "Which of the following is a fundamental quantity?", "options": ["Force", "Mass", "Velocity", "Pressure"], "answer": 1, "explanation": "Mass is fundamental; the others are derived." },
+        { "q": "The SI unit of electric current is:", "options": ["Volt", "Ampere", "Ohm", "Coulomb"], "answer": 1, "explanation": "Ampere (A) is the fundamental unit of current." },
+        { "q": "Which instrument is used to measure the internal diameter of a small pipe?", "options": ["Metre rule", "Vernier caliper", "Beam balance", "Stopwatch"], "answer": 1, "explanation": "Vernier caliper measures internal/external dimensions." },
+        { "q": "The dimension of force is:", "options": ["MLT⁻²", "ML²T⁻²", "MLT⁻¹", "ML²T⁻¹"], "answer": 0, "explanation": "Force = mass × acceleration = MLT⁻²." },
+        { "q": "Which of the following is a derived unit?", "options": ["Kilogram", "Second", "Newton", "Kelvin"], "answer": 2, "explanation": "Newton is derived (kg·m/s²)." },
+        { "q": "The number of significant figures in 0.0072 is:", "options": ["2", "3", "4", "5"], "answer": 0, "explanation": "Leading zeros are not significant; 7 and 2 are." },
+        { "q": "A micrometer screw gauge has a pitch of 0.5 mm. The thimble has 50 divisions. The least count is:", "options": ["0.01 mm", "0.02 mm", "0.05 mm", "0.1 mm"], "answer": 0, "explanation": "0.5 mm / 50 = 0.01 mm." },
+        { "q": "Which of the following is NOT a fundamental unit?", "options": ["Metre", "Kilogram", "Newton", "Second"], "answer": 2, "explanation": "Newton is a derived unit." },
+        { "q": "The dimension of pressure is:", "options": ["ML⁻¹T⁻²", "MLT⁻²", "ML²T⁻²", "ML⁻²T⁻²"], "answer": 0, "explanation": "Pressure = Force/Area = ML⁻¹T⁻²." },
+        { "q": "Which measuring instrument has the highest precision?", "options": ["Metre rule", "Vernier caliper", "Micrometer screw gauge", "Measuring tape"], "answer": 2, "explanation": "Micrometer screw gauge reads to 0.01 mm." }
+      ]
+    },
+    {
+      "id": "phys-02",
+      "order": 2,
+      "name": "Scalars and Vectors",
+      "questions": [
+        { "q": "Which of the following is a scalar quantity?", "options": ["Force", "Velocity", "Speed", "Acceleration"], "answer": 2, "explanation": "Speed has magnitude only." },
+        { "q": "Which of the following is a vector quantity?", "options": ["Mass", "Temperature", "Displacement", "Time"], "answer": 2, "explanation": "Displacement has both magnitude and direction." },
+        { "q": "The resultant of two forces 3 N and 4 N acting at right angles is:", "options": ["5 N", "7 N", "1 N", "12 N"], "answer": 0, "explanation": "√(3² + 4²) = √25 = 5 N." },
+        { "q": "Two vectors of magnitudes 6 N and 8 N act in opposite directions. Their resultant is:", "options": ["14 N", "2 N", "10 N", "48 N"], "answer": 1, "explanation": "8 − 6 = 2 N." },
+        { "q": "The horizontal component of a force F at angle θ to the horizontal is:", "options": ["F sin θ", "F cos θ", "F tan θ", "F / cos θ"], "answer": 1, "explanation": "Horizontal component = F cos θ." },
+        { "q": "The vertical component of a force F at angle θ to the horizontal is:", "options": ["F sin θ", "F cos θ", "F tan θ", "F / sin θ"], "answer": 0, "explanation": "Vertical component = F sin θ." },
+        { "q": "Which of the following quantities is a vector?", "options": ["Energy", "Work", "Momentum", "Power"], "answer": 2, "explanation": "Momentum has direction (mass × velocity)." },
+        { "q": "A vector of magnitude 10 N is resolved into two perpendicular components. If one component is 6 N, the other is:", "options": ["4 N", "8 N", "16 N", "2 N"], "answer": 1, "explanation": "√(10² − 6²) = √64 = 8 N." },
+        { "q": "Relative velocity of A with respect to B is given by:", "options": ["vA + vB", "vA − vB", "vB − vA", "vA × vB"], "answer": 1, "explanation": "Relative velocity = vA − vB." },
+        { "q": "The parallelogram law of vector addition is used to find:", "options": ["Difference of vectors", "Resultant of two vectors", "Product of vectors", "Unit vector"], "answer": 1, "explanation": "Parallelogram law gives resultant." }
+      ]
+    },
+    {
+      "id": "phys-03",
+      "order": 3,
+      "name": "Motion (Kinematics)",
+      "questions": [
+        { "q": "A body starts from rest and accelerates at 2 m/s². Its velocity after 5 s is:", "options": ["5 m/s", "10 m/s", "15 m/s", "20 m/s"], "answer": 1, "explanation": "v = u + at = 0 + 2(5) = 10 m/s." },
+        { "q": "The area under a velocity-time graph represents:", "options": ["Acceleration", "Displacement", "Force", "Momentum"], "answer": 1, "explanation": "Area = velocity × time = displacement." },
+        { "q": "The slope of a velocity-time graph represents:", "options": ["Displacement", "Acceleration", "Distance", "Speed"], "answer": 1, "explanation": "Slope = Δv/Δt = acceleration." },
+        { "q": "A body moves with uniform velocity. Its acceleration is:", "options": ["Zero", "Constant", "Increasing", "Decreasing"], "answer": 0, "explanation": "Uniform velocity means no change in velocity, so a = 0." },
+        { "q": "A car accelerates uniformly from 10 m/s to 30 m/s in 5 s. Its acceleration is:", "options": ["2 m/s²", "4 m/s²", "6 m/s²", "8 m/s²"], "answer": 1, "explanation": "a = (30 − 10)/5 = 4 m/s²." },
+        { "q": "An object is dropped from a height of 45 m. Time to reach the ground (g = 10 m/s²):", "options": ["3 s", "4.5 s", "9 s", "2 s"], "answer": 0, "explanation": "45 = ½(10)t² → t² = 9 → t = 3 s." },
+        { "q": "The maximum height reached by a projectile depends on:", "options": ["Horizontal velocity only", "Vertical velocity only", "Both horizontal and vertical velocity", "Mass of the projectile"], "answer": 1, "explanation": "H = u²sin²θ / 2g; depends on vertical component." },
+        { "q": "A body moving in a circular path with constant speed has:", "options": ["Constant velocity", "Constant acceleration", "Changing velocity", "Zero acceleration"], "answer": 2, "explanation": "Direction changes continuously, so velocity changes." },
+        { "q": "The equation v² = u² + 2as is valid for:", "options": ["Non-uniform acceleration", "Uniform acceleration", "Circular motion", "Any motion"], "answer": 1, "explanation": "This equation assumes uniform acceleration." },
+        { "q": "A stone thrown vertically upward returns to the thrower. At the highest point:", "options": ["Velocity is maximum", "Velocity is zero", "Acceleration is zero", "Acceleration is negative"], "answer": 1, "explanation": "At highest point, vertical velocity is momentarily zero." }
+      ]
+    },
+    {
+      "id": "phys-04",
+      "order": 4,
+      "name": "Forces and Equilibrium",
+      "questions": [
+        { "q": "Newton's first law of motion is also called the law of:", "options": ["Momentum", "Inertia", "Acceleration", "Action-reaction"], "answer": 1, "explanation": "A body remains at rest or uniform motion unless acted upon by a force." },
+        { "q": "The unit of force is:", "options": ["Joule", "Newton", "Watt", "Pascal"], "answer": 1, "explanation": "Newton (N) = kg·m/s²." },
+        { "q": "For a body in equilibrium, the net force is:", "options": ["Maximum", "Zero", "Constant", "Changing"], "answer": 1, "explanation": "Equilibrium means net force = 0." },
+        { "q": "Newton's third law states that:", "options": ["F = ma", "Action and reaction are equal and opposite", "A body continues in uniform motion", "Energy is conserved"], "answer": 1, "explanation": "For every action, there is an equal and opposite reaction." },
+        { "q": "The moment of a force about a point is:", "options": ["Force × distance", "Force / distance", "Force + distance", "Force − distance"], "answer": 0, "explanation": "Moment = Force × perpendicular distance." },
+        { "q": "Lami's theorem is used for:", "options": ["Two forces", "Three coplanar forces in equilibrium", "Four forces", "Any number of forces"], "answer": 1, "explanation": "Lami's theorem applies to three coplanar concurrent forces." },
+        { "q": "A uniform metre rule balances at the 50 cm mark. Its center of gravity is at:", "options": ["0 cm", "25 cm", "50 cm", "100 cm"], "answer": 2, "explanation": "Uniform rule has CG at its midpoint." },
+        { "q": "The condition for a rigid body to be in equilibrium is:", "options": ["Sum of forces = 0 only", "Sum of moments = 0 only", "Both sum of forces and sum of moments = 0", "Neither"], "answer": 2, "explanation": "Both translational and rotational equilibrium needed." },
+        { "q": "A force of 10 N acts at a distance of 2 m from a pivot. The moment is:", "options": ["5 Nm", "12 Nm", "20 Nm", "8 Nm"], "answer": 2, "explanation": "Moment = 10 × 2 = 20 Nm." },
+        { "q": "A body is in stable equilibrium when its center of gravity is:", "options": ["Raised after displacement", "Lowered after displacement", "Unchanged", "At the pivot"], "answer": 1, "explanation": "Stable equilibrium: CG rises when displaced." }
+      ]
+    },
+    {
+      "id": "phys-05",
+      "order": 5,
+      "name": "Work, Energy, and Power",
+      "questions": [
+        { "q": "Work is done when:", "options": ["Force is applied", "Force causes displacement", "Body is at rest", "Force is perpendicular to displacement"], "answer": 1, "explanation": "Work = force × displacement in direction of force." },
+        { "q": "The SI unit of work is:", "options": ["Newton", "Joule", "Watt", "Pascal"], "answer": 1, "explanation": "Joule (J) = N·m." },
+        { "q": "Kinetic energy of a body of mass m moving with velocity v is:", "options": ["mv", "½mv²", "mv²", "½mv"], "answer": 1, "explanation": "KE = ½mv²." },
+        { "q": "Potential energy of a body of mass m at height h is:", "options": ["mgh", "½mgh", "mg/h", "mh/g"], "answer": 0, "explanation": "PE = mgh." },
+        { "q": "Power is defined as:", "options": ["Work × time", "Work / time", "Force × time", "Energy × time"], "answer": 1, "explanation": "Power = work done / time taken." },
+        { "q": "The unit of power is:", "options": ["Joule", "Newton", "Watt", "Pascal"], "answer": 2, "explanation": "Watt (W) = J/s." },
+        { "q": "A boy of mass 50 kg climbs 6 m in 5 s. His power output is (g = 10 m/s²):", "options": ["300 W", "600 W", "1500 W", "250 W"], "answer": 1, "explanation": "Work = 50 × 10 × 6 = 3000 J; Power = 3000/5 = 600 W." },
+        { "q": "The principle of conservation of energy states that energy:", "options": ["Can be created", "Can be destroyed", "Can be transformed but not created or destroyed", "Is always lost"], "answer": 2, "explanation": "Energy is conserved in a closed system." },
+        { "q": "When a body falls freely, its potential energy is converted to:", "options": ["Heat", "Kinetic energy", "Chemical energy", "Electrical energy"], "answer": 1, "explanation": "PE → KE during free fall." },
+        { "q": "If the velocity of a body is doubled, its kinetic energy becomes:", "options": ["Double", "Half", "Four times", "Unchanged"], "answer": 2, "explanation": "KE ∝ v²; doubling v quadruples KE." }
+      ]
+    },
+    {
+      "id": "phys-06",
+      "order": 6,
+      "name": "Friction",
+      "questions": [
+        { "q": "Friction is the force that:", "options": ["Helps motion", "Opposes relative motion between surfaces in contact", "Increases velocity", "Reduces weight"], "answer": 1, "explanation": "Friction opposes relative motion between two surfaces in contact." },
+        { "q": "The coefficient of static friction is generally:", "options": ["Less than dynamic friction", "Equal to dynamic friction", "Greater than dynamic friction", "Zero"], "answer": 2, "explanation": "Static friction is greater than kinetic (dynamic) friction." },
+        { "q": "The force of friction depends on:", "options": ["Area of contact", "Normal reaction", "Volume", "Shape"], "answer": 1, "explanation": "Friction = μN, where N is normal reaction." },
+        { "q": "The limiting frictional force is given by:", "options": ["μN", "μ/N", "N/μ", "μ + N"], "answer": 0, "explanation": "F = μN." },
+        { "q": "A block of mass 5 kg is on a horizontal surface. If μ = 0.4 and g = 10 m/s², the frictional force is:", "options": ["2 N", "5 N", "20 N", "50 N"], "answer": 2, "explanation": "F = μmg = 0.4 × 5 × 10 = 20 N." },
+        { "q": "Which of the following is an advantage of friction?", "options": ["Wear and tear", "Ability to walk", "Energy loss", "Heat generation in machines"], "answer": 1, "explanation": "Without friction we cannot walk." },
+        { "q": "Lubricants are used to:", "options": ["Increase friction", "Reduce friction", "Increase weight", "Increase wear"], "answer": 1, "explanation": "Lubricants reduce friction between surfaces." },
+        { "q": "The angle of friction θ is related to coefficient of friction μ by:", "options": ["μ = sin θ", "μ = cos θ", "μ = tan θ", "μ = cot θ"], "answer": 2, "explanation": "μ = tan θ." },
+        { "q": "Rolling friction is:", "options": ["Greater than sliding friction", "Less than sliding friction", "Equal to sliding friction", "Zero"], "answer": 1, "explanation": "Rolling friction < sliding friction." },
+        { "q": "A body of weight 100 N rests on a plane inclined at 30°. The component of weight parallel to the plane is:", "options": ["50 N", "86.6 N", "100 N", "30 N"], "answer": 0, "explanation": "W sin 30° = 100 × 0.5 = 50 N." }
+      ]
+    },
+    {
+      "id": "phys-07",
+      "order": 7,
+      "name": "Simple Machines",
+      "questions": [
+        { "q": "The mechanical advantage of a machine is:", "options": ["Load × Effort", "Load / Effort", "Effort / Load", "Load + Effort"], "answer": 1, "explanation": "MA = Load / Effort." },
+        { "q": "Velocity ratio of a machine is:", "options": ["Load / Effort", "Distance moved by effort / Distance moved by load", "Distance moved by load / Distance moved by effort", "Effort × Load"], "answer": 1, "explanation": "VR = distance moved by effort / distance moved by load." },
+        { "q": "Efficiency of a machine is:", "options": ["MA × VR", "MA / VR × 100%", "VR / MA × 100%", "MA + VR"], "answer": 1, "explanation": "Efficiency = (MA / VR) × 100%." },
+        { "q": "A machine has MA = 4 and VR = 5. Its efficiency is:", "options": ["80%", "20%", "125%", "50%"], "answer": 0, "explanation": "(4/5) × 100% = 80%." },
+        { "q": "For a perfect machine, efficiency is:", "options": ["0%", "50%", "100%", "Less than 100%"], "answer": 2, "explanation": "A perfect (ideal) machine has 100% efficiency." },
+        { "q": "The velocity ratio of a pulley system with 4 pulleys supporting the load is:", "options": ["2", "4", "6", "8"], "answer": 1, "explanation": "VR = number of pulleys supporting the load = 4." },
+        { "q": "In an inclined plane, the velocity ratio is given by:", "options": ["Length / Height", "Height / Length", "Length × Height", "Length − Height"], "answer": 0, "explanation": "VR = L / h." },
+        { "q": "The efficiency of a machine can never be greater than 100% because:", "options": ["Machines are strong", "Energy is lost to friction", "Load is small", "Effort is large"], "answer": 1, "explanation": "Friction causes energy loss." },
+        { "q": "Which of the following is NOT a simple machine?", "options": ["Lever", "Pulley", "Inclined plane", "Electric motor"], "answer": 3, "explanation": "Electric motor is a complex machine." },
+        { "q": "A lever of the first order has fulcrum:", "options": ["At one end", "Between load and effort", "At the load", "At the effort"], "answer": 1, "explanation": "First-order lever: fulcrum between load and effort." }
+      ]
+    },
+    {
+      "id": "phys-08",
+      "order": 8,
+      "name": "Elasticity",
+      "questions": [
+        { "q": "Hooke's law states that the extension of a spring is:", "options": ["Inversely proportional to the force", "Directly proportional to the force (within elastic limit)", "Independent of force", "Proportional to the square of the force"], "answer": 1, "explanation": "F = ke (within elastic limit)." },
+        { "q": "The force constant of a spring is measured in:", "options": ["N", "N/m", "N·m", "J"], "answer": 1, "explanation": "k = F/e, unit = N/m." },
+        { "q": "Young's modulus of elasticity is defined as:", "options": ["Stress × Strain", "Stress / Strain", "Strain / Stress", "Stress + Strain"], "answer": 1, "explanation": "Y = Stress / Strain." },
+        { "q": "The elastic limit of a material is:", "options": ["The point where it breaks", "The maximum stress for which it returns to its original shape", "The point of maximum strain", "The yield point"], "answer": 1, "explanation": "Beyond the elastic limit, deformation is permanent." },
+        { "q": "A spring of force constant 200 N/m is stretched by 0.05 m. The force applied is:", "options": ["4 N", "10 N", "40 N", "100 N"], "answer": 1, "explanation": "F = ke = 200 × 0.05 = 10 N." },
+        { "q": "Which of the following materials is most elastic?", "options": ["Rubber", "Steel", "Wood", "Plastic"], "answer": 1, "explanation": "Steel has a high Young's modulus." },
+        { "q": "The unit of Young's modulus is:", "options": ["N", "N/m", "N/m²", "J"], "answer": 2, "explanation": "Stress (N/m²) divided by strain (dimensionless) gives N/m²." },
+        { "q": "The energy stored in a stretched spring is:", "options": ["ke", "½ke²", "ke²", "½k²e"], "answer": 1, "explanation": "Elastic PE = ½ke²." },
+        { "q": "A wire of length 2 m extends by 1 mm when a force is applied. The strain is:", "options": ["0.0005", "0.001", "0.002", "0.005"], "answer": 0, "explanation": "Strain = ΔL/L = 0.001/2 = 0.0005." },
+        { "q": "The force-extension graph of a spring is a straight line passing through the origin. This illustrates:", "options": ["Newton's law", "Hooke's law", "Ohm's law", "Boyle's law"], "answer": 1, "explanation": "Straight-line F-e graph shows Hooke's law." }
+      ]
+    },
+    {
+      "id": "phys-09",
+      "order": 9,
+      "name": "Pressure and Liquids at Rest",
+      "questions": [
+        { "q": "Pressure is defined as:", "options": ["Force × Area", "Force / Area", "Area / Force", "Force + Area"], "answer": 1, "explanation": "P = F / A." },
+        { "q": "The SI unit of pressure is:", "options": ["Newton", "Pascal", "Joule", "Watt"], "answer": 1, "explanation": "Pascal (Pa) = N/m²." },
+        { "q": "Pressure at a depth h in a liquid of density ρ is:", "options": ["ρgh", "ρg/h", "ρh/g", "gh/ρ"], "answer": 0, "explanation": "P = ρgh." },
+        { "q": "Atmospheric pressure is measured using a:", "options": ["Thermometer", "Barometer", "Manometer", "Hydrometer"], "answer": 1, "explanation": "Barometer measures atmospheric pressure." },
+        { "q": "Archimedes' principle states that the upthrust on a body in a fluid equals:", "options": ["The weight of the body", "The weight of the fluid displaced", "The volume of the body", "The density of the fluid"], "answer": 1, "explanation": "Upthrust = weight of fluid displaced." },
+        { "q": "A body floats in a liquid when its:", "options": ["Weight is greater than upthrust", "Weight is less than upthrust", "Weight equals upthrust", "Density is greater than liquid"], "answer": 2, "explanation": "Floatation: weight = upthrust." },
+        { "q": "The pressure in a liquid at a given depth depends on:", "options": ["Shape of the container", "Volume of the liquid", "Density and depth", "Area of the container"], "answer": 2, "explanation": "P = ρgh; depends on density and depth." },
+        { "q": "A body of volume 0.002 m³ is fully submerged in water (ρ = 1000 kg/m³). The upthrust is (g = 10 m/s²):", "options": ["2 N", "20 N", "200 N", "0.2 N"], "answer": 1, "explanation": "Upthrust = ρVg = 1000 × 0.002 × 10 = 20 N." },
+        { "q": "A hydrometer is used to measure:", "options": ["Atmospheric pressure", "Relative density of liquids", "Temperature", "Volume of gases"], "answer": 1, "explanation": "Hydrometer measures relative density." },
+        { "q": "The pressure at the bottom of a 5 m deep water tank (ρ = 1000 kg/m³, g = 10 m/s²) is:", "options": ["500 Pa", "5000 Pa", "50000 Pa", "500000 Pa"], "answer": 2, "explanation": "P = ρgh = 1000 × 10 × 5 = 50000 Pa." }
+      ]
+    },
+    {
+      "id": "phys-10",
+      "order": 10,
+      "name": "Temperature and Its Measurement",
+      "questions": [
+        { "q": "Temperature is a measure of:", "options": ["Heat content", "Average kinetic energy of molecules", "Total energy", "Volume"], "answer": 1, "explanation": "Temperature = average KE of particles." },
+        { "q": "The SI unit of temperature is:", "options": ["Celsius", "Fahrenheit", "Kelvin", "Rankine"], "answer": 2, "explanation": "Kelvin (K) is the SI unit." },
+        { "q": "The lower fixed point of a thermometer is:", "options": ["Melting point of ice", "Boiling point of water", "Room temperature", "Body temperature"], "answer": 0, "explanation": "Lower fixed point = ice point (0°C)." },
+        { "q": "The upper fixed point of a thermometer is:", "options": ["Melting point of ice", "Boiling point of water", "Room temperature", "Body temperature"], "answer": 1, "explanation": "Upper fixed point = steam point (100°C)." },
+        { "q": "The conversion formula from Celsius to Kelvin is:", "options": ["K = °C + 100", "K = °C + 273", "K = °C − 273", "K = °C × 273"], "answer": 1, "explanation": "K = °C + 273." },
+        { "q": "Which thermometer is best for measuring very high temperatures?", "options": ["Mercury", "Alcohol", "Thermocouple", "Clinical"], "answer": 2, "explanation": "Thermocouple measures very high temperatures." },
+        { "q": "The temperature of a body is 300 K. In Celsius it is:", "options": ["27°C", "37°C", "273°C", "573°C"], "answer": 0, "explanation": "°C = K − 273 = 300 − 273 = 27°C." },
+        { "q": "Which of the following is a thermometric property?", "options": ["Mass", "Length of a liquid column", "Weight", "Density of a solid"], "answer": 1, "explanation": "Liquid expansion is a thermometric property." },
+        { "q": "Absolute zero is:", "options": ["0°C", "100 K", "−273°C", "273 K"], "answer": 2, "explanation": "Absolute zero = −273°C = 0 K." },
+        { "q": "A clinical thermometer measures body temperature in the range:", "options": ["0–100°C", "35–42°C", "−10–110°C", "20–50°C"], "answer": 1, "explanation": "Human body temp is around 37°C, so range is 35–42°C." }
+      ]
+    },
+    {
+      "id": "phys-11",
+      "order": 11,
+      "name": "Thermal Expansion",
+      "questions": [
+        { "q": "Linear expansivity is defined as the fractional increase in:", "options": ["Volume per degree rise", "Length per degree rise", "Area per degree rise", "Mass per degree rise"], "answer": 1, "explanation": "α = ΔL / (L₀Δθ)." },
+        { "q": "The unit of linear expansivity is:", "options": ["m", "K", "K⁻¹", "m·K"], "answer": 2, "explanation": "α has unit per Kelvin (K⁻¹)." },
+        { "q": "The relationship between linear (α), area (β), and volume (γ) expansivities is:", "options": ["α : β : γ = 1 : 2 : 3", "α : β : γ = 3 : 2 : 1", "α : β : γ = 1 : 1 : 1", "α : β : γ = 2 : 3 : 1"], "answer": 0, "explanation": "β = 2α, γ = 3α." },
+        { "q": "A metal rod of length 1 m expands by 0.001 m when heated through 50 K. Its linear expansivity is:", "options": ["1×10⁻⁵ K⁻¹", "2×10⁻⁵ K⁻¹", "5×10⁻⁵ K⁻¹", "1×10⁻⁴ K⁻¹"], "answer": 1, "explanation": "α = 0.001 / (1 × 50) = 2×10⁻⁵ K⁻¹." },
+        { "q": "Bimetallic strips are used in:", "options": ["Thermometers", "Fire alarms", "Thermostats", "Barometers"], "answer": 2, "explanation": "Thermostats use bimetallic strips to regulate temperature." },
+        { "q": "Water has its maximum density at:", "options": ["0°C", "4°C", "10°C", "100°C"], "answer": 1, "explanation": "Water is densest at 4°C — anomalous expansion." },
+        { "q": "Which of the following expands the most when heated equally?", "options": ["Solids", "Liquids", "Gases", "All expand equally"], "answer": 2, "explanation": "Gases expand most, then liquids, then solids." },
+        { "q": "The real expansion of a liquid is equal to its:", "options": ["Apparent expansion only", "Apparent expansion plus expansion of the container", "Apparent expansion minus expansion of the container", "Volume expansion only"], "answer": 1, "explanation": "Real = Apparent + Container expansion." },
+        { "q": "A metal has volume expansivity of 6×10⁻⁵ K⁻¹. Its linear expansivity is:", "options": ["2×10⁻⁵ K⁻¹", "3×10⁻⁵ K⁻¹", "6×10⁻⁵ K⁻¹", "18×10⁻⁵ K⁻¹"], "answer": 0, "explanation": "α = γ/3 = 2×10⁻⁵ K⁻¹." },
+        { "q": "Railway lines are laid with gaps because:", "options": ["To save material", "To allow for thermal expansion", "To reduce friction", "To allow water drainage"], "answer": 1, "explanation": "Gaps prevent buckling during expansion." }
+      ]
+    },
+    {
+      "id": "phys-12",
+      "order": 12,
+      "name": "Gas Laws",
+      "questions": [
+        { "q": "Boyle's law states that at constant temperature:", "options": ["P ∝ V", "P ∝ 1/V", "V ∝ T", "P ∝ T"], "answer": 1, "explanation": "P₁V₁ = P₂V₂." },
+        { "q": "Charles' law states that at constant pressure:", "options": ["V ∝ 1/T", "V ∝ T", "P ∝ T", "P ∝ 1/V"], "answer": 1, "explanation": "V/T = constant." },
+        { "q": "The pressure law states that at constant volume:", "options": ["P ∝ T", "P ∝ 1/T", "P ∝ V", "V ∝ T"], "answer": 0, "explanation": "P/T = constant." },
+        { "q": "The general gas equation is:", "options": ["PV = nRT", "P/V = nRT", "PV² = nRT", "P + V = nRT"], "answer": 0, "explanation": "Ideal gas equation." },
+        { "q": "A gas occupies 2 L at 1 atm. Its volume at 2 atm (constant T) is:", "options": ["1 L", "2 L", "4 L", "0.5 L"], "answer": 0, "explanation": "P₁V₁ = P₂V₂ → 2 = 2V₂ → V₂ = 1 L." },
+        { "q": "At absolute zero, the volume of an ideal gas is:", "options": ["Infinite", "Zero", "Constant", "Undefined"], "answer": 1, "explanation": "Theoretically V = 0 at 0 K." },
+        { "q": "The value of the universal gas constant R is approximately:", "options": ["8.31 J/mol·K", "3.14 J/mol·K", "1.38 J/mol·K", "6.02 J/mol·K"], "answer": 0, "explanation": "R ≈ 8.31 J/mol·K." },
+        { "q": "A gas at 27°C is heated to 327°C at constant pressure. The ratio of final to initial volume is:", "options": ["1:2", "2:1", "1:1", "4:1"], "answer": 1, "explanation": "V₁/T₁ = V₂/T₂ → 300→600 K → V₂/V₁ = 2." },
+        { "q": "Which law explains why a balloon bursts when taken to high altitude?", "options": ["Boyle's law", "Charles' law", "Pressure law", "Newton's law"], "answer": 0, "explanation": "At high altitude, pressure drops, volume increases (Boyle's law)." },
+        { "q": "Ideal gas molecules:", "options": ["Attract each other", "Repel each other", "Have no intermolecular forces", "Have large volume"], "answer": 2, "explanation": "Ideal gases assume no intermolecular forces." }
+      ]
+    },
+    {
+      "id": "phys-13",
+      "order": 13,
+      "name": "Quantity of Heat",
+      "questions": [
+        { "q": "Specific heat capacity is defined as the heat required to raise the temperature of:", "options": ["1 kg of a substance by 1 K", "1 g of a substance by 1 K", "1 mol by 1 K", "Any mass by 1 K"], "answer": 0, "explanation": "c = Q / (mΔθ)." },
+        { "q": "The unit of specific heat capacity is:", "options": ["J/kg", "J/kg·K", "J·K", "J/mol"], "answer": 1, "explanation": "J/(kg·K)." },
+        { "q": "Latent heat of fusion is the heat required to:", "options": ["Raise temperature", "Change solid to liquid at melting point", "Change liquid to gas", "Lower temperature"], "answer": 1, "explanation": "Fusion: solid → liquid at constant temp." },
+        { "q": "The specific latent heat of vaporisation of water is:", "options": ["334 J/g", "2260 J/g", "4200 J/g", "100 J/g"], "answer": 1, "explanation": "≈ 2260 J/g (or 2.26 × 10⁶ J/kg)." },
+        { "q": "Heat required to melt 0.5 kg of ice at 0°C (L = 334 kJ/kg) is:", "options": ["167 kJ", "334 kJ", "500 kJ", "668 kJ"], "answer": 0, "explanation": "Q = mL = 0.5 × 334 = 167 kJ." },
+        { "q": "The principle of calorimetry states that:", "options": ["Heat gained = Heat lost", "Heat gained > Heat lost", "Heat gained < Heat lost", "Heat is conserved only in gases"], "answer": 0, "explanation": "Heat lost by hot body = heat gained by cold body." },
+        { "q": "During change of state, temperature:", "options": ["Increases", "Decreases", "Remains constant", "Fluctuates"], "answer": 2, "explanation": "Temperature stays constant during phase change." },
+        { "q": "Calculate the heat needed to raise 2 kg of water from 20°C to 70°C (c = 4200 J/kg·K):", "options": ["210000 J", "420000 J", "84000 J", "42000 J"], "answer": 1, "explanation": "Q = mcΔθ = 2 × 4200 × 50 = 420000 J." },
+        { "q": "Which has a higher specific heat capacity?", "options": ["Iron", "Copper", "Water", "Mercury"], "answer": 2, "explanation": "Water has the highest specific heat capacity among common substances." },
+        { "q": "Evaporation causes cooling because:", "options": ["Molecules gain energy", "Fastest molecules escape, reducing average KE", "Heat is added", "Temperature increases"], "answer": 1, "explanation": "Loss of high-energy molecules lowers average KE → cooling." }
+      ]
+    },
+    {
+      "id": "phys-14",
+      "order": 14,
+      "name": "Vapours and Humidity",
+      "questions": [
+        { "q": "Saturated vapour pressure:", "options": ["Increases with temperature", "Decreases with temperature", "Is independent of temperature", "Is always zero"], "answer": 0, "explanation": "SVP increases with temperature." },
+        { "q": "Relative humidity is defined as:", "options": ["Actual vapour pressure × 100 / SVP", "SVP × 100 / actual", "Actual / SVP", "SVP / actual"], "answer": 0, "explanation": "RH = (actual VP / SVP) × 100%." },
+        { "q": "The dew point is the temperature at which:", "options": ["Water boils", "Water freezes", "Air becomes saturated and vapour condenses", "Ice melts"], "answer": 2, "explanation": "Dew point = temperature of saturation." },
+        { "q": "A hygrometer is used to measure:", "options": ["Temperature", "Humidity", "Pressure", "Wind speed"], "answer": 1, "explanation": "Hygrometer measures humidity." },
+        { "q": "When relative humidity is 100%, the air is:", "options": ["Dry", "Saturated", "Warm", "Cold"], "answer": 1, "explanation": "100% RH means saturated air." },
+        { "q": "Boiling occurs when:", "options": ["Vapour pressure equals atmospheric pressure", "Saturated vapour pressure is less than atmospheric", "Temperature exceeds 100°C", "Water evaporates"], "answer": 0, "explanation": "Boiling point = temp when VP = atmospheric pressure." },
+        { "q": "At higher altitudes, water boils at a lower temperature because:", "options": ["Temperature is higher", "Atmospheric pressure is lower", "Water is purer", "Gravity is higher"], "answer": 1, "explanation": "Lower pressure → boiling at lower temperature." },
+        { "q": "Evaporation takes place:", "options": ["Only at boiling point", "At all temperatures", "Only at 0°C", "Only in vacuum"], "answer": 1, "explanation": "Evaporation occurs at all temperatures." },
+        { "q": "Which factor does NOT affect the rate of evaporation?", "options": ["Temperature", "Surface area", "Wind speed", "Colour of liquid"], "answer": 3, "explanation": "Colour does not significantly affect evaporation." },
+        { "q": "Dew forms when:", "options": ["Temperature rises above dew point", "Temperature falls below dew point", "Humidity is low", "Wind speed increases"], "answer": 1, "explanation": "Below dew point, vapour condenses." }
+      ]
+    },
+    {
+      "id": "phys-15",
+      "order": 15,
+      "name": "Waves",
+      "questions": [
+        { "q": "A wave is a disturbance that transfers:", "options": ["Matter", "Energy", "Mass", "Charge"], "answer": 1, "explanation": "Waves transfer energy without transferring matter." },
+        { "q": "The wave equation relating velocity, frequency, and wavelength is:", "options": ["v = f/λ", "v = fλ", "v = λ/f", "v = f + λ"], "answer": 1, "explanation": "v = fλ." },
+        { "q": "Which of the following is a longitudinal wave?", "options": ["Light wave", "Water wave", "Sound wave", "Radio wave"], "answer": 2, "explanation": "Sound waves are longitudinal." },
+        { "q": "The distance between two consecutive crests is called:", "options": ["Frequency", "Period", "Amplitude", "Wavelength"], "answer": 3, "explanation": "Wavelength (λ)." },
+        { "q": "The number of oscillations per second is called:", "options": ["Wavelength", "Amplitude", "Frequency", "Period"], "answer": 2, "explanation": "Frequency (f), in Hz." },
+        { "q": "The time for one complete oscillation is called:", "options": ["Frequency", "Period", "Wavelength", "Amplitude"], "answer": 1, "explanation": "Period T = 1/f." },
+        { "q": "A wave has frequency 50 Hz and wavelength 2 m. Its velocity is:", "options": ["25 m/s", "52 m/s", "100 m/s", "48 m/s"], "answer": 2, "explanation": "v = fλ = 50 × 2 = 100 m/s." },
+        { "q": "When two waves meet and cancel each other, this is called:", "options": ["Constructive interference", "Destructive interference", "Reflection", "Refraction"], "answer": 1, "explanation": "Destructive = cancellation." },
+        { "q": "Standing waves are produced by:", "options": ["One wave", "Two waves of same frequency travelling in opposite directions", "A single moving source", "Random wave motion"], "answer": 1, "explanation": "Standing waves = superposition of two waves in opposite directions." },
+        { "q": "The distance between two consecutive nodes in a standing wave is:", "options": ["λ", "λ/2", "λ/4", "2λ"], "answer": 1, "explanation": "Nodes are λ/2 apart." }
+      ]
+    },
+    {
+      "id": "phys-16",
+      "order": 16,
+      "name": "Sound Waves",
+      "questions": [
+        { "q": "Sound waves are:", "options": ["Transverse", "Longitudinal", "Electromagnetic", "Stationary"], "answer": 1, "explanation": "Sound waves are longitudinal." },
+        { "q": "Sound cannot travel through:", "options": ["Solids", "Liquids", "Gases", "Vacuum"], "answer": 3, "explanation": "Sound needs a medium; vacuum has none." },
+        { "q": "The speed of sound in air at room temperature is approximately:", "options": ["150 m/s", "340 m/s", "3×10⁸ m/s", "1000 m/s"], "answer": 1, "explanation": "≈ 340 m/s in air." },
+        { "q": "An echo is due to:", "options": ["Refraction of sound", "Reflection of sound", "Diffraction of sound", "Interference"], "answer": 1, "explanation": "Echo = reflected sound." },
+        { "q": "The pitch of a sound depends on:", "options": ["Amplitude", "Frequency", "Wavelength", "Speed"], "answer": 1, "explanation": "Higher frequency = higher pitch." },
+        { "q": "The loudness of a sound depends on:", "options": ["Frequency", "Amplitude", "Wavelength", "Speed"], "answer": 1, "explanation": "Greater amplitude = louder sound." },
+        { "q": "Ultrasound has frequency:", "options": ["Below 20 Hz", "Between 20 Hz and 20 kHz", "Above 20 kHz", "Equal to 20 Hz"], "answer": 2, "explanation": "Ultrasound > 20,000 Hz." },
+        { "q": "The quality (timbre) of a sound is determined by:", "options": ["Fundamental frequency only", "Overtones/harmonics", "Amplitude only", "Speed"], "answer": 1, "explanation": "Timbre depends on the harmonic content." },
+        { "q": "Beats are produced when two sound waves of:", "options": ["Same frequency interfere", "Slightly different frequencies interfere", "Different amplitudes meet", "Same amplitude meet"], "answer": 1, "explanation": "Beats arise from slightly different frequencies." },
+        { "q": "A person shouts in a valley and hears an echo 2 s later. If the speed of sound is 340 m/s, the distance to the reflecting surface is:", "options": ["170 m", "340 m", "680 m", "85 m"], "answer": 1, "explanation": "Total distance = 340 × 2 = 680 m; one-way = 340 m." }
+      ]
+    },
+    {
+      "id": "phys-17",
+      "order": 17,
+      "name": "Light Energy",
+      "questions": [
+        { "q": "Light travels in:", "options": ["Curved lines", "Straight lines", "Circles", "Zigzag paths"], "answer": 1, "explanation": "Light travels in straight lines (rectilinear propagation)." },
+        { "q": "The speed of light in a vacuum is:", "options": ["3×10⁶ m/s", "3×10⁸ m/s", "3×10¹⁰ m/s", "3×10⁵ m/s"], "answer": 1, "explanation": "c ≈ 3×10⁸ m/s." },
+        { "q": "Light is a form of:", "options": ["Sound wave", "Mechanical wave", "Electromagnetic wave", "Matter wave"], "answer": 2, "explanation": "Light is electromagnetic." },
+        { "q": "A pinhole camera forms:", "options": ["An upright image", "An inverted real image", "A virtual image", "No image"], "answer": 1, "explanation": "Pinhole camera forms an inverted real image." },
+        { "q": "A shadow is formed because light:", "options": ["Bends around objects", "Travels in straight lines", "Is absorbed by air", "Reflects off objects"], "answer": 1, "explanation": "Straight-line travel creates shadows." },
+        { "q": "An eclipse of the sun occurs when:", "options": ["Earth is between Sun and Moon", "Moon is between Sun and Earth", "Sun is between Earth and Moon", "Moon is behind Earth"], "answer": 1, "explanation": "Solar eclipse: Moon between Sun and Earth." },
+        { "q": "An eclipse of the moon occurs when:", "options": ["Earth is between Sun and Moon", "Moon is between Sun and Earth", "Sun is between Earth and Moon", "Moon faces away from Earth"], "answer": 0, "explanation": "Lunar eclipse: Earth between Sun and Moon." },
+        { "q": "A luminous object is one that:", "options": ["Reflects light", "Emits its own light", "Absorbs light", "Scatters light"], "answer": 1, "explanation": "Luminous objects emit their own light." },
+        { "q": "Which is a non-luminous object?", "options": ["Sun", "Star", "Moon", "Fire"], "answer": 2, "explanation": "The Moon reflects sunlight; it does not emit its own." },
+        { "q": "The rectilinear propagation of light explains:", "options": ["Reflection", "Refraction", "Formation of shadows", "Dispersion"], "answer": 2, "explanation": "Shadows form due to straight-line travel." }
+      ]
+    },
+    {
+      "id": "phys-18",
+      "order": 18,
+      "name": "Reflection of Light",
+      "questions": [
+        { "q": "The law of reflection states that the angle of incidence equals:", "options": ["Angle of refraction", "Angle of reflection", "90°", "Angle of deviation"], "answer": 1, "explanation": "∠i = ∠r." },
+        { "q": "The image formed by a plane mirror is:", "options": ["Real and inverted", "Virtual and upright", "Real and upright", "Virtual and inverted"], "answer": 1, "explanation": "Plane mirrors form virtual, upright images." },
+        { "q": "The focal length of a concave mirror with radius of curvature 20 cm is:", "options": ["20 cm", "10 cm", "40 cm", "5 cm"], "answer": 1, "explanation": "f = R/2 = 10 cm." },
+        { "q": "The mirror formula is:", "options": ["1/f = 1/u + 1/v", "f = u + v", "1/f = u + v", "f = uv"], "answer": 0, "explanation": "1/f = 1/u + 1/v." },
+        { "q": "A concave mirror is also called a:", "options": ["Diverging mirror", "Converging mirror", "Plane mirror", "Cylindrical mirror"], "answer": 1, "explanation": "Concave mirrors converge light." },
+        { "q": "A convex mirror is used as a driving mirror because it:", "options": ["Gives a wider field of view", "Magnifies objects", "Inverts images", "Forms real images"], "answer": 0, "explanation": "Convex mirrors give a wide field of view." },
+        { "q": "The magnification of a mirror is given by:", "options": ["u/v", "v/u", "u × v", "u + v"], "answer": 1, "explanation": "m = v/u (or image height / object height)." },
+        { "q": "The focal point of a concave mirror is:", "options": ["Behind the mirror", "In front of the mirror", "At the pole", "At the center of curvature"], "answer": 1, "explanation": "Concave mirror focuses in front." },
+        { "q": "When an object is placed at the center of curvature of a concave mirror, the image is:", "options": ["Virtual and upright", "Real, inverted, and same size", "Real and smaller", "No image"], "answer": 1, "explanation": "At C, image is real, inverted, same size." },
+        { "q": "A real image can be formed on:", "options": ["A screen", "Only in the eye", "Never", "Only by convex mirrors"], "answer": 0, "explanation": "Real images can be projected on screens." }
+      ]
+    },
+    {
+      "id": "phys-19",
+      "order": 19,
+      "name": "Refraction of Light",
+      "questions": [
+        { "q": "Refraction is the:", "options": ["Bouncing of light", "Bending of light as it passes between media", "Splitting of light", "Absorption of light"], "answer": 1, "explanation": "Bending due to change of speed." },
+        { "q": "Snell's law states that:", "options": ["n = sin i × sin r", "n = sin i / sin r", "n = cos i / cos r", "n = tan i / tan r"], "answer": 1, "explanation": "n = sin i / sin r." },
+        { "q": "The refractive index of water is approximately:", "options": ["1.00", "1.33", "1.50", "2.42"], "answer": 1, "explanation": "n_water ≈ 1.33." },
+        { "q": "Total internal reflection occurs when light travels from:", "options": ["Air to glass", "Glass to air at angle > critical angle", "Air to water", "Any medium to any other"], "answer": 1, "explanation": "Denser to less dense at angle > critical angle." },
+        { "q": "The critical angle θ_c is related to refractive index n by:", "options": ["sin θ_c = n", "sin θ_c = 1/n", "cos θ_c = n", "tan θ_c = n"], "answer": 1, "explanation": "sin θ_c = 1/n." },
+        { "q": "A convex lens is also called a:", "options": ["Diverging lens", "Converging lens", "Plane lens", "Cylindrical lens"], "answer": 1, "explanation": "Convex lenses converge light." },
+        { "q": "The lens formula is:", "options": ["1/f = 1/u + 1/v", "1/f = u + v", "f = uv", "f = u − v"], "answer": 0, "explanation": "1/f = 1/u + 1/v." },
+        { "q": "Total internal reflection is used in:", "options": ["Mirrors", "Optical fibres", "Lenses", "Prisms in reflection only"], "answer": 1, "explanation": "Optical fibres rely on total internal reflection." },
+        { "q": "The focal length of a lens with power 5 D is:", "options": ["0.2 m", "5 m", "20 m", "0.5 m"], "answer": 0, "explanation": "f = 1/P = 1/5 = 0.2 m." },
+        { "q": "The critical angle for glass with n = 1.5 is approximately:", "options": ["30°", "41.8°", "60°", "90°"], "answer": 1, "explanation": "sin θ_c = 1/1.5 → θ_c ≈ 41.8°." }
+      ]
+    },
+    {
+      "id": "phys-20",
+      "order": 20,
+      "name": "Optical Instruments",
+      "questions": [
+        { "q": "A simple microscope uses:", "options": ["A concave mirror", "A convex lens", "A plane mirror", "A prism"], "answer": 1, "explanation": "Simple microscope = single convex lens." },
+        { "q": "A compound microscope has:", "options": ["One lens", "Two convex lenses", "One concave lens", "A mirror only"], "answer": 1, "explanation": "Objective + eyepiece." },
+        { "q": "An astronomical telescope uses:", "options": ["Two concave lenses", "Two convex lenses", "A plane mirror", "A prism"], "answer": 1, "explanation": "Objective + eyepiece are convex." },
+        { "q": "The human eye focuses light on the:", "options": ["Cornea", "Iris", "Retina", "Pupil"], "answer": 2, "explanation": "Image forms on the retina." },
+        { "q": "Short-sightedness (myopia) is corrected with:", "options": ["Convex lens", "Concave lens", "Bifocal lens", "Prism"], "answer": 1, "explanation": "Concave lens corrects myopia." },
+        { "q": "Long-sightedness (hypermetropia) is corrected with:", "options": ["Concave lens", "Convex lens", "Cylindrical lens", "Plane lens"], "answer": 1, "explanation": "Convex lens corrects hypermetropia." },
+        { "q": "The least distance of distinct vision for a normal human eye is:", "options": ["10 cm", "25 cm", "50 cm", "100 cm"], "answer": 1, "explanation": "≈ 25 cm." },
+        { "q": "The power of a lens is measured in:", "options": ["Metres", "Dioptres", "Newtons", "Watts"], "answer": 1, "explanation": "Dioptre (D) = m⁻¹." },
+        { "q": "The magnifying power of a telescope increases with:", "options": ["Smaller objective focal length", "Larger objective focal length", "Larger eyepiece focal length", "Smaller aperture"], "answer": 1, "explanation": "M = f_o / f_e; larger f_o increases magnification." },
+        { "q": "A camera uses a:", "options": ["Concave lens", "Convex lens", "Plane mirror", "Prism"], "answer": 1, "explanation": "Camera uses a convex lens to form a real image." }
+      ]
+    }
+  ]
+}
