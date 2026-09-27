@@ -22,17 +22,22 @@ const dataCache = {};
 // ═══════════════════════════════════════════════════════
 // THEME
 // ═══════════════════════════════════════════════════════
-const themeBtn = document.getElementById('theme-toggle');
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    renderDashboard();
-  });
+function applyTheme(next) {
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  updateDarkToggle();
+  renderDashboard();
+}
+
+function updateDarkToggle() {
+  const toggle = document.getElementById('dark-toggle');
+  if (!toggle) return;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  toggle.classList.toggle('on', isDark);
+  toggle.setAttribute('aria-checked', isDark ? 'true' : 'false');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -85,7 +90,7 @@ function renderStreak() {
 }
 
 // ═══════════════════════════════════════════════════════
-// PRACTICE HISTORY (for calendar)
+// PRACTICE HISTORY
 // ═══════════════════════════════════════════════════════
 function getPracticeDays() {
   try { return JSON.parse(localStorage.getItem('practiceDays')) || []; }
@@ -629,23 +634,24 @@ if (continueBtn) {
 }
 
 // ═══════════════════════════════════════════════════════
-// REMINDER SETTINGS + SMART NOTIFICATION
+// SETTINGS MODAL
 // ═══════════════════════════════════════════════════════
-const settingsBtn       = document.getElementById('settings-btn');
-const settingsModal     = document.getElementById('settings-modal');
-const settingsCloseBtn  = document.getElementById('settings-close-btn');
-const settingsXBtn      = document.getElementById('settings-x-btn');
+const settingsBtn      = document.getElementById('settings-btn');
+const settingsModal    = document.getElementById('settings-modal');
+const settingsXBtn     = document.getElementById('settings-x-btn');
+const darkToggle       = document.getElementById('dark-toggle');
+const reminderToggle   = document.getElementById('reminder-toggle');
 const reminderTimeInput = document.getElementById('reminder-time-input');
-const reminderEnableBtn = document.getElementById('reminder-enable-btn');
-const settingsStatus    = document.getElementById('settings-status');
-
-const savedTime = localStorage.getItem('reminderTime') || '20:00';
-if (reminderTimeInput) reminderTimeInput.value = savedTime;
+const settingsStatus   = document.getElementById('settings-status');
+const resetAllBtn      = document.getElementById('reset-all-btn');
 
 function openSettings() {
   if (!settingsModal) return;
   settingsModal.classList.remove('hidden');
+  updateDarkToggle();
+  updateReminderToggle();
   updateSettingsStatus();
+  if (typeof updateAuthUI === 'function') updateAuthUI();
 }
 
 function closeSettings() {
@@ -653,28 +659,7 @@ function closeSettings() {
   settingsModal.classList.add('hidden');
 }
 
-function updateSettingsStatus() {
-  if (!settingsStatus) return;
-  const enabled = localStorage.getItem('reminderEnabled') === 'true';
-
-  if (!('Notification' in window)) {
-    settingsStatus.textContent = '❌ Notifications not supported on this device.';
-    return;
-  }
-  if (Notification.permission === 'denied') {
-    settingsStatus.textContent = '❌ Blocked — enable notifications in browser settings.';
-    return;
-  }
-  if (Notification.permission === 'granted' && enabled) {
-    settingsStatus.textContent =
-      `✅ Active — daily nudge at ${formatTime(reminderTimeInput.value)} if you skip practice.`;
-    return;
-  }
-  settingsStatus.textContent = 'Notifications are off.';
-}
-
 if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
-if (settingsCloseBtn) settingsCloseBtn.addEventListener('click', closeSettings);
 if (settingsXBtn) settingsXBtn.addEventListener('click', closeSettings);
 
 if (settingsModal) {
@@ -689,7 +674,68 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// Dark mode toggle
+if (darkToggle) {
+  darkToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+}
+
+// Reminder toggle
+function updateReminderToggle() {
+  if (!reminderToggle) return;
+  const enabled = localStorage.getItem('reminderEnabled') === 'true' &&
+                  'Notification' in window &&
+                  Notification.permission === 'granted';
+  reminderToggle.classList.toggle('on', enabled);
+  reminderToggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+}
+
+if (reminderToggle) {
+  reminderToggle.addEventListener('click', async () => {
+    const currentlyOn = reminderToggle.classList.contains('on');
+    if (currentlyOn) {
+      localStorage.setItem('reminderEnabled', 'false');
+      updateReminderToggle();
+      updateSettingsStatus();
+      return;
+    }
+
+    if (!('Notification' in window)) {
+      settingsStatus.textContent = '❌ Notifications not supported on this device.';
+      return;
+    }
+    if (Notification.permission === 'denied') {
+      settingsStatus.textContent = '❌ Blocked — enable notifications in browser settings.';
+      return;
+    }
+
+    let perm = Notification.permission;
+    if (perm !== 'granted') {
+      perm = await Notification.requestPermission();
+    }
+
+    if (perm === 'granted') {
+      localStorage.setItem('reminderEnabled', 'true');
+      try {
+        new Notification('AIM360', {
+          body: `Reminders set for ${formatTime(reminderTimeInput.value)}. We'll only nudge you if you skip practice.`
+        });
+      } catch (err) { console.warn(err); }
+      scheduleSmartReminder();
+      updateReminderToggle();
+      updateSettingsStatus();
+    } else {
+      settingsStatus.textContent = '❌ Permission denied.';
+    }
+  });
+}
+
 if (reminderTimeInput) {
+  const savedTime = localStorage.getItem('reminderTime') || '20:00';
+  reminderTimeInput.value = savedTime;
+
   reminderTimeInput.addEventListener('change', () => {
     localStorage.setItem('reminderTime', reminderTimeInput.value);
     if (Notification.permission === 'granted' &&
@@ -700,54 +746,44 @@ if (reminderTimeInput) {
   });
 }
 
-if (reminderEnableBtn) {
-  reminderEnableBtn.addEventListener('click', async () => {
-    console.log('[Reminder] Button clicked. Current permission:', Notification.permission);
+function updateSettingsStatus() {
+  if (!settingsStatus) return;
+  const enabled = localStorage.getItem('reminderEnabled') === 'true';
 
-    if (!('Notification' in window)) {
-      settingsStatus.textContent = '❌ This browser does not support notifications.';
-      return;
-    }
+  if (!('Notification' in window)) {
+    settingsStatus.textContent = '❌ Notifications not supported on this device.';
+    return;
+  }
+  if (Notification.permission === 'denied') {
+    settingsStatus.textContent = '❌ Blocked — enable in browser settings.';
+    return;
+  }
+  if (Notification.permission === 'granted' && enabled) {
+    settingsStatus.textContent =
+      `✅ Active — daily nudge at ${formatTime(reminderTimeInput.value)} if you skip practice.`;
+    return;
+  }
+  settingsStatus.textContent = 'Notifications are off.';
+}
 
-    if (Notification.permission === 'denied') {
-      settingsStatus.textContent = '❌ Notifications are blocked. Open browser settings → Site settings → Notifications → Allow for this site.';
-      return;
-    }
+// Reset all progress
+if (resetAllBtn) {
+  resetAllBtn.addEventListener('click', () => {
+    if (!confirm('Reset ALL progress? This wipes every subject, streak, and history. Cannot be undone.')) return;
+    if (!confirm('Really sure? Everything will be deleted.')) return;
 
-    let perm = Notification.permission;
-    if (perm !== 'granted') {
-      try {
-        perm = await Notification.requestPermission();
-      } catch (err) {
-        console.error('[Reminder] requestPermission failed:', err);
-        settingsStatus.textContent = '❌ Permission request failed.';
-        return;
-      }
-    }
+    localStorage.removeItem('progress');
+    localStorage.removeItem('streak');
+    localStorage.removeItem('practiceDays');
 
-    console.log('[Reminder] Final permission:', perm);
+    if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
 
-    if (perm === 'granted') {
-      localStorage.setItem('reminderEnabled', 'true');
-      localStorage.setItem('reminderTime', reminderTimeInput.value);
-
-      try {
-        new Notification('AIM360', {
-          body: `Reminders set for ${formatTime(reminderTimeInput.value)}. We'll only nudge you if you skip practice.`
-        });
-      } catch (err) {
-        console.warn('[Reminder] Test notification failed:', err);
-      }
-
-      scheduleSmartReminder();
-      updateSettingsStatus();
-    } else {
-      localStorage.setItem('reminderEnabled', 'false');
-      settingsStatus.textContent = '❌ Permission denied. Enable in browser settings.';
-    }
+    closeSettings();
+    location.reload();
   });
 }
 
+// Smart reminder logic
 function hasPracticedToday() {
   const s = getStreak();
   return s.lastDate === new Date().toDateString();
@@ -768,7 +804,6 @@ function scheduleSmartReminder() {
   if (next <= now) next.setDate(next.getDate() + 1);
 
   const delay = next - now;
-  console.log(`[Reminder] Scheduled in ${Math.round(delay / 1000 / 60)} minutes`);
 
   reminderTimeout = setTimeout(() => {
     if (!hasPracticedToday()) {
@@ -777,9 +812,7 @@ function scheduleSmartReminder() {
           body: "You haven't practiced today. 5 quick questions to keep your streak alive!",
           tag: 'aim360-reminder'
         });
-      } catch (err) {
-        console.warn('[Reminder] Fire failed:', err);
-      }
+      } catch (err) { console.warn(err); }
     }
     scheduleSmartReminder();
   }, delay);
@@ -797,8 +830,6 @@ if ('Notification' in window &&
     localStorage.getItem('reminderEnabled') === 'true') {
   scheduleSmartReminder();
 }
-
-updateSettingsStatus();
 
 // ═══════════════════════════════════════════════════════
 // STREAK CALENDAR
@@ -911,3 +942,5 @@ document.addEventListener('keydown', (e) => {
 updateGreeting();
 renderStreak();
 renderDashboard();
+updateDarkToggle();
+updateReminderToggle();

@@ -46,14 +46,6 @@
           <span>Practice</span>
         </button>
       </nav>
-
-      <div class="profile">
-        <div class="avatar">AO</div>
-        <div class="profile-text">
-          <p class="profile-name">Future 360 scorer</p>
-          <p class="profile-role">JAMB candidate</p>
-        </div>
-      </div>
     </aside>
 
     <div class="main-wrap">
@@ -63,13 +55,6 @@
         </button>
 
         <div class="topbar-right">
-          <button id="settings-btn" class="icon-btn" aria-label="Reminder settings">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
-            </svg>
-          </button>
-
           <button id="auth-btn" class="reminder-btn" aria-label="Sign in">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -83,11 +68,12 @@
             <span id="streak-count">0</span>
           </button>
 
-          <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <button id="settings-btn" class="icon-btn" aria-label="Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
+            </svg>
           </button>
-
-          <div class="avatar">AO</div>
         </div>
       </header>
 
@@ -202,29 +188,60 @@
           <div id="quiz-summary" class="panel hidden"></div>
         </section>
 
-        <!-- Reminder Settings Modal -->
+        <!-- ═══════════ SETTINGS MODAL ═══════════ -->
         <div id="settings-modal" class="modal-overlay hidden">
           <div class="modal-card">
             <button id="settings-x-btn" class="modal-x" aria-label="Close">×</button>
 
-            <h3>Reminder Settings</h3>
-            <p>Pick a time to get a daily nudge — but only if you haven't practiced.</p>
+            <h3>Settings</h3>
 
-            <label class="modal-label">
-              Reminder time
-              <input type="time" id="reminder-time-input" value="20:00" />
-            </label>
-
-            <div class="modal-actions">
-              <button id="reminder-enable-btn" class="cta-btn">Enable reminders</button>
-              <button id="settings-close-btn" class="btn-ghost">Close</button>
+            <!-- Profile section -->
+            <div id="settings-profile" class="settings-profile">
+              <!-- filled by JS -->
             </div>
 
-            <p class="note" id="settings-status">Notifications are off.</p>
+            <div class="settings-divider"></div>
+
+            <!-- Dark mode -->
+            <div class="settings-row">
+              <div class="settings-row-label">
+                <span class="settings-icon">🌙</span>
+                <span>Dark mode</span>
+              </div>
+              <button id="dark-toggle" class="toggle-switch" role="switch">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+
+            <!-- Reminder -->
+            <div class="settings-row">
+              <div class="settings-row-label">
+                <span class="settings-icon">🔔</span>
+                <span>Daily reminder</span>
+              </div>
+              <button id="reminder-toggle" class="toggle-switch" role="switch">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+
+            <div class="settings-sub">
+              <label class="modal-label">
+                Reminder time
+                <input type="time" id="reminder-time-input" value="20:00" />
+              </label>
+              <p class="note" id="settings-status">Notifications are off.</p>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <!-- Reset -->
+            <button id="reset-all-btn" class="settings-danger">
+              🗑️ Reset all progress
+            </button>
           </div>
         </div>
 
-        <!-- Streak Calendar Modal -->
+        <!-- ═══════════ STREAK CALENDAR MODAL ═══════════ -->
         <div id="calendar-modal" class="modal-overlay hidden">
           <div class="modal-card modal-wide">
             <button id="calendar-x" class="modal-x" aria-label="Close">×</button>

@@ -33,7 +33,7 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
 });
 
 // ═══════════════════════════════════════════════════════
-// SYNC — Push to cloud
+// SYNC
 // ═══════════════════════════════════════════════════════
 async function pushProgressToCloud() {
   if (!currentUser) return;
@@ -53,9 +53,6 @@ async function pushProgressToCloud() {
   else console.log('[Sync] Progress pushed');
 }
 
-// ═══════════════════════════════════════════════════════
-// SYNC — Pull from cloud
-// ═══════════════════════════════════════════════════════
 async function pullProgressFromCloud() {
   if (!currentUser) return;
   const { data, error } = await supabaseClient
@@ -94,22 +91,79 @@ function mergeProgress(local, cloud) {
 }
 
 // ═══════════════════════════════════════════════════════
-// UI
+// UI — Updates the auth button and settings profile block
 // ═══════════════════════════════════════════════════════
 function updateAuthUI() {
   const btn = document.getElementById('auth-btn');
   const txt = document.getElementById('auth-btn-text');
-  if (!btn || !txt) return;
+  const profileBlock = document.getElementById('settings-profile');
 
-  if (currentUser) {
-    txt.textContent = currentUser.email?.split('@')[0] || 'Account';
-    btn.onclick = signOutUser;
-    btn.title = `${currentUser.email} — click to sign out`;
-  } else {
-    txt.textContent = 'Sign in';
-    btn.onclick = signInWithGoogle;
-    btn.title = 'Sign in with Google to sync progress';
+  if (btn && txt) {
+    if (currentUser) {
+      const name = getFirstName(currentUser);
+      txt.textContent = name;
+      btn.onclick = () => openSettings();
+      btn.title = `${currentUser.email} — open settings`;
+    } else {
+      txt.textContent = 'Sign in';
+      btn.onclick = signInWithGoogle;
+      btn.title = 'Sign in with Google to sync progress';
+    }
   }
+
+  // Settings modal profile section
+  if (profileBlock) {
+    if (currentUser) {
+      const name = getFullName(currentUser);
+      const email = currentUser.email || '';
+      const photo = getAvatarUrl(currentUser);
+      const initial = (getFirstName(currentUser)[0] || '?').toUpperCase();
+
+      profileBlock.innerHTML = `
+        <div class="settings-profile-row">
+          <div class="settings-avatar" style="${photo ? `background-image: url('${photo}')` : ''}">
+            ${photo ? '' : initial}
+          </div>
+          <div class="settings-profile-info">
+            <p class="settings-profile-name">${escapeHtml(name)}</p>
+            <p class="settings-profile-email">${escapeHtml(email)}</p>
+          </div>
+        </div>
+        <button id="signout-btn" class="settings-signout">Sign out</button>
+      `;
+      document.getElementById('signout-btn').onclick = signOutUser;
+    } else {
+      profileBlock.innerHTML = `
+        <p class="settings-profile-guest">Sign in with Google to sync your progress across devices.</p>
+        <button id="settings-signin-btn" class="cta-btn settings-signin-btn">Sign in with Google</button>
+      `;
+      document.getElementById('settings-signin-btn').onclick = signInWithGoogle;
+    }
+  }
+}
+
+function getFirstName(user) {
+  const meta = user.user_metadata || {};
+  const full = meta.full_name || meta.name || '';
+  if (full) return full.split(' ')[0];
+  if (user.email) return user.email.split('@')[0];
+  return 'Account';
+}
+
+function getFullName(user) {
+  const meta = user.user_metadata || {};
+  return meta.full_name || meta.name || (user.email ? user.email.split('@')[0] : 'Account');
+}
+
+function getAvatarUrl(user) {
+  const meta = user.user_metadata || {};
+  return meta.avatar_url || meta.picture || '';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
 }
 
 // ═══════════════════════════════════════════════════════
@@ -120,4 +174,4 @@ function updateAuthUI() {
   currentUser = session?.user || null;
   if (currentUser) await pullProgressFromCloud();
   updateAuthUI();
-})();
+})();continuue
