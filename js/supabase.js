@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════
 // SUPABASE CLIENT
 // ═══════════════════════════════════════════════════════
-const SUPABASE_URL = 'https://usukzxzrarlbaluscvzo.supabase.co/rest/v1/';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzdWt6eHpyYXJsYmFsdXNjdnpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1MDc3ODcsImV4cCI6MjEwNjA4Mzc4N30.56VlSigB_3MBdqnQQ3uVVvwG_fzpC0MCQOUr9jOAfdQ';
+const SUPABASE_URL = 'PASTE-YOUR-PROJECT-URL-HERE';
+const SUPABASE_ANON_KEY = 'PASTE-YOUR-ANON-KEY-HERE';
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -81,6 +81,7 @@ async function pullProgressFromCloud() {
   if (typeof renderStreak === 'function') renderStreak();
 }
 
+// Keep the higher score per topic
 function mergeProgress(local, cloud) {
   const merged = { ...cloud };
   for (const id in local) {

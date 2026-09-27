@@ -717,3 +717,32 @@ code { background: var(--hover); padding: 1px 6px; border-radius: 4px; font-size
   flex-shrink: 0;
   padding: 12px 16px;
 }
+
+/* Modal X button */
+.modal-card {
+  position: relative;
+}
+
+.modal-x {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--hover);
+  color: var(--text-2);
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.modal-x:hover {
+  background: var(--danger);
+  color: #fff;
+}
