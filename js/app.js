@@ -85,6 +85,25 @@ function renderStreak() {
 }
 
 // ═══════════════════════════════════════════════════════
+// PRACTICE HISTORY (for calendar)
+// ═══════════════════════════════════════════════════════
+function getPracticeDays() {
+  try { return JSON.parse(localStorage.getItem('practiceDays')) || []; }
+  catch { return []; }
+}
+
+function recordPracticeDay() {
+  const days = getPracticeDays();
+  const today = new Date().toDateString();
+  if (!days.includes(today)) {
+    days.push(today);
+    const cutoff = Date.now() - 365 * 86400000;
+    const filtered = days.filter(d => new Date(d).getTime() >= cutoff);
+    localStorage.setItem('practiceDays', JSON.stringify(filtered));
+  }
+}
+
+// ═══════════════════════════════════════════════════════
 // PROGRESS
 // ═══════════════════════════════════════════════════════
 function getProgress() {
@@ -495,9 +514,9 @@ function finishQuiz() {
 
   recordResult(currentTopic.id, correctCount, currentQuestions.length);
   updateStreak();
+  recordPracticeDay();
   renderStreak();
 
-  // ☁️ Sync to cloud
   if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
 
   const pct = Math.round((correctCount / currentQuestions.length) * 100);
@@ -780,6 +799,111 @@ if ('Notification' in window &&
 }
 
 updateSettingsStatus();
+
+// ═══════════════════════════════════════════════════════
+// STREAK CALENDAR
+// ═══════════════════════════════════════════════════════
+let calendarMonth = new Date().getMonth();
+let calendarYear  = new Date().getFullYear();
+
+const streakBadge     = document.getElementById('streak-badge');
+const calendarModal   = document.getElementById('calendar-modal');
+const calendarClose   = document.getElementById('calendar-close');
+const calendarX       = document.getElementById('calendar-x');
+const calendarPrev    = document.getElementById('calendar-prev');
+const calendarNext    = document.getElementById('calendar-next');
+const calendarTitle   = document.getElementById('calendar-title');
+const calendarGrid    = document.getElementById('calendar-grid');
+const calendarStreak  = document.getElementById('calendar-streak');
+const calendarTotal   = document.getElementById('calendar-total');
+
+function openCalendar() {
+  if (!calendarModal) return;
+  calendarMonth = new Date().getMonth();
+  calendarYear = new Date().getFullYear();
+  renderCalendar();
+  calendarModal.classList.remove('hidden');
+}
+
+function closeCalendar() {
+  if (!calendarModal) return;
+  calendarModal.classList.add('hidden');
+}
+
+function renderCalendar() {
+  if (!calendarTitle || !calendarGrid) return;
+
+  const monthNames = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+  calendarTitle.textContent = `${monthNames[calendarMonth]} ${calendarYear}`;
+
+  const days = getPracticeDays();
+  const practicedSet = new Set(days);
+
+  const firstDay = new Date(calendarYear, calendarMonth, 1);
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const startWeekday = (firstDay.getDay() + 6) % 7;
+  const today = new Date().toDateString();
+
+  let html = '';
+  const dayLabels = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+  dayLabels.forEach(d => { html += `<div class="cal-label">${d}</div>`; });
+
+  for (let i = 0; i < startWeekday; i++) {
+    html += `<div class="cal-cell empty"></div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(calendarYear, calendarMonth, d);
+    const dateStr = date.toDateString();
+    const isPracticed = practicedSet.has(dateStr);
+    const isToday = dateStr === today;
+
+    let cls = 'cal-cell';
+    if (isPracticed) cls += ' practiced';
+    if (isToday) cls += ' today';
+
+    html += `<div class="${cls}">${d}</div>`;
+  }
+
+  calendarGrid.innerHTML = html;
+
+  const streakData = getStreak();
+  if (calendarStreak) calendarStreak.textContent = `🔥 ${streakData.count} day streak`;
+  if (calendarTotal) calendarTotal.textContent = `📅 ${days.length} days studied total`;
+}
+
+if (streakBadge) streakBadge.addEventListener('click', openCalendar);
+if (calendarClose) calendarClose.addEventListener('click', closeCalendar);
+if (calendarX) calendarX.addEventListener('click', closeCalendar);
+
+if (calendarModal) {
+  calendarModal.addEventListener('click', (e) => {
+    if (e.target === calendarModal) closeCalendar();
+  });
+}
+
+if (calendarPrev) {
+  calendarPrev.addEventListener('click', () => {
+    calendarMonth--;
+    if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
+    renderCalendar();
+  });
+}
+
+if (calendarNext) {
+  calendarNext.addEventListener('click', () => {
+    calendarMonth++;
+    if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+    renderCalendar();
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && calendarModal && !calendarModal.classList.contains('hidden')) {
+    closeCalendar();
+  }
+});
 
 // ═══════════════════════════════════════════════════════
 // INIT

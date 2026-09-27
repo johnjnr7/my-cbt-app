@@ -78,10 +78,10 @@
             <span id="auth-btn-text">Sign in</span>
           </button>
 
-          <span class="streak-badge" id="streak-badge" title="Daily streak">
+          <button class="streak-badge" id="streak-badge" title="View streak calendar">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 1-3-3 2-5 5-5 8a8 8 0 0 0 16 0c0-5-8-13-8-13z"/></svg>
             <span id="streak-count">0</span>
-          </span>
+          </button>
 
           <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -221,6 +221,32 @@
             </div>
 
             <p class="note" id="settings-status">Notifications are off.</p>
+          </div>
+        </div>
+
+        <!-- Streak Calendar Modal -->
+        <div id="calendar-modal" class="modal-overlay hidden">
+          <div class="modal-card modal-wide">
+            <button id="calendar-x" class="modal-x" aria-label="Close">×</button>
+
+            <h3>Your Study Streak</h3>
+
+            <div class="calendar-stats">
+              <span id="calendar-streak">🔥 0 day streak</span>
+              <span id="calendar-total">📅 0 days studied total</span>
+            </div>
+
+            <div class="calendar-nav">
+              <button id="calendar-prev" class="calendar-arrow">←</button>
+              <h4 id="calendar-title">Month Year</h4>
+              <button id="calendar-next" class="calendar-arrow">→</button>
+            </div>
+
+            <div id="calendar-grid" class="calendar-grid"></div>
+
+            <div class="modal-actions">
+              <button id="calendar-close" class="btn-ghost">Close</button>
+            </div>
           </div>
         </div>
       </main>
