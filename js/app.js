@@ -107,6 +107,49 @@ function recordPracticeDay() {
     localStorage.setItem('practiceDays', JSON.stringify(filtered));
   }
 }
+// ═══════════════════════════════════════════════════════
+// BOOKMARKS
+// ═══════════════════════════════════════════════════════
+function getBookmarks() {
+  try { return JSON.parse(localStorage.getItem('bookmarks')) || []; }
+  catch { return []; }
+}
+
+function saveBookmarks(list) {
+  localStorage.setItem('bookmarks', JSON.stringify(list));
+}
+
+function isBookmarked(subject, topicId, questionIndex) {
+  const key = `${subject}:${topicId}:${questionIndex}`;
+  return getBookmarks().some(b => b.key === key);
+}
+
+function toggleBookmark(subject, topicId, questionIndex, questionText) {
+  const key = `${subject}:${topicId}:${questionIndex}`;
+  const list = getBookmarks();
+  const existing = list.findIndex(b => b.key === key);
+
+  if (existing >= 0) {
+    list.splice(existing, 1);
+    saveBookmarks(list);
+    return false;
+  } else {
+    list.push({
+      key,
+      subject,
+      topicId,
+      questionIndex,
+      questionText
+    });
+    saveBookmarks(list);
+    return true;
+  }
+}
+
+function removeBookmark(key) {
+  const list = getBookmarks().filter(b => b.key !== key);
+  saveBookmarks(list);
+}
 
 // ═══════════════════════════════════════════════════════
 // PROGRESS
@@ -460,8 +503,41 @@ function shuffle(a) {
 function renderQuestion() {
   answered = false;
   const q = currentQuestions[currentIndex];
+  const sub = subjectSelect.value;
+
   document.getElementById('question-text').textContent =
     `Q${currentIndex + 1}/${currentQuestions.length} — ${q.q}`;
+
+  // ⭐ Bookmark star
+  const star = document.getElementById('bookmark-star');
+  if (star && currentTopic) {
+    const originalIdx = currentTopic.questions.findIndex(
+      x => x.q === q.q && x.answer === q.answer
+    );
+    const qIdx = originalIdx >= 0 ? originalIdx : currentIndex;
+    const isSaved = isBookmarked(sub, currentTopic.id, qIdx);
+
+    star.classList.toggle('saved', isSaved);
+    star.dataset.qIdx = qIdx;
+    star.title = isSaved ? 'Remove bookmark' : 'Bookmark this question';
+
+    // Replace listener cleanly each render
+    const newStar = star.cloneNode(true);
+    star.parentNode.replaceChild(newStar, star);
+
+    newStar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(newStar.dataset.qIdx, 10);
+      const nowSaved = toggleBookmark(sub, currentTopic.id, idx, q.q);
+      newStar.classList.toggle('saved', nowSaved);
+      newStar.title = nowSaved ? 'Remove bookmark' : 'Bookmark this question';
+
+      // Pop animation
+      newStar.classList.remove('pop');
+      void newStar.offsetWidth;
+      newStar.classList.add('pop');
+    });
+  }
 
   const optionsDiv = document.getElementById('options');
   optionsDiv.innerHTML = '';
@@ -477,6 +553,98 @@ function renderQuestion() {
   fb.textContent = '';
   fb.style.color = '';
   document.getElementById('next-btn').classList.add('hidden');
+}
+
+// ═══════════════════════════════════════════════════════
+// BOOKMARKS VIEW
+// ═══════════════════════════════════════════════════════
+function renderBookmarksView() {
+  const list = document.getElementById('bookmarks-list');
+  const startBtn = document.getElementById('start-bookmarks-btn');
+  if (!list) return;
+
+  const bookmarks = getBookmarks();
+
+  if (bookmarks.length === 0) {
+    if (startBtn) startBtn.classList.add('hidden');
+    list.innerHTML = `
+      <div class="bookmarks-empty">
+        <div class="bookmarks-empty-icon">⭐</div>
+        <h3>No bookmarks yet</h3>
+        <p>Tap the star on any question during practice to save it here for review.</p>
+      </div>
+    `;
+    return;
+  }
+
+  if (startBtn) startBtn.classList.remove('hidden');
+
+  // Group by subject
+  const grouped = {};
+  bookmarks.forEach(b => {
+    if (!grouped[b.subject]) grouped[b.subject] = [];
+    grouped[b.subject].push(b);
+  });
+
+  let html = '';
+  SUBJECTS.forEach(sub => {
+    const items = grouped[sub];
+    if (!items || items.length === 0) return;
+
+    html += `
+      <div class="bookmarks-group">
+        <div class="bookmarks-group-title">
+          ${SUBJECT_LABELS[sub]}
+          <span class="bookmarks-count">${items.length}</span>
+        </div>
+    `;
+
+    items.forEach(b => {
+      const topic = (dataCache[sub] && dataCache[sub].topics.find(t => t.id === b.topicId)) || null;
+      const topicName = topic ? topic.name : 'Unknown topic';
+      const preview = b.questionText.length > 120
+        ? b.questionText.slice(0, 120) + '…'
+        : b.questionText;
+
+      html += `
+        <div class="bookmark-card" data-key="${b.key}">
+          <div class="bookmark-card-star">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="bookmark-card-body">
+            <div class="bookmark-card-q">${escapeHtmlText(preview)}</div>
+            <div class="bookmark-card-meta">
+              <span class="bookmark-card-topic">${escapeHtmlText(topicName)}</span>
+              <span>·</span>
+              <span>Tap to remove</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  });
+
+  list.innerHTML = html;
+
+  // Click a card → remove bookmark
+  list.querySelectorAll('.bookmark-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const key = card.dataset.key;
+      if (confirm('Remove this bookmark?')) {
+        removeBookmark(key);
+        renderBookmarksView();
+      }
+    });
+  });
+}
+
+// Simple HTML escaper for bookmark previews
+function escapeHtmlText(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
 }
 
 function selectAnswer(chosen, correct) {
@@ -977,6 +1145,73 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+
+// ═══════════════════════════════════════════════════════
+// BOOKMARKS QUIZ MODE
+// ═══════════════════════════════════════════════════════
+let bookmarksQuizMode = false;
+
+const startBookmarksBtn = document.getElementById('start-bookmarks-btn');
+if (startBookmarksBtn) {
+  startBookmarksBtn.addEventListener('click', () => {
+    const bookmarks = getBookmarks();
+    if (bookmarks.length === 0) return;
+
+    // Build a question array from bookmarks
+    const questions = [];
+    bookmarks.forEach(b => {
+      const data = dataCache[b.subject];
+      if (!data) return;
+      const topic = data.topics.find(t => t.id === b.topicId);
+      if (!topic || !topic.questions[b.questionIndex]) return;
+      questions.push({
+        ...topic.questions[b.questionIndex],
+        _subject: b.subject,
+        _topicId: b.topicId
+      });
+    });
+
+    if (questions.length === 0) {
+      alert('Could not load bookmarked questions. Try refreshing.');
+      return;
+    }
+
+    // Switch to practice view
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelector('[data-view="practice"]').classList.add('active');
+    document.getElementById('view-practice').classList.add('active');
+
+    // Enter bookmarks quiz mode
+    bookmarksQuizMode = true;
+    currentQuestions = shuffle(questions);
+    currentIndex = 0;
+    correctCount = 0;
+    currentTopic = {
+      id: '__bookmarks__',
+      name: 'Bookmarks Review',
+      questions: currentQuestions
+    };
+
+    quizSummary.classList.add('hidden');
+    quizArea.classList.remove('hidden');
+    document.querySelector('.selector').classList.add('hidden');
+    renderQuestion();
+  });
+}
+
+document.getElementById('summary-next-btn').addEventListener('click', () => {
+  if (currentTopic.id === '__bookmarks__') {
+    // Return to bookmarks view
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelector('[data-view="bookmarks"]').classList.add('active');
+    document.getElementById('view-bookmarks').classList.add('active');
+    renderBookmarksView();
+    return;
+  }
+  subjectSelect.dispatchEvent(new Event('change'));
+});
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════

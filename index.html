@@ -45,6 +45,11 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
           <span>Practice</span>
         </button>
+
+        <button class="nav-item" data-view="bookmarks">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+  <span>Bookmarks</span>
+</button>
       </nav>
     </aside>
 
@@ -179,14 +184,33 @@
           </div>
 
           <div id="quiz-area" class="panel hidden">
-            <p id="question-text"></p>
-            <div id="options"></div>
-            <p id="feedback"></p>
-            <button id="next-btn" class="cta-btn hidden">Next →</button>
-          </div>
+  <button id="bookmark-star" class="bookmark-star" aria-label="Bookmark this question" title="Bookmark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+    </svg>
+  </button>
+  <p id="question-text"></p>
+  <div id="options"></div>
+  <p id="feedback"></p>
+  <button id="next-btn" class="cta-btn hidden">Next →</button>
+</div>
 
           <div id="quiz-summary" class="panel hidden"></div>
         </section>
+
+        <section id="view-bookmarks" class="view">
+  <div class="hero-head">
+    <div>
+      <h2 class="greeting">Bookmarks</h2>
+      <p class="subtitle">Questions you've flagged to review later.</p>
+    </div>
+    <button id="start-bookmarks-btn" class="cta-btn hidden">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      Start bookmarks quiz
+    </button>
+  </div>
+  <div id="bookmarks-list"></div>
+</section>
 
         <!-- ═══════════ SETTINGS MODAL ═══════════ -->
         <div id="settings-modal" class="modal-overlay hidden">

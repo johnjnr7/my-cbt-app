@@ -905,3 +905,227 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ═══════════════ BOOKMARKS ═══════════════ */
+.bookmark-star {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+  z-index: 5;
+}
+
+.bookmark-star:hover {
+  border-color: #eab308;
+  color: #eab308;
+  transform: scale(1.05);
+}
+
+.bookmark-star svg {
+  width: 20px;
+  height: 20px;
+  transition: all 0.2s;
+}
+
+.bookmark-star.saved {
+  background: #fef3c7;
+  border-color: #eab308;
+  color: #eab308;
+}
+
+[data-theme="dark"] .bookmark-star.saved {
+  background: rgba(234,179,8,0.15);
+  border-color: #eab308;
+  color: #facc15;
+}
+
+.bookmark-star.saved svg {
+  fill: #eab308;
+  stroke: #eab308;
+}
+
+[data-theme="dark"] .bookmark-star.saved svg {
+  fill: #facc15;
+  stroke: #facc15;
+}
+
+/* Star animation on toggle */
+@keyframes starPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.bookmark-star.pop {
+  animation: starPop 0.3s ease;
+}
+
+/* Make quiz-area relative so the star positions correctly */
+#quiz-area {
+  position: relative;
+}
+
+/* Make room for star in question text */
+#question-text {
+  padding-right: 60px;
+}
+
+/* ═══════════════ BOOKMARKS LIST ═══════════════ */
+.bookmarks-empty {
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.bookmarks-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.bookmarks-empty h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.bookmarks-empty p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.bookmarks-group {
+  margin-bottom: 28px;
+}
+
+.bookmarks-group-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bookmarks-group-title .bookmarks-count {
+  background: var(--hover);
+  color: var(--text-2);
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.bookmark-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.bookmark-card:hover {
+  border-color: var(--brand);
+  transform: translateX(3px);
+  box-shadow: var(--shadow-md);
+}
+
+.bookmark-card-star {
+  flex-shrink: 0;
+  color: #eab308;
+  margin-top: 2px;
+}
+
+.bookmark-card-star svg {
+  width: 18px;
+  height: 18px;
+  fill: #eab308;
+  stroke: #eab308;
+}
+
+.bookmark-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.bookmark-card-q {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bookmark-card-meta {
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bookmark-card-topic {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .bookmark-card-topic {
+  color: var(--brand-lime);
+}
+
+/* ═══════════════ MOBILE ═══════════════ */
+@media (max-width: 600px) {
+  .bookmark-star {
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+  }
+  .bookmark-star svg {
+    width: 18px;
+    height: 18px;
+  }
+  #question-text {
+    padding-right: 50px;
+  }
+  .bookmarks-empty {
+    padding: 36px 20px;
+  }
+  .bookmark-card {
+    padding: 14px 16px;
+  }
+  .bookmark-card-q {
+    font-size: 0.88rem;
+  }
+}
