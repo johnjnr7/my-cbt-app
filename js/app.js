@@ -782,7 +782,48 @@ if (resetAllBtn) {
     location.reload();
   });
 }
+// ═══════════════════════════════════════════════════════
+// GOOGLE CALENDAR REMINDER
+// ═══════════════════════════════════════════════════════
+const gcalBtn = document.getElementById('gcal-btn');
 
+if (gcalBtn) {
+  gcalBtn.addEventListener('click', () => {
+    const time = (reminderTimeInput && reminderTimeInput.value) || '20:00';
+    const [hh, mm] = time.split(':').map(Number);
+
+    // Build today's date at the chosen time
+    const start = new Date();
+    start.setHours(hh, mm, 0, 0);
+
+    // If the time has already passed today, start tomorrow
+    if (start.getTime() <= Date.now()) {
+      start.setDate(start.getDate() + 1);
+    }
+
+    // 30-minute event
+    const end = new Date(start.getTime() + 30 * 60 * 1000);
+
+    // Format as YYYYMMDDTHHMMSS (local time, no Z)
+    const fmt = (d) => {
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+    };
+
+    const dates = `${fmt(start)}/${fmt(end)}`;
+
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: '🔥 AIM360 — Study Session',
+      dates: dates,
+      recur: 'RRULE:FREQ=DAILY',
+      details: 'Daily JAMB prep. Open AIM360 and keep your streak alive:\nhttps://my-cbt-app-seven.vercel.app'
+    });
+
+    const url = `https://calendar.google.com/calendar/render?${params.toString()}`;
+    window.open(url, '_blank');
+  });
+}
 // Smart reminder logic
 function hasPracticedToday() {
   const s = getStreak();
