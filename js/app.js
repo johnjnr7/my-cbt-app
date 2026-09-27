@@ -612,38 +612,129 @@ if (installBtn) {
   });
 }
 
-const notifyBtn = document.getElementById('notify-btn');
-if (notifyBtn) {
-  notifyBtn.addEventListener('click', async () => {
-    if (!('Notification' in window)) return alert('Notifications not supported.');
+// ═══════════════════════════════════════════════════════
+// REMINDER SETTINGS + SMART NOTIFICATION
+// ═══════════════════════════════════════════════════════
+const settingsBtn       = document.getElementById('settings-btn');
+const settingsModal     = document.getElementById('settings-modal');
+const settingsCloseBtn  = document.getElementById('settings-close-btn');
+const reminderTimeInput = document.getElementById('reminder-time-input');
+const reminderEnableBtn = document.getElementById('reminder-enable-btn');
+const settingsStatus    = document.getElementById('settings-status');
+
+const savedTime = localStorage.getItem('reminderTime') || '20:00';
+if (reminderTimeInput) reminderTimeInput.value = savedTime;
+updateSettingsStatus();
+
+if (settingsBtn) {
+  settingsBtn.addEventListener('click', () => {
+    settingsModal.classList.remove('hidden');
+    updateSettingsStatus();
+  });
+}
+
+if (settingsCloseBtn) {
+  settingsCloseBtn.addEventListener('click', () => {
+    settingsModal.classList.add('hidden');
+  });
+}
+
+if (settingsModal) {
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) settingsModal.classList.add('hidden');
+  });
+}
+
+if (reminderTimeInput) {
+  reminderTimeInput.addEventListener('change', () => {
+    localStorage.setItem('reminderTime', reminderTimeInput.value);
+    if (Notification.permission === 'granted' &&
+        localStorage.getItem('reminderEnabled') === 'true') {
+      scheduleSmartReminder();
+    }
+    updateSettingsStatus();
+  });
+}
+
+if (reminderEnableBtn) {
+  reminderEnableBtn.addEventListener('click', async () => {
+    if (!('Notification' in window)) {
+      settingsStatus.textContent = 'Notifications not supported on this device.';
+      return;
+    }
     const perm = await Notification.requestPermission();
     if (perm === 'granted') {
+      localStorage.setItem('reminderEnabled', 'true');
+      localStorage.setItem('reminderTime', reminderTimeInput.value);
       new Notification('AIM360', {
-        body: '✅ Daily reminders enabled. Practice at 8 PM!',
+        body: `✅ Reminders enabled for ${formatTime(reminderTimeInput.value)} — but only if you haven't practiced.`,
         icon: './icons/icon-192.png'
       });
-      scheduleLocalReminder();
+      scheduleSmartReminder();
+      updateSettingsStatus();
     } else {
-      alert('Notifications blocked.');
+      localStorage.setItem('reminderEnabled', 'false');
+      settingsStatus.textContent = 'Notifications blocked. Enable them in browser settings.';
     }
   });
 }
 
-function scheduleLocalReminder() {
+function updateSettingsStatus() {
+  if (!settingsStatus) return;
+  if (Notification.permission === 'granted' &&
+      localStorage.getItem('reminderEnabled') === 'true') {
+    settingsStatus.textContent =
+      `✅ Active — daily nudge at ${formatTime(reminderTimeInput.value)} if you skip practice.`;
+  } else if (Notification.permission === 'denied') {
+    settingsStatus.textContent = '❌ Blocked — enable in browser settings.';
+  } else {
+    settingsStatus.textContent = 'Notifications are off.';
+  }
+}
+
+function hasPracticedToday() {
+  const s = getStreak();
+  return s.lastDate === new Date().toDateString();
+}
+
+let reminderTimeout = null;
+
+function scheduleSmartReminder() {
+  if (reminderTimeout) clearTimeout(reminderTimeout);
+  if (Notification.permission !== 'granted') return;
+  if (localStorage.getItem('reminderEnabled') !== 'true') return;
+
+  const [hh, mm] = (localStorage.getItem('reminderTime') || '20:00').split(':').map(Number);
   const now = new Date();
   const next = new Date();
-  next.setHours(DAILY_REMINDER_HOUR, 0, 0, 0);
+  next.setHours(hh, mm, 0, 0);
   if (next <= now) next.setDate(next.getDate() + 1);
 
-  setTimeout(() => {
-    if (Notification.permission === 'granted') {
+  const delay = next - now;
+
+  reminderTimeout = setTimeout(() => {
+    if (!hasPracticedToday()) {
       new Notification('🔥 Streak Alert!', {
-        body: "You haven't practiced today. 5 quick questions to keep the streak alive!",
-        icon: './icons/icon-192.png'
+        body: "You haven't practiced today. 5 quick questions to keep your streak alive!",
+        icon: './icons/icon-192.png',
+        badge: './icons/icon-192.png',
+        tag: 'aim360-reminder'
       });
     }
-    scheduleLocalReminder();
-  }, next - now);
+    scheduleSmartReminder();
+  }, delay);
+}
+
+function formatTime(hhmm) {
+  const [h, m] = hhmm.split(':').map(Number);
+  const ampm = h < 12 ? 'AM' : 'PM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
+}
+
+if (Notification.permission === 'granted' &&
+    localStorage.getItem('reminderEnabled') === 'true') {
+  scheduleSmartReminder();
 }
 
 // ═══════════════════════════════════════════════════════

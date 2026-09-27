@@ -645,3 +645,75 @@ code { background: var(--hover); padding: 1px 6px; border-radius: 4px; font-size
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ═══════════════ MODAL ═══════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  padding: 20px;
+}
+
+.modal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.modal-card > p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.modal-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+.modal-label input[type="time"] {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  margin-top: 6px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modal-actions .cta-btn {
+  margin-top: 0;
+  flex: 1;
+}
+
+.modal-actions .btn-ghost {
+  flex-shrink: 0;
+  padding: 12px 16px;
+}

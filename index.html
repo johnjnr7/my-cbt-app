@@ -77,27 +77,26 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
 
-        <div class="topbar-left">
-          <p class="eyebrow">YOUR 360 JOURNEY</p>
-        </div>
-
+        
         <div class="topbar-right">
-          <span class="streak-badge" id="streak-badge" title="Daily streak">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 1-3-3 2-5 5-5 8a8 8 0 0 0 16 0c0-5-8-13-8-13z"/></svg>
-            <span id="streak-count">0</span>
-          </span>
+  <button id="settings-btn" class="icon-btn" aria-label="Reminder settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
+    </svg>
+  </button>
 
-          <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-          </button>
+  <span class="streak-badge" id="streak-badge" title="Daily streak">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 1-3-3 2-5 5-5 8a8 8 0 0 0 16 0c0-5-8-13-8-13z"/></svg>
+    <span id="streak-count">0</span>
+  </span>
 
-          <button id="notify-btn" class="reminder-btn" aria-label="Enable daily reminder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
-            <span>Daily reminder</span>
-          </button>
+  <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
 
-          <div class="avatar">AO</div>
-        </div>
+  <div class="avatar">AO</div>
+</div>
       </header>
 
       <main class="content">
@@ -211,6 +210,25 @@
           <div id="quiz-summary" class="panel hidden"></div>
         </section>
 
+        <!-- Reminder Settings Modal -->
+<div id="settings-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3>Reminder Settings</h3>
+    <p>Pick a time to get a daily nudge — but only if you haven't practiced.</p>
+
+    <label class="modal-label">
+      Reminder time
+      <input type="time" id="reminder-time-input" value="20:00" />
+    </label>
+
+    <div class="modal-actions">
+      <button id="reminder-enable-btn" class="cta-btn">Enable reminders</button>
+      <button id="settings-close-btn" class="btn-ghost">Close</button>
+    </div>
+
+    <p class="note" id="settings-status">Notifications are off.</p>
+  </div>
+</div>
       </main>
     </div>
   </div>
