@@ -17,7 +17,6 @@ let currentQuestions = [];
 let currentIndex = 0;
 let correctCount = 0;
 let answered = false;
-let bookmarksQuizMode = false;
 const dataCache = {};
 
 // ═══════════════════════════════════════════════════════
@@ -53,33 +52,8 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 
     if (btn.dataset.view === 'dashboard') renderDashboard();
     if (btn.dataset.view === 'subjects') renderSubjectsView();
-    if (btn.dataset.view === 'bookmarks') renderBookmarksView();
-    if (btn.dataset.view === 'practice') applyDailyLockUI();
   });
 });
-
-function applyDailyLockUI() {
-  const banner = document.getElementById('daily-lock-banner');
-  const selector = document.querySelector('.selector');
-  const quizAreaEl = document.getElementById('quiz-area');
-  const quizSummaryEl = document.getElementById('quiz-summary');
-  if (!banner || !selector) return;
-
-  if (isLockedToday()) {
-    const lock = getDailyLock();
-    const subLabel = SUBJECT_LABELS[lock.subject] || lock.subject;
-    const nameEl = document.getElementById('daily-lock-topic-name');
-    if (nameEl) nameEl.textContent = `${lock.topicName} — ${subLabel}`;
-
-    banner.classList.remove('hidden');
-    selector.classList.add('hidden');
-    if (quizAreaEl) quizAreaEl.classList.add('hidden');
-    if (quizSummaryEl) quizSummaryEl.classList.add('hidden');
-  } else {
-    banner.classList.add('hidden');
-    selector.classList.remove('hidden');
-  }
-}
 
 // ═══════════════════════════════════════════════════════
 // GREETING
@@ -133,32 +107,6 @@ function recordPracticeDay() {
     localStorage.setItem('practiceDays', JSON.stringify(filtered));
   }
 }
-
-// ═══════════════════════════════════════════════════════
-// DAILY LOCK — one topic per day
-// ═══════════════════════════════════════════════════════
-function getDailyLock() {
-  try {
-    return JSON.parse(localStorage.getItem('dailyLock')) || { date: null, subject: null, topicId: null, topicName: null };
-  } catch {
-    return { date: null, subject: null, topicId: null, topicName: null };
-  }
-}
-
-function setDailyLock(subject, topicId, topicName) {
-  localStorage.setItem('dailyLock', JSON.stringify({
-    date: new Date().toDateString(),
-    subject,
-    topicId,
-    topicName
-  }));
-}
-
-function isLockedToday() {
-  const lock = getDailyLock();
-  return lock.date === new Date().toDateString() && lock.topicId !== null;
-}
-
 // ═══════════════════════════════════════════════════════
 // BOOKMARKS
 // ═══════════════════════════════════════════════════════
@@ -186,7 +134,13 @@ function toggleBookmark(subject, topicId, questionIndex, questionText) {
     saveBookmarks(list);
     return false;
   } else {
-    list.push({ key, subject, topicId, questionIndex, questionText });
+    list.push({
+      key,
+      subject,
+      topicId,
+      questionIndex,
+      questionText
+    });
     saveBookmarks(list);
     return true;
   }
@@ -388,34 +342,15 @@ function renderTargetProjection(stats) {
 }
 
 async function renderFocusCard() {
-  const lock = getDailyLock();
-  const titleEl = document.getElementById('focus-title');
-  const metaEl = document.getElementById('focus-meta');
-  const descEl = document.getElementById('focus-desc');
-
-  // If already did today's topic
-  if (isLockedToday()) {
-    const subLabel = SUBJECT_LABELS[lock.subject] || lock.subject;
-    if (titleEl) titleEl.textContent = 'Done for today ✅';
-    if (metaEl) {
-      metaEl.innerHTML =
-        `<span>${subLabel}</span><span class="dot">•</span>` +
-        `<span>${lock.topicName}</span><span class="dot">•</span>` +
-        `<span>+20 XP</span>`;
-    }
-    if (descEl) {
-      descEl.textContent = 'Come back tomorrow for the next topic. Streak locked in 🔥';
-    }
-    return;
-  }
-
-  // Otherwise show the next topic
   for (const sub of SUBJECTS) {
     const data = await loadSubject(sub);
     const sorted = getSortedTopics(sub);
     for (let i = 0; i < sorted.length; i++) {
       const t = sorted[i];
       if (getMastery(t.id) !== 'mastered') {
+        const titleEl = document.getElementById('focus-title');
+        const metaEl = document.getElementById('focus-meta');
+        const descEl = document.getElementById('focus-desc');
         if (titleEl) titleEl.textContent = t.name;
         if (metaEl) {
           metaEl.innerHTML =
@@ -432,7 +367,8 @@ async function renderFocusCard() {
       }
     }
   }
-
+  const titleEl = document.getElementById('focus-title');
+  const descEl = document.getElementById('focus-desc');
   if (titleEl) titleEl.textContent = 'All topics mastered 🎉';
   if (descEl) descEl.textContent = 'Switch to full mock exams and lock in your 360+.';
 }
@@ -476,12 +412,9 @@ async function renderSubjectsView() {
       document.querySelector('[data-view="practice"]').classList.add('active');
       document.getElementById('view-practice').classList.add('active');
 
-      applyDailyLockUI();
-      if (!isLockedToday()) {
-        const subSel = document.getElementById('subject-select');
-        subSel.value = sub;
-        subSel.dispatchEvent(new Event('change'));
-      }
+      const subSel = document.getElementById('subject-select');
+      subSel.value = sub;
+      subSel.dispatchEvent(new Event('change'));
     });
 
     grid.appendChild(card);
@@ -507,20 +440,12 @@ if (subjectSelect) {
 
     await loadSubject(sub);
     const sorted = getSortedTopics(sub);
-    const lock = getDailyLock();
-    const locked = isLockedToday();
 
     sorted.forEach((t, i) => {
       const status = getTopicStatus(sub, i);
       const opt = document.createElement('option');
 
-      if (locked && !(sub === lock.subject && t.id === lock.topicId)) {
-        opt.textContent = `🔒 ${t.name}`;
-        opt.disabled = true;
-      } else if (locked && sub === lock.subject && t.id === lock.topicId) {
-        opt.textContent = `✅ ${t.name}  (today's topic)`;
-        opt.value = t.id;
-      } else if (status === 'locked') {
+      if (status === 'locked') {
         opt.textContent = `🔒 ${t.name}`;
         opt.disabled = true;
       } else if (status === 'passed') {
@@ -549,15 +474,6 @@ if (topicSelect) {
     const topicId = topicSelect.value;
     if (!topicId) return;
 
-    const lock = getDailyLock();
-    if (isLockedToday()) {
-      if (!(sub === lock.subject && topicId === lock.topicId)) {
-        alert(`You already completed today's topic: ${lock.topicName}.\n\nCome back tomorrow for the next one.`);
-        topicSelect.value = lock.topicId;
-        return;
-      }
-    }
-
     const data = await loadSubject(sub);
     const topic = data.topics.find(t => t.id === topicId);
     if (!topic || !topic.questions || !topic.questions.length) {
@@ -569,7 +485,6 @@ if (topicSelect) {
     currentQuestions = shuffle([...topic.questions]);
     currentIndex = 0;
     correctCount = 0;
-    bookmarksQuizMode = false;
 
     quizSummary.classList.add('hidden');
     quizArea.classList.remove('hidden');
@@ -588,13 +503,14 @@ function shuffle(a) {
 function renderQuestion() {
   answered = false;
   const q = currentQuestions[currentIndex];
-  const sub = subjectSelect ? subjectSelect.value : null;
+  const sub = subjectSelect.value;
 
   document.getElementById('question-text').textContent =
     `Q${currentIndex + 1}/${currentQuestions.length} — ${q.q}`;
 
+  // ⭐ Bookmark star
   const star = document.getElementById('bookmark-star');
-  if (star && currentTopic && sub) {
+  if (star && currentTopic) {
     const originalIdx = currentTopic.questions.findIndex(
       x => x.q === q.q && x.answer === q.answer
     );
@@ -605,6 +521,7 @@ function renderQuestion() {
     star.dataset.qIdx = qIdx;
     star.title = isSaved ? 'Remove bookmark' : 'Bookmark this question';
 
+    // Replace listener cleanly each render
     const newStar = star.cloneNode(true);
     star.parentNode.replaceChild(newStar, star);
 
@@ -615,12 +532,11 @@ function renderQuestion() {
       newStar.classList.toggle('saved', nowSaved);
       newStar.title = nowSaved ? 'Remove bookmark' : 'Bookmark this question';
 
+      // Pop animation
       newStar.classList.remove('pop');
       void newStar.offsetWidth;
       newStar.classList.add('pop');
     });
-  } else if (star) {
-    star.classList.add('hidden');
   }
 
   const optionsDiv = document.getElementById('options');
@@ -637,6 +553,98 @@ function renderQuestion() {
   fb.textContent = '';
   fb.style.color = '';
   document.getElementById('next-btn').classList.add('hidden');
+}
+
+// ═══════════════════════════════════════════════════════
+// BOOKMARKS VIEW
+// ═══════════════════════════════════════════════════════
+function renderBookmarksView() {
+  const list = document.getElementById('bookmarks-list');
+  const startBtn = document.getElementById('start-bookmarks-btn');
+  if (!list) return;
+
+  const bookmarks = getBookmarks();
+
+  if (bookmarks.length === 0) {
+    if (startBtn) startBtn.classList.add('hidden');
+    list.innerHTML = `
+      <div class="bookmarks-empty">
+        <div class="bookmarks-empty-icon">⭐</div>
+        <h3>No bookmarks yet</h3>
+        <p>Tap the star on any question during practice to save it here for review.</p>
+      </div>
+    `;
+    return;
+  }
+
+  if (startBtn) startBtn.classList.remove('hidden');
+
+  // Group by subject
+  const grouped = {};
+  bookmarks.forEach(b => {
+    if (!grouped[b.subject]) grouped[b.subject] = [];
+    grouped[b.subject].push(b);
+  });
+
+  let html = '';
+  SUBJECTS.forEach(sub => {
+    const items = grouped[sub];
+    if (!items || items.length === 0) return;
+
+    html += `
+      <div class="bookmarks-group">
+        <div class="bookmarks-group-title">
+          ${SUBJECT_LABELS[sub]}
+          <span class="bookmarks-count">${items.length}</span>
+        </div>
+    `;
+
+    items.forEach(b => {
+      const topic = (dataCache[sub] && dataCache[sub].topics.find(t => t.id === b.topicId)) || null;
+      const topicName = topic ? topic.name : 'Unknown topic';
+      const preview = b.questionText.length > 120
+        ? b.questionText.slice(0, 120) + '…'
+        : b.questionText;
+
+      html += `
+        <div class="bookmark-card" data-key="${b.key}">
+          <div class="bookmark-card-star">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="bookmark-card-body">
+            <div class="bookmark-card-q">${escapeHtmlText(preview)}</div>
+            <div class="bookmark-card-meta">
+              <span class="bookmark-card-topic">${escapeHtmlText(topicName)}</span>
+              <span>·</span>
+              <span>Tap to remove</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  });
+
+  list.innerHTML = html;
+
+  // Click a card → remove bookmark
+  list.querySelectorAll('.bookmark-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const key = card.dataset.key;
+      if (confirm('Remove this bookmark?')) {
+        removeBookmark(key);
+        renderBookmarksView();
+      }
+    });
+  });
+}
+
+// Simple HTML escaper for bookmark previews
+function escapeHtmlText(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
 }
 
 function selectAnswer(chosen, correct) {
@@ -682,34 +690,25 @@ function finishQuiz() {
   recordPracticeDay();
   renderStreak();
 
-  // Lock the day to this topic (skip for bookmarks review)
-  if (!bookmarksQuizMode) {
-    setDailyLock(subjectSelect.value, currentTopic.id, currentTopic.name);
-  }
-
   if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
 
   const pct = Math.round((correctCount / currentQuestions.length) * 100);
   const passed = pct >= 80;
+  const sub = subjectSelect.value;
 
   let unlockedMsg = '';
-  if (bookmarksQuizMode) {
-    unlockedMsg = `<p class="unlock-msg">📌 Bookmark review complete.</p>`;
-  } else if (passed) {
-    const sub = subjectSelect.value;
+  if (passed) {
     const sorted = getSortedTopics(sub);
     const thisIdx = sorted.findIndex(t => t.id === currentTopic.id);
     const nextTopic = sorted[thisIdx + 1];
     unlockedMsg = nextTopic
-      ? `<p class="unlock-msg">🔓 Tomorrow: <strong>${nextTopic.name}</strong></p>`
+      ? `<p class="unlock-msg">🔓 Next up: <strong>${nextTopic.name}</strong></p>`
       : `<p class="unlock-msg">🎉 Subject complete! Every topic passed.</p>`;
   } else {
     unlockedMsg = `<p class="unlock-msg warn">You need 80% to unlock the next topic. Try again.</p>`;
   }
 
-  const heading = bookmarksQuizMode
-    ? '📌 Bookmarks reviewed!'
-    : (passed ? '✅ Topic complete for today!' : '📚 Not yet — try again');
+  const heading = passed ? '✅ Topic passed!' : '📚 Not yet — try again';
 
   quizSummary.innerHTML = `
     <h2 style="font-size:1.6rem;margin-bottom:8px">${heading}</h2>
@@ -719,30 +718,12 @@ function finishQuiz() {
     <p style="color:var(--muted);font-size:0.9rem">Topic: <em>${currentTopic.name}</em></p>
     ${unlockedMsg}
     <button class="cta-btn" style="margin-top:20px" id="summary-next-btn">
-      ${bookmarksQuizMode ? 'Back to bookmarks' : 'Back to dashboard'}
+      ${passed ? 'Go to next topic →' : 'Try again'}
     </button>
   `;
 
   document.getElementById('summary-next-btn').addEventListener('click', () => {
-    if (bookmarksQuizMode) {
-      bookmarksQuizMode = false;
-      const selector = document.querySelector('.selector');
-      if (selector) selector.classList.remove('hidden');
-
-      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.querySelector('[data-view="bookmarks"]').classList.add('active');
-      document.getElementById('view-bookmarks').classList.add('active');
-      renderBookmarksView();
-      return;
-    }
-
-    // Non-bookmark mode: go back to dashboard
-    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelector('[data-view="dashboard"]').classList.add('active');
-    document.getElementById('view-dashboard').classList.add('active');
-    renderDashboard();
+    subjectSelect.dispatchEvent(new Event('change'));
   });
 }
 
@@ -765,32 +746,6 @@ if (resetBtn) {
     renderDashboard();
 
     if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
-  });
-}
-
-// ═══════════════════════════════════════════════════════
-// RETRY TODAY'S TOPIC
-// ═══════════════════════════════════════════════════════
-const dailyLockRetry = document.getElementById('daily-lock-retry');
-if (dailyLockRetry) {
-  dailyLockRetry.addEventListener('click', async () => {
-    const lock = getDailyLock();
-    if (!lock.topicId || !lock.subject) return;
-
-    const data = await loadSubject(lock.subject);
-    const topic = data.topics.find(t => t.id === lock.topicId);
-    if (!topic || !topic.questions || !topic.questions.length) {
-      alert('Could not load today\'s topic.');
-      return;
-    }
-
-    document.querySelector('.selector').classList.remove('hidden');
-    document.getElementById('daily-lock-banner').classList.add('hidden');
-
-    subjectSelect.value = lock.subject;
-    await new Promise(r => setTimeout(r, 50));
-    topicSelect.value = lock.topicId;
-    topicSelect.dispatchEvent(new Event('change'));
   });
 }
 
@@ -833,13 +788,6 @@ if (continueBtn) {
     document.querySelector('[data-view="practice"]').classList.add('active');
     document.getElementById('view-practice').classList.add('active');
 
-    applyDailyLockUI();
-
-    if (isLockedToday()) {
-      // Already did today — nothing to load
-      return;
-    }
-
     (async () => {
       for (const sub of SUBJECTS) {
         const data = await loadSubject(sub);
@@ -856,14 +804,14 @@ if (continueBtn) {
 // ═══════════════════════════════════════════════════════
 // SETTINGS MODAL
 // ═══════════════════════════════════════════════════════
-const settingsBtn       = document.getElementById('settings-btn');
-const settingsModal     = document.getElementById('settings-modal');
-const settingsXBtn      = document.getElementById('settings-x-btn');
-const darkToggle        = document.getElementById('dark-toggle');
-const reminderToggle    = document.getElementById('reminder-toggle');
+const settingsBtn      = document.getElementById('settings-btn');
+const settingsModal    = document.getElementById('settings-modal');
+const settingsXBtn     = document.getElementById('settings-x-btn');
+const darkToggle       = document.getElementById('dark-toggle');
+const reminderToggle   = document.getElementById('reminder-toggle');
 const reminderTimeInput = document.getElementById('reminder-time-input');
-const settingsStatus    = document.getElementById('settings-status');
-const resetAllBtn       = document.getElementById('reset-all-btn');
+const settingsStatus   = document.getElementById('settings-status');
+const resetAllBtn      = document.getElementById('reset-all-btn');
 
 function openSettings() {
   if (!settingsModal) return;
@@ -894,6 +842,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// Dark mode toggle
 if (darkToggle) {
   darkToggle.addEventListener('click', () => {
     const current = document.documentElement.getAttribute('data-theme');
@@ -901,6 +850,7 @@ if (darkToggle) {
   });
 }
 
+// Reminder toggle
 function updateReminderToggle() {
   if (!reminderToggle) return;
   const enabled = localStorage.getItem('reminderEnabled') === 'true' &&
@@ -984,6 +934,7 @@ function updateSettingsStatus() {
   settingsStatus.textContent = 'Notifications are off.';
 }
 
+// Reset all progress
 if (resetAllBtn) {
   resetAllBtn.addEventListener('click', () => {
     if (!confirm('Reset ALL progress? This wipes every subject, streak, and history. Cannot be undone.')) return;
@@ -992,8 +943,6 @@ if (resetAllBtn) {
     localStorage.removeItem('progress');
     localStorage.removeItem('streak');
     localStorage.removeItem('practiceDays');
-    localStorage.removeItem('bookmarks');
-    localStorage.removeItem('dailyLock');
 
     if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
 
@@ -1001,7 +950,6 @@ if (resetAllBtn) {
     location.reload();
   });
 }
-
 // ═══════════════════════════════════════════════════════
 // GOOGLE CALENDAR REMINDER
 // ═══════════════════════════════════════════════════════
@@ -1012,32 +960,39 @@ if (gcalBtn) {
     const time = (reminderTimeInput && reminderTimeInput.value) || '20:00';
     const [hh, mm] = time.split(':').map(Number);
 
+    // Build today's date at the chosen time
     const start = new Date();
     start.setHours(hh, mm, 0, 0);
-    if (start.getTime() <= Date.now()) start.setDate(start.getDate() + 1);
 
+    // If the time has already passed today, start tomorrow
+    if (start.getTime() <= Date.now()) {
+      start.setDate(start.getDate() + 1);
+    }
+
+    // 30-minute event
     const end = new Date(start.getTime() + 30 * 60 * 1000);
 
+    // Format as YYYYMMDDTHHMMSS (local time, no Z)
     const fmt = (d) => {
       const pad = (n) => String(n).padStart(2, '0');
       return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
     };
 
+    const dates = `${fmt(start)}/${fmt(end)}`;
+
     const params = new URLSearchParams({
       action: 'TEMPLATE',
       text: '🔥 AIM360 — Study Session',
-      dates: `${fmt(start)}/${fmt(end)}`,
+      dates: dates,
       recur: 'RRULE:FREQ=DAILY',
       details: 'Daily JAMB prep. Open AIM360 and keep your streak alive:\nhttps://my-cbt-app-seven.vercel.app'
     });
 
-    window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+    const url = `https://calendar.google.com/calendar/render?${params.toString()}`;
+    window.open(url, '_blank');
   });
 }
-
-// ═══════════════════════════════════════════════════════
-// SMART REMINDER
-// ═══════════════════════════════════════════════════════
+// Smart reminder logic
 function hasPracticedToday() {
   const s = getStreak();
   return s.lastDate === new Date().toDateString();
@@ -1091,16 +1046,16 @@ if ('Notification' in window &&
 let calendarMonth = new Date().getMonth();
 let calendarYear  = new Date().getFullYear();
 
-const streakBadge    = document.getElementById('streak-badge');
-const calendarModal  = document.getElementById('calendar-modal');
-const calendarClose  = document.getElementById('calendar-close');
-const calendarX      = document.getElementById('calendar-x');
-const calendarPrev   = document.getElementById('calendar-prev');
-const calendarNext   = document.getElementById('calendar-next');
-const calendarTitle  = document.getElementById('calendar-title');
-const calendarGrid   = document.getElementById('calendar-grid');
-const calendarStreak = document.getElementById('calendar-streak');
-const calendarTotal  = document.getElementById('calendar-total');
+const streakBadge     = document.getElementById('streak-badge');
+const calendarModal   = document.getElementById('calendar-modal');
+const calendarClose   = document.getElementById('calendar-close');
+const calendarX       = document.getElementById('calendar-x');
+const calendarPrev    = document.getElementById('calendar-prev');
+const calendarNext    = document.getElementById('calendar-next');
+const calendarTitle   = document.getElementById('calendar-title');
+const calendarGrid    = document.getElementById('calendar-grid');
+const calendarStreak  = document.getElementById('calendar-streak');
+const calendarTotal   = document.getElementById('calendar-total');
 
 function openCalendar() {
   if (!calendarModal) return;
@@ -1154,19 +1109,8 @@ function renderCalendar() {
   calendarGrid.innerHTML = html;
 
   const streakData = getStreak();
-  const streakCount = streakData.count;
-  const totalDays = days.length;
-
-  if (calendarStreak) {
-    calendarStreak.textContent = streakCount === 1
-      ? `🔥 1 day streak`
-      : `🔥 ${streakCount} day streak`;
-  }
-  if (calendarTotal) {
-    calendarTotal.textContent = totalDays === 1
-      ? `📅 1 day studied`
-      : `📅 ${totalDays} days studied`;
-  }
+  if (calendarStreak) calendarStreak.textContent = `🔥 ${streakData.count} day streak`;
+  if (calendarTotal) calendarTotal.textContent = `📅 ${days.length} days studied total`;
 }
 
 if (streakBadge) streakBadge.addEventListener('click', openCalendar);
@@ -1201,94 +1145,11 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+
 // ═══════════════════════════════════════════════════════
-// BOOKMARKS VIEW + QUIZ MODE
+// BOOKMARKS QUIZ MODE
 // ═══════════════════════════════════════════════════════
-function renderBookmarksView() {
-  const list = document.getElementById('bookmarks-list');
-  const startBtn = document.getElementById('start-bookmarks-btn');
-  if (!list) return;
-
-  const bookmarks = getBookmarks();
-
-  if (bookmarks.length === 0) {
-    if (startBtn) startBtn.classList.add('hidden');
-    list.innerHTML = `
-      <div class="bookmarks-empty">
-        <div class="bookmarks-empty-icon">⭐</div>
-        <h3>No bookmarks yet</h3>
-        <p>Tap the star on any question during practice to save it here for review.</p>
-      </div>
-    `;
-    return;
-  }
-
-  if (startBtn) startBtn.classList.remove('hidden');
-
-  const grouped = {};
-  bookmarks.forEach(b => {
-    if (!grouped[b.subject]) grouped[b.subject] = [];
-    grouped[b.subject].push(b);
-  });
-
-  let html = '';
-  SUBJECTS.forEach(sub => {
-    const items = grouped[sub];
-    if (!items || items.length === 0) return;
-
-    html += `
-      <div class="bookmarks-group">
-        <div class="bookmarks-group-title">
-          ${SUBJECT_LABELS[sub]}
-          <span class="bookmarks-count">${items.length}</span>
-        </div>
-    `;
-
-    items.forEach(b => {
-      const topic = (dataCache[sub] && dataCache[sub].topics.find(t => t.id === b.topicId)) || null;
-      const topicName = topic ? topic.name : 'Unknown topic';
-      const preview = b.questionText.length > 120
-        ? b.questionText.slice(0, 120) + '…'
-        : b.questionText;
-
-      html += `
-        <div class="bookmark-card" data-key="${b.key}">
-          <div class="bookmark-card-star">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <div class="bookmark-card-body">
-            <div class="bookmark-card-q">${escapeHtmlText(preview)}</div>
-            <div class="bookmark-card-meta">
-              <span class="bookmark-card-topic">${escapeHtmlText(topicName)}</span>
-              <span>·</span>
-              <span>Tap to remove</span>
-            </div>
-          </div>
-        </div>
-      `;
-    });
-
-    html += `</div>`;
-  });
-
-  list.innerHTML = html;
-
-  list.querySelectorAll('.bookmark-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const key = card.dataset.key;
-      if (confirm('Remove this bookmark?')) {
-        removeBookmark(key);
-        renderBookmarksView();
-      }
-    });
-  });
-}
-
-function escapeHtmlText(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
+let bookmarksQuizMode = false;
 
 const startBookmarksBtn = document.getElementById('start-bookmarks-btn');
 if (startBookmarksBtn) {
@@ -1296,6 +1157,7 @@ if (startBookmarksBtn) {
     const bookmarks = getBookmarks();
     if (bookmarks.length === 0) return;
 
+    // Build a question array from bookmarks
     const questions = [];
     bookmarks.forEach(b => {
       const data = dataCache[b.subject];
@@ -1314,11 +1176,13 @@ if (startBookmarksBtn) {
       return;
     }
 
+    // Switch to practice view
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelector('[data-view="practice"]').classList.add('active');
     document.getElementById('view-practice').classList.add('active');
 
+    // Enter bookmarks quiz mode
     bookmarksQuizMode = true;
     currentQuestions = shuffle(questions);
     currentIndex = 0;
@@ -1331,91 +1195,23 @@ if (startBookmarksBtn) {
 
     quizSummary.classList.add('hidden');
     quizArea.classList.remove('hidden');
-
-    const selector = document.querySelector('.selector');
-    if (selector) selector.classList.add('hidden');
-
-    const banner = document.getElementById('daily-lock-banner');
-    if (banner) banner.classList.add('hidden');
-
+    document.querySelector('.selector').classList.add('hidden');
     renderQuestion();
   });
 }
 
-// ═══════════════════════════════════════════════════════
-// WELCOME MODAL
-// ═══════════════════════════════════════════════════════
-const welcomeModal    = document.getElementById('welcome-modal');
-const welcomeSwitch   = document.getElementById('welcome-switch');
-const welcomeGoogle   = document.getElementById('welcome-google');
-const welcomeGuest    = document.getElementById('welcome-guest');
-const welcomeTitle    = document.getElementById('welcome-title');
-const welcomeSubtitle = document.getElementById('welcome-subtitle');
-
-let welcomeView = 'register';
-
-function updateWelcomeView() {
-  if (!welcomeTitle || !welcomeSubtitle || !welcomeSwitch) return;
-
-  if (welcomeView === 'register') {
-    welcomeTitle.textContent = 'Join AIM360';
-    welcomeSubtitle.textContent = 'Sync your progress across all your devices and never lose a streak.';
-    welcomeSwitch.innerHTML = 'Already have an account? <strong>Login</strong>';
-  } else {
-    welcomeTitle.textContent = 'Welcome back';
-    welcomeSubtitle.textContent = 'Sign in to continue where you left off.';
-    welcomeSwitch.innerHTML = 'New here? <strong>Create account</strong>';
+document.getElementById('summary-next-btn').addEventListener('click', () => {
+  if (currentTopic.id === '__bookmarks__') {
+    // Return to bookmarks view
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelector('[data-view="bookmarks"]').classList.add('active');
+    document.getElementById('view-bookmarks').classList.add('active');
+    renderBookmarksView();
+    return;
   }
-}
-
-function showWelcome() {
-  if (!welcomeModal) return;
-  updateWelcomeView();
-  welcomeModal.classList.remove('hidden');
-}
-
-function hideWelcome() {
-  if (!welcomeModal) return;
-  welcomeModal.classList.add('hidden');
-  localStorage.setItem('welcomeDismissed', 'true');
-}
-
-function hasSupabaseSession() {
-  try {
-    const keys = Object.keys(localStorage);
-    return keys.some(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
-  } catch { return false; }
-}
-
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const dismissed = localStorage.getItem('welcomeDismissed') === 'true';
-    if (!dismissed && !hasSupabaseSession()) {
-      showWelcome();
-    }
-  }, 600);
+  subjectSelect.dispatchEvent(new Event('change'));
 });
-
-if (welcomeSwitch) {
-  welcomeSwitch.addEventListener('click', () => {
-    welcomeView = welcomeView === 'register' ? 'login' : 'register';
-    updateWelcomeView();
-  });
-}
-
-if (welcomeGoogle) {
-  welcomeGoogle.addEventListener('click', () => {
-    hideWelcome();
-    if (typeof signInWithGoogle === 'function') signInWithGoogle();
-  });
-}
-
-if (welcomeGuest) {
-  welcomeGuest.addEventListener('click', () => {
-    hideWelcome();
-  });
-}
-
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════

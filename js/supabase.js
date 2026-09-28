@@ -174,4 +174,4 @@ function escapeHtml(s) {
   currentUser = session?.user || null;
   if (currentUser) await pullProgressFromCloud();
   updateAuthUI();
-})();continuue
+})();
