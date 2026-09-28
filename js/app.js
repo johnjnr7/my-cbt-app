@@ -1212,6 +1212,85 @@ document.getElementById('summary-next-btn').addEventListener('click', () => {
   }
   subjectSelect.dispatchEvent(new Event('change'));
 });
+
+// ═══════════════════════════════════════════════════════
+// WELCOME MODAL
+// ═══════════════════════════════════════════════════════
+const welcomeModal    = document.getElementById('welcome-modal');
+const welcomeSwitch   = document.getElementById('welcome-switch');
+const welcomeGoogle   = document.getElementById('welcome-google');
+const welcomeGuest    = document.getElementById('welcome-guest');
+const welcomeTitle    = document.getElementById('welcome-title');
+const welcomeSubtitle = document.getElementById('welcome-subtitle');
+
+let welcomeView = 'register'; // 'register' | 'login'
+
+function updateWelcomeView() {
+  if (!welcomeTitle || !welcomeSubtitle || !welcomeSwitch) return;
+
+  if (welcomeView === 'register') {
+    welcomeTitle.textContent = 'Join AIM360';
+    welcomeSubtitle.textContent = 'Sync your progress across all your devices and never lose a streak.';
+    welcomeSwitch.innerHTML = 'Already have an account? <strong>Login</strong>';
+  } else {
+    welcomeTitle.textContent = 'Welcome back';
+    welcomeSubtitle.textContent = 'Sign in to continue where you left off.';
+    welcomeSwitch.innerHTML = 'New here? <strong>Create account</strong>';
+  }
+}
+
+function showWelcome() {
+  if (!welcomeModal) return;
+  updateWelcomeView();
+  welcomeModal.classList.remove('hidden');
+}
+
+function hideWelcome() {
+  if (!welcomeModal) return;
+  welcomeModal.classList.add('hidden');
+  localStorage.setItem('welcomeDismissed', 'true');
+}
+
+// Does the user have a Supabase session already?
+function hasSupabaseSession() {
+  try {
+    const keys = Object.keys(localStorage);
+    return keys.some(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+  } catch { return false; }
+}
+
+// Show on load (after a small delay for smoother render)
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const dismissed = localStorage.getItem('welcomeDismissed') === 'true';
+    if (!dismissed && !hasSupabaseSession()) {
+      showWelcome();
+    }
+  }, 600);
+});
+
+// Toggle register/login text
+if (welcomeSwitch) {
+  welcomeSwitch.addEventListener('click', () => {
+    welcomeView = welcomeView === 'register' ? 'login' : 'register';
+    updateWelcomeView();
+  });
+}
+
+// Sign in with Google
+if (welcomeGoogle) {
+  welcomeGoogle.addEventListener('click', () => {
+    hideWelcome();
+    if (typeof signInWithGoogle === 'function') signInWithGoogle();
+  });
+}
+
+// Continue as guest
+if (welcomeGuest) {
+  welcomeGuest.addEventListener('click', () => {
+    hideWelcome();
+  });
+}
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
