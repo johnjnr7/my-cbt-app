@@ -1023,8 +1023,19 @@ function renderCalendar() {
   calendarGrid.innerHTML = html;
 
   const streakData = getStreak();
-  if (calendarStreak) calendarStreak.textContent = `🔥 ${streakData.count} day streak`;
-  if (calendarTotal) calendarTotal.textContent = `📅 ${days.length} days studied total`;
+  const streakCount = streakData.count;
+const totalDays = days.length;
+
+if (calendarStreak) {
+  calendarStreak.textContent = streakCount === 1
+    ? `🔥 1 day streak`
+    : `🔥 ${streakCount} day streak`;
+}
+if (calendarTotal) {
+  calendarTotal.textContent = totalDays === 1
+    ? `📅 1 day studied`
+    : `📅 ${totalDays} days studied`;
+}
 }
 
 if (streakBadge) streakBadge.addEventListener('click', openCalendar);
