@@ -54,8 +54,32 @@ document.querySelectorAll('.nav-item').forEach(btn => {
     if (btn.dataset.view === 'dashboard') renderDashboard();
     if (btn.dataset.view === 'subjects') renderSubjectsView();
     if (btn.dataset.view === 'bookmarks') renderBookmarksView();
+    if (btn.dataset.view === 'practice') applyDailyLockUI();
   });
 });
+
+function applyDailyLockUI() {
+  const banner = document.getElementById('daily-lock-banner');
+  const selector = document.querySelector('.selector');
+  const quizAreaEl = document.getElementById('quiz-area');
+  const quizSummaryEl = document.getElementById('quiz-summary');
+  if (!banner || !selector) return;
+
+  if (isLockedToday()) {
+    const lock = getDailyLock();
+    const subLabel = SUBJECT_LABELS[lock.subject] || lock.subject;
+    const nameEl = document.getElementById('daily-lock-topic-name');
+    if (nameEl) nameEl.textContent = `${lock.topicName} — ${subLabel}`;
+
+    banner.classList.remove('hidden');
+    selector.classList.add('hidden');
+    if (quizAreaEl) quizAreaEl.classList.add('hidden');
+    if (quizSummaryEl) quizSummaryEl.classList.add('hidden');
+  } else {
+    banner.classList.add('hidden');
+    selector.classList.remove('hidden');
+  }
+}
 
 // ═══════════════════════════════════════════════════════
 // GREETING
@@ -108,6 +132,31 @@ function recordPracticeDay() {
     const filtered = days.filter(d => new Date(d).getTime() >= cutoff);
     localStorage.setItem('practiceDays', JSON.stringify(filtered));
   }
+}
+
+// ═══════════════════════════════════════════════════════
+// DAILY LOCK — one topic per day
+// ═══════════════════════════════════════════════════════
+function getDailyLock() {
+  try {
+    return JSON.parse(localStorage.getItem('dailyLock')) || { date: null, subject: null, topicId: null, topicName: null };
+  } catch {
+    return { date: null, subject: null, topicId: null, topicName: null };
+  }
+}
+
+function setDailyLock(subject, topicId, topicName) {
+  localStorage.setItem('dailyLock', JSON.stringify({
+    date: new Date().toDateString(),
+    subject,
+    topicId,
+    topicName
+  }));
+}
+
+function isLockedToday() {
+  const lock = getDailyLock();
+  return lock.date === new Date().toDateString() && lock.topicId !== null;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -339,15 +388,34 @@ function renderTargetProjection(stats) {
 }
 
 async function renderFocusCard() {
+  const lock = getDailyLock();
+  const titleEl = document.getElementById('focus-title');
+  const metaEl = document.getElementById('focus-meta');
+  const descEl = document.getElementById('focus-desc');
+
+  // If already did today's topic
+  if (isLockedToday()) {
+    const subLabel = SUBJECT_LABELS[lock.subject] || lock.subject;
+    if (titleEl) titleEl.textContent = 'Done for today ✅';
+    if (metaEl) {
+      metaEl.innerHTML =
+        `<span>${subLabel}</span><span class="dot">•</span>` +
+        `<span>${lock.topicName}</span><span class="dot">•</span>` +
+        `<span>+20 XP</span>`;
+    }
+    if (descEl) {
+      descEl.textContent = 'Come back tomorrow for the next topic. Streak locked in 🔥';
+    }
+    return;
+  }
+
+  // Otherwise show the next topic
   for (const sub of SUBJECTS) {
     const data = await loadSubject(sub);
     const sorted = getSortedTopics(sub);
     for (let i = 0; i < sorted.length; i++) {
       const t = sorted[i];
       if (getMastery(t.id) !== 'mastered') {
-        const titleEl = document.getElementById('focus-title');
-        const metaEl = document.getElementById('focus-meta');
-        const descEl = document.getElementById('focus-desc');
         if (titleEl) titleEl.textContent = t.name;
         if (metaEl) {
           metaEl.innerHTML =
@@ -364,8 +432,7 @@ async function renderFocusCard() {
       }
     }
   }
-  const titleEl = document.getElementById('focus-title');
-  const descEl = document.getElementById('focus-desc');
+
   if (titleEl) titleEl.textContent = 'All topics mastered 🎉';
   if (descEl) descEl.textContent = 'Switch to full mock exams and lock in your 360+.';
 }
@@ -409,9 +476,12 @@ async function renderSubjectsView() {
       document.querySelector('[data-view="practice"]').classList.add('active');
       document.getElementById('view-practice').classList.add('active');
 
-      const subSel = document.getElementById('subject-select');
-      subSel.value = sub;
-      subSel.dispatchEvent(new Event('change'));
+      applyDailyLockUI();
+      if (!isLockedToday()) {
+        const subSel = document.getElementById('subject-select');
+        subSel.value = sub;
+        subSel.dispatchEvent(new Event('change'));
+      }
     });
 
     grid.appendChild(card);
@@ -437,12 +507,20 @@ if (subjectSelect) {
 
     await loadSubject(sub);
     const sorted = getSortedTopics(sub);
+    const lock = getDailyLock();
+    const locked = isLockedToday();
 
     sorted.forEach((t, i) => {
       const status = getTopicStatus(sub, i);
       const opt = document.createElement('option');
 
-      if (status === 'locked') {
+      if (locked && !(sub === lock.subject && t.id === lock.topicId)) {
+        opt.textContent = `🔒 ${t.name}`;
+        opt.disabled = true;
+      } else if (locked && sub === lock.subject && t.id === lock.topicId) {
+        opt.textContent = `✅ ${t.name}  (today's topic)`;
+        opt.value = t.id;
+      } else if (status === 'locked') {
         opt.textContent = `🔒 ${t.name}`;
         opt.disabled = true;
       } else if (status === 'passed') {
@@ -470,6 +548,15 @@ if (topicSelect) {
     const sub = subjectSelect.value;
     const topicId = topicSelect.value;
     if (!topicId) return;
+
+    const lock = getDailyLock();
+    if (isLockedToday()) {
+      if (!(sub === lock.subject && topicId === lock.topicId)) {
+        alert(`You already completed today's topic: ${lock.topicName}.\n\nCome back tomorrow for the next one.`);
+        topicSelect.value = lock.topicId;
+        return;
+      }
+    }
 
     const data = await loadSubject(sub);
     const topic = data.topics.find(t => t.id === topicId);
@@ -506,7 +593,6 @@ function renderQuestion() {
   document.getElementById('question-text').textContent =
     `Q${currentIndex + 1}/${currentQuestions.length} — ${q.q}`;
 
-  // ⭐ Bookmark star
   const star = document.getElementById('bookmark-star');
   if (star && currentTopic && sub) {
     const originalIdx = currentTopic.questions.findIndex(
@@ -596,6 +682,11 @@ function finishQuiz() {
   recordPracticeDay();
   renderStreak();
 
+  // Lock the day to this topic (skip for bookmarks review)
+  if (!bookmarksQuizMode) {
+    setDailyLock(subjectSelect.value, currentTopic.id, currentTopic.name);
+  }
+
   if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
 
   const pct = Math.round((correctCount / currentQuestions.length) * 100);
@@ -603,14 +694,14 @@ function finishQuiz() {
 
   let unlockedMsg = '';
   if (bookmarksQuizMode) {
-    unlockedMsg = `<p class="unlock-msg">📌 Bookmark review complete. Keep them starred or unstar to remove.</p>`;
+    unlockedMsg = `<p class="unlock-msg">📌 Bookmark review complete.</p>`;
   } else if (passed) {
     const sub = subjectSelect.value;
     const sorted = getSortedTopics(sub);
     const thisIdx = sorted.findIndex(t => t.id === currentTopic.id);
     const nextTopic = sorted[thisIdx + 1];
     unlockedMsg = nextTopic
-      ? `<p class="unlock-msg">🔓 Next up: <strong>${nextTopic.name}</strong></p>`
+      ? `<p class="unlock-msg">🔓 Tomorrow: <strong>${nextTopic.name}</strong></p>`
       : `<p class="unlock-msg">🎉 Subject complete! Every topic passed.</p>`;
   } else {
     unlockedMsg = `<p class="unlock-msg warn">You need 80% to unlock the next topic. Try again.</p>`;
@@ -618,7 +709,7 @@ function finishQuiz() {
 
   const heading = bookmarksQuizMode
     ? '📌 Bookmarks reviewed!'
-    : (passed ? '✅ Topic passed!' : '📚 Not yet — try again');
+    : (passed ? '✅ Topic complete for today!' : '📚 Not yet — try again');
 
   quizSummary.innerHTML = `
     <h2 style="font-size:1.6rem;margin-bottom:8px">${heading}</h2>
@@ -628,7 +719,7 @@ function finishQuiz() {
     <p style="color:var(--muted);font-size:0.9rem">Topic: <em>${currentTopic.name}</em></p>
     ${unlockedMsg}
     <button class="cta-btn" style="margin-top:20px" id="summary-next-btn">
-      ${bookmarksQuizMode ? 'Back to bookmarks' : (passed ? 'Go to next topic →' : 'Try again')}
+      ${bookmarksQuizMode ? 'Back to bookmarks' : 'Back to dashboard'}
     </button>
   `;
 
@@ -645,7 +736,13 @@ function finishQuiz() {
       renderBookmarksView();
       return;
     }
-    subjectSelect.dispatchEvent(new Event('change'));
+
+    // Non-bookmark mode: go back to dashboard
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelector('[data-view="dashboard"]').classList.add('active');
+    document.getElementById('view-dashboard').classList.add('active');
+    renderDashboard();
   });
 }
 
@@ -668,6 +765,32 @@ if (resetBtn) {
     renderDashboard();
 
     if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// RETRY TODAY'S TOPIC
+// ═══════════════════════════════════════════════════════
+const dailyLockRetry = document.getElementById('daily-lock-retry');
+if (dailyLockRetry) {
+  dailyLockRetry.addEventListener('click', async () => {
+    const lock = getDailyLock();
+    if (!lock.topicId || !lock.subject) return;
+
+    const data = await loadSubject(lock.subject);
+    const topic = data.topics.find(t => t.id === lock.topicId);
+    if (!topic || !topic.questions || !topic.questions.length) {
+      alert('Could not load today\'s topic.');
+      return;
+    }
+
+    document.querySelector('.selector').classList.remove('hidden');
+    document.getElementById('daily-lock-banner').classList.add('hidden');
+
+    subjectSelect.value = lock.subject;
+    await new Promise(r => setTimeout(r, 50));
+    topicSelect.value = lock.topicId;
+    topicSelect.dispatchEvent(new Event('change'));
   });
 }
 
@@ -709,6 +832,13 @@ if (continueBtn) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelector('[data-view="practice"]').classList.add('active');
     document.getElementById('view-practice').classList.add('active');
+
+    applyDailyLockUI();
+
+    if (isLockedToday()) {
+      // Already did today — nothing to load
+      return;
+    }
 
     (async () => {
       for (const sub of SUBJECTS) {
@@ -863,6 +993,7 @@ if (resetAllBtn) {
     localStorage.removeItem('streak');
     localStorage.removeItem('practiceDays');
     localStorage.removeItem('bookmarks');
+    localStorage.removeItem('dailyLock');
 
     if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
 
@@ -1024,18 +1155,18 @@ function renderCalendar() {
 
   const streakData = getStreak();
   const streakCount = streakData.count;
-const totalDays = days.length;
+  const totalDays = days.length;
 
-if (calendarStreak) {
-  calendarStreak.textContent = streakCount === 1
-    ? `🔥 1 day streak`
-    : `🔥 ${streakCount} day streak`;
-}
-if (calendarTotal) {
-  calendarTotal.textContent = totalDays === 1
-    ? `📅 1 day studied`
-    : `📅 ${totalDays} days studied`;
-}
+  if (calendarStreak) {
+    calendarStreak.textContent = streakCount === 1
+      ? `🔥 1 day streak`
+      : `🔥 ${streakCount} day streak`;
+  }
+  if (calendarTotal) {
+    calendarTotal.textContent = totalDays === 1
+      ? `📅 1 day studied`
+      : `📅 ${totalDays} days studied`;
+  }
 }
 
 if (streakBadge) streakBadge.addEventListener('click', openCalendar);
@@ -1203,6 +1334,9 @@ if (startBookmarksBtn) {
 
     const selector = document.querySelector('.selector');
     if (selector) selector.classList.add('hidden');
+
+    const banner = document.getElementById('daily-lock-banner');
+    if (banner) banner.classList.add('hidden');
 
     renderQuestion();
   });
