@@ -14,6 +14,36 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 });
 
 let currentUser = null;
+let lastUserId = localStorage.getItem('aim360_last_user_id') || null;
+
+// ─── User-scoped localStorage helpers ─────────────────
+function userKey(key) {
+  return currentUser ? `${key}_${currentUser.id}` : key;
+}
+
+function getUserProgress() {
+  try {
+    if (!currentUser) return {};
+    return JSON.parse(localStorage.getItem(userKey('progress')) || '{}');
+  } catch { return {}; }
+}
+
+function setUserProgress(p) {
+  if (!currentUser) return;
+  localStorage.setItem(userKey('progress'), JSON.stringify(p));
+}
+
+function getUserStreak() {
+  try {
+    if (!currentUser) return { count: 0, lastDate: null };
+    return JSON.parse(localStorage.getItem(userKey('streak')) || '{"count":0,"lastDate":null}');
+  } catch { return { count: 0, lastDate: null }; }
+}
+
+function setUserStreak(s) {
+  if (!currentUser) return;
+  localStorage.setItem(userKey('streak'), JSON.stringify(s));
+}
 
 // ─── AUTH ─────────────────────────────────────────────
 async function signInWithGoogle() {
@@ -92,23 +122,44 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   }
 });
 
-// ─── SYNC ─────────────────────────────────────────────
-async function pushProgressToCloud() {
+async function pullProgressFromCloud() {
   if (!currentUser) return;
-  const progress = JSON.parse(localStorage.getItem('progress') || '{}');
-  const streak = JSON.parse(localStorage.getItem('streak') || '{"count":0,"lastDate":null}');
+  try {
+    const { data, error } = await supabaseClient
+      .from('progress')
+      .select('data, streak')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
 
-  const { error } = await supabaseClient
-    .from('progress')
-    .upsert({
-      user_id: currentUser.id,
-      data: progress,
-      streak: streak,
-      updated_at: new Date().toISOString()
-    }, { onConflict: 'user_id' });
+    if (error) { console.error('[Sync] Pull failed:', error.message); return; }
 
-  if (error) console.error('[Sync] Push failed:', error.message);
-  else console.log('[Sync] Progress pushed');
+    // If this is a DIFFERENT user than last time, wipe old local data first
+    if (lastUserId && lastUserId !== currentUser.id) {
+      console.log('[Sync] Different user detected — clearing old local data');
+      localStorage.removeItem(userKey('progress'));
+      localStorage.removeItem(userKey('streak'));
+    }
+
+    // Update the "last user" marker
+    lastUserId = currentUser.id;
+    localStorage.setItem('aim360_last_user_id', currentUser.id);
+
+    // Use the cloud data as the source of truth
+    if (!data) {
+      // No cloud data yet → start clean for this user
+      setUserProgress({});
+      setUserStreak({ count: 0, lastDate: null });
+    } else {
+      setUserProgress(data.data || {});
+      setUserStreak(data.streak || { count: 0, lastDate: null });
+    }
+
+    console.log('[Sync] Progress pulled for', currentUser.email);
+    if (typeof renderDashboard === 'function') renderDashboard();
+    if (typeof renderStreak === 'function') renderStreak();
+  } catch (e) {
+    console.warn('[Sync] Pull error:', e);
+  }
 }
 
 async function pullProgressFromCloud() {

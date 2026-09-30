@@ -69,6 +69,7 @@ function updateGreeting() {
 // STREAK
 // ═══════════════════════════════════════════════════════
 function getStreak() {
+  if (typeof getUserStreak === 'function') return getUserStreak();
   try { return JSON.parse(localStorage.getItem('streak')) || { count: 0, lastDate: null }; }
   catch { return { count: 0, lastDate: null }; }
 }
@@ -80,10 +81,10 @@ function updateStreak() {
   if (d.lastDate === today) return d;
   d.count = d.lastDate === yesterday ? d.count + 1 : 1;
   d.lastDate = today;
-  localStorage.setItem('streak', JSON.stringify(d));
+  if (typeof setUserStreak === 'function') setUserStreak(d);
+  else localStorage.setItem('streak', JSON.stringify(d));
   return d;
 }
-
 function renderStreak() {
   const el = document.getElementById('streak-count');
   if (el) el.textContent = getStreak().count;
@@ -155,16 +156,17 @@ function removeBookmark(key) {
 // PROGRESS
 // ═══════════════════════════════════════════════════════
 function getProgress() {
+  if (typeof getUserProgress === 'function') return getUserProgress();
   try { return JSON.parse(localStorage.getItem('progress')) || {}; }
   catch { return {}; }
 }
-
 function recordResult(topicId, correct, total) {
   const p = getProgress();
   if (!p[topicId]) p[topicId] = { correct: 0, total: 0 };
   p[topicId].correct += correct;
   p[topicId].total += total;
-  localStorage.setItem('progress', JSON.stringify(p));
+  if (typeof setUserProgress === 'function') setUserProgress(p);
+  else localStorage.setItem('progress', JSON.stringify(p));
 }
 
 function getMastery(topicId) {
@@ -1322,7 +1324,7 @@ if (welcomeModal) {
           statusEl.textContent = result.error;
           statusEl.className = 'welcome-status error';
         } else {
-          statusEl.textContent = '✅ Account created! Check your inbox for a welcome email.';
+          statusEl.textContent = '✅ Account created! Welcome to AIM360.';
           statusEl.className = 'welcome-status success';
           setTimeout(() => {
             modal.classList.add('hidden');
