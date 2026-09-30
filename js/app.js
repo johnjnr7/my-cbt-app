@@ -474,6 +474,13 @@ if (topicSelect) {
     const topicId = topicSelect.value;
     if (!topicId) return;
 
+    // ⭐ PAYWALL GATE
+    if (typeof canAccessTopics === 'function' && !canAccessTopics()) {
+      document.getElementById('quiz-area').classList.add('hidden');
+      if (typeof openPaywallModal === 'function') openPaywallModal();
+      return;
+    }
+
     const data = await loadSubject(sub);
     const topic = data.topics.find(t => t.id === topicId);
     if (!topic || !topic.questions || !topic.questions.length) {
@@ -686,6 +693,8 @@ function finishQuiz() {
   quizSummary.classList.remove('hidden');
 
   recordResult(currentTopic.id, correctCount, currentQuestions.length);
+
+    if (typeof loadSubscription === 'function') loadSubscription();
   updateStreak();
   recordPracticeDay();
   renderStreak();
@@ -1200,18 +1209,170 @@ if (startBookmarksBtn) {
   });
 }
 
-document.getElementById('summary-next-btn').addEventListener('click', () => {
-  if (currentTopic.id === '__bookmarks__') {
-    // Return to bookmarks view
-    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelector('[data-view="bookmarks"]').classList.add('active');
-    document.getElementById('view-bookmarks').classList.add('active');
-    renderBookmarksView();
-    return;
+const summaryNextBtn = document.getElementById('summary-next-btn');
+if (summaryNextBtn) {
+  summaryNextBtn.addEventListener('click', () => {
+    if (currentTopic.id === '__bookmarks__') {
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelector('[data-view="bookmarks"]').classList.add('active');
+      document.getElementById('view-bookmarks').classList.add('active');
+      renderBookmarksView();
+      return;
+    }
+    subjectSelect.dispatchEvent(new Event('change'));
+  });
+}
+
+// Close welcome modal on backdrop click or Escape
+const welcomeModal = document.getElementById('welcome-modal');
+if (welcomeModal) {
+  welcomeModal.addEventListener('click', (e) => {
+    if (e.target.id === 'welcome-modal') {
+      welcomeModal.classList.add('hidden');
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !welcomeModal.classList.contains('hidden')) {
+      welcomeModal.classList.add('hidden');
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// EMAIL/PASSWORD AUTH UI
+// ═══════════════════════════════════════════════════════
+(function () {
+  let mode = 'signup';
+
+  const modal = document.getElementById('welcome-modal');
+  if (!modal) return;
+
+  const titleEl    = document.getElementById('welcome-title');
+  const subtitleEl = document.getElementById('welcome-subtitle');
+  const submitBtn  = document.getElementById('welcome-submit');
+  const switchText = document.getElementById('welcome-switch-text');
+  const switchCta  = document.getElementById('welcome-switch-cta');
+  const switchBtn  = document.getElementById('welcome-switch');
+  const form       = document.getElementById('welcome-form');
+  const emailInput = document.getElementById('welcome-email');
+  const passInput  = document.getElementById('welcome-password');
+  const statusEl   = document.getElementById('welcome-status');
+  const googleBtn  = document.getElementById('welcome-google');
+  const guestBtn   = document.getElementById('welcome-guest');
+
+  function setMode(next) {
+    mode = next;
+    statusEl.textContent = '';
+    statusEl.className = 'welcome-status';
+
+    if (mode === 'signup') {
+      titleEl.textContent = 'Join AIM360';
+      subtitleEl.textContent = 'Create an account to sync progress across all your devices.';
+      submitBtn.textContent = 'Create account';
+      switchText.textContent = 'Already have an account?';
+      switchCta.textContent = 'Login';
+      passInput.setAttribute('autocomplete', 'new-password');
+    } else {
+      titleEl.textContent = 'Welcome back';
+      subtitleEl.textContent = 'Sign in to pick up where you left off.';
+      submitBtn.textContent = 'Sign in';
+      switchText.textContent = "Don't have an account?";
+      switchCta.textContent = 'Sign up';
+      passInput.setAttribute('autocomplete', 'current-password');
+    }
   }
-  subjectSelect.dispatchEvent(new Event('change'));
-});
+
+  switchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    setMode(mode === 'signup' ? 'login' : 'signup');
+  });
+
+  if (googleBtn) {
+    googleBtn.addEventListener('click', () => signInWithGoogle());
+  }
+
+  if (guestBtn) {
+    guestBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    const password = passInput.value;
+
+    if (!email || !password) return;
+    if (password.length < 6) {
+      statusEl.textContent = 'Password must be at least 6 characters.';
+      statusEl.className = 'welcome-status error';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = mode === 'signup' ? 'Creating account…' : 'Signing in…';
+    statusEl.textContent = '';
+    statusEl.className = 'welcome-status';
+
+    try {
+      if (mode === 'signup') {
+        const result = await signUpWithEmail(email, password);
+        if (result.error) {
+          statusEl.textContent = result.error;
+          statusEl.className = 'welcome-status error';
+        } else {
+          statusEl.textContent = '✅ Account created! Check your inbox for a welcome email.';
+          statusEl.className = 'welcome-status success';
+          setTimeout(() => {
+            modal.classList.add('hidden');
+            if (typeof renderDashboard === 'function') renderDashboard();
+          }, 1200);
+        }
+      } else {
+        const result = await signInWithEmail(email, password);
+        if (result.error) {
+          statusEl.textContent = result.error;
+          statusEl.className = 'welcome-status error';
+        } else {
+          modal.classList.add('hidden');
+          if (typeof renderDashboard === 'function') renderDashboard();
+        }
+      }
+    } catch (err) {
+      statusEl.textContent = 'Something went wrong. Try again.';
+      statusEl.className = 'welcome-status error';
+      console.error(err);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = mode === 'signup' ? 'Create account' : 'Sign in';
+    }
+  });
+
+  setMode('signup');
+})();
+
+  if (togglePwBtn) {
+    togglePwBtn.addEventListener('click', () => {
+      const isPassword = passInput.type === 'password';
+
+      // Toggle input type
+      passInput.type = isPassword ? 'text' : 'password';
+
+      // Swap eye icons
+      const eyeOpen = togglePwBtn.querySelector('.eye-open');
+      const eyeClosed = togglePwBtn.querySelector('.eye-closed');
+      if (eyeOpen && eyeClosed) {
+        eyeOpen.style.display = isPassword ? 'none' : 'block';
+        eyeClosed.style.display = isPassword ? 'block' : 'none';
+      }
+
+      // Color + accessibility
+      togglePwBtn.classList.toggle('revealed', isPassword);
+      togglePwBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+      togglePwBtn.setAttribute('title', isPassword ? 'Hide password' : 'Show password');
+    });
+  }
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════

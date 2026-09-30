@@ -4,13 +4,18 @@
 const SUPABASE_URL = 'https://usukzxzrarlbaluscvzo.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzdWt6eHpyYXJsYmFsdXNjdnpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1MDc3ODcsImV4cCI6MjEwNjA4Mzc4N30.56VlSigB_3MBdqnQQ3uVVvwG_fzpC0MCQOUr9jOAfdQ';
 
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    lock: async (_name, _acquireTimeout, fn) => fn()
+  }
+});
 
 let currentUser = null;
 
-// ═══════════════════════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════════════════════
+// ─── AUTH ─────────────────────────────────────────────
 async function signInWithGoogle() {
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'google',
@@ -19,22 +24,75 @@ async function signInWithGoogle() {
   if (error) console.error('OAuth error:', error.message);
 }
 
+async function signUpWithEmail(email, password) {
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: window.location.origin }
+  });
+
+  if (error) return { error: error.message };
+
+  // Fire welcome email (fire and forget)
+  if (data?.user) {
+    fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        userId: data.user.id,
+        name: email.split('@')[0]
+      })
+    }).catch(err => console.warn('Welcome email failed:', err));
+  }
+
+  return { success: true, user: data.user };
+}
+
+async function signInWithEmail(email, password) {
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+  if (error) return { error: error.message };
+  return { success: true, user: data.user };
+}
+
+function openWelcomeModal() {
+  const modal = document.getElementById('welcome-modal');
+  if (!modal) {
+    signInWithGoogle();
+    return;
+  }
+  modal.classList.remove('hidden');
+}
+
+function closeWelcomeModal() {
+  document.getElementById('welcome-modal')?.classList.add('hidden');
+}
+
 async function signOutUser() {
   await supabaseClient.auth.signOut();
   currentUser = null;
   updateAuthUI();
 }
 
-supabaseClient.auth.onAuthStateChange(async (event, session) => {
+// ⚠️ CRITICAL: This listener must NOT be async and must NOT await DB work.
+// Supabase holds an auth lock while running listeners — awaiting inside
+// here deadlocks every subsequent DB call on the page.
+supabaseClient.auth.onAuthStateChange((event, session) => {
   console.log('[Auth]', event);
   currentUser = session?.user || null;
-  if (currentUser) await pullProgressFromCloud();
   updateAuthUI();
+  closeWelcomeModal();
+  if (currentUser) {
+    setTimeout(() => {
+      pullProgressFromCloud().catch(e => console.warn('[Sync]', e));
+    }, 0);
+  }
 });
 
-// ═══════════════════════════════════════════════════════
-// SYNC
-// ═══════════════════════════════════════════════════════
+// ─── SYNC ─────────────────────────────────────────────
 async function pushProgressToCloud() {
   if (!currentUser) return;
   const progress = JSON.parse(localStorage.getItem('progress') || '{}');
@@ -55,27 +113,31 @@ async function pushProgressToCloud() {
 
 async function pullProgressFromCloud() {
   if (!currentUser) return;
-  const { data, error } = await supabaseClient
-    .from('progress')
-    .select('data, streak')
-    .eq('user_id', currentUser.id)
-    .maybeSingle();
+  try {
+    const { data, error } = await supabaseClient
+      .from('progress')
+      .select('data, streak')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
 
-  if (error) { console.error('[Sync] Pull failed:', error.message); return; }
-  if (!data) return;
+    if (error) { console.error('[Sync] Pull failed:', error.message); return; }
+    if (!data) return;
 
-  const localProgress = JSON.parse(localStorage.getItem('progress') || '{}');
-  const merged = mergeProgress(localProgress, data.data || {});
-  localStorage.setItem('progress', JSON.stringify(merged));
+    const localProgress = JSON.parse(localStorage.getItem('progress') || '{}');
+    const merged = mergeProgress(localProgress, data.data || {});
+    localStorage.setItem('progress', JSON.stringify(merged));
 
-  const localStreak = JSON.parse(localStorage.getItem('streak') || '{"count":0,"lastDate":null}');
-  const cloudStreak = data.streak || { count: 0, lastDate: null };
-  const better = (cloudStreak.count > localStreak.count) ? cloudStreak : localStreak;
-  localStorage.setItem('streak', JSON.stringify(better));
+    const localStreak = JSON.parse(localStorage.getItem('streak') || '{"count":0,"lastDate":null}');
+    const cloudStreak = data.streak || { count: 0, lastDate: null };
+    const better = (cloudStreak.count > localStreak.count) ? cloudStreak : localStreak;
+    localStorage.setItem('streak', JSON.stringify(better));
 
-  console.log('[Sync] Progress pulled');
-  if (typeof renderDashboard === 'function') renderDashboard();
-  if (typeof renderStreak === 'function') renderStreak();
+    console.log('[Sync] Progress pulled');
+    if (typeof renderDashboard === 'function') renderDashboard();
+    if (typeof renderStreak === 'function') renderStreak();
+  } catch (e) {
+    console.warn('[Sync] Pull error:', e);
+  }
 }
 
 function mergeProgress(local, cloud) {
@@ -90,9 +152,7 @@ function mergeProgress(local, cloud) {
   return merged;
 }
 
-// ═══════════════════════════════════════════════════════
-// UI — Updates the auth button and settings profile block
-// ═══════════════════════════════════════════════════════
+// ─── UI ───────────────────────────────────────────────
 function updateAuthUI() {
   const btn = document.getElementById('auth-btn');
   const txt = document.getElementById('auth-btn-text');
@@ -106,12 +166,11 @@ function updateAuthUI() {
       btn.title = `${currentUser.email} — open settings`;
     } else {
       txt.textContent = 'Sign in';
-      btn.onclick = signInWithGoogle;
-      btn.title = 'Sign in with Google to sync progress';
+      btn.onclick = openWelcomeModal;
+      btn.title = 'Sign in or create an account';
     }
   }
 
-  // Settings modal profile section
   if (profileBlock) {
     if (currentUser) {
       const name = getFullName(currentUser);
@@ -134,10 +193,10 @@ function updateAuthUI() {
       document.getElementById('signout-btn').onclick = signOutUser;
     } else {
       profileBlock.innerHTML = `
-        <p class="settings-profile-guest">Sign in with Google to sync your progress across devices.</p>
-        <button id="settings-signin-btn" class="cta-btn settings-signin-btn">Sign in with Google</button>
+        <p class="settings-profile-guest">Sign in to sync your progress across devices.</p>
+        <button id="settings-signin-btn" class="cta-btn settings-signin-btn">Sign in</button>
       `;
-      document.getElementById('settings-signin-btn').onclick = signInWithGoogle;
+      document.getElementById('settings-signin-btn').onclick = openWelcomeModal;
     }
   }
 }
@@ -165,13 +224,3 @@ function escapeHtml(s) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[c]));
 }
-
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-(async () => {
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  currentUser = session?.user || null;
-  if (currentUser) await pullProgressFromCloud();
-  updateAuthUI();
-})();

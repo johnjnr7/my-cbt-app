@@ -1296,3 +1296,88 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
     padding: 5px 8px;
   }
 }
+
+/* ═══════════════ WELCOME MODAL FORM ═══════════════ */
+.welcome-form { display: flex; flex-direction: column; gap: 14px; margin-bottom: 18px; }
+
+.welcome-label { display: flex; flex-direction: column; gap: 6px; }
+.welcome-label > span {
+  font-size: 0.82rem; font-weight: 600; color: var(--text-2);
+}
+.welcome-label input {
+  padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--bg); color: var(--text); font-family: inherit; font-size: 0.95rem;
+  transition: border-color 0.15s;
+}
+.welcome-label input:focus { outline: none; border-color: var(--brand); }
+[data-theme="dark"] .welcome-label input:focus { border-color: var(--brand-lime); }
+
+.welcome-status {
+  font-size: 0.85rem; line-height: 1.5;
+  min-height: 20px; margin: 0 0 4px;
+}
+.welcome-status.error { color: var(--danger); }
+.welcome-status.success { color: var(--accent); }
+
+.welcome-guest-ghost {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 12px;
+}
+.welcome-guest-ghost:hover {
+  color: var(--text);
+  border-color: var(--text-2);
+  background: var(--hover);
+}
+
+/* ═══════════════ PASSWORD SHOW/HIDE TOGGLE ═══════════════ */
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  width: 100%;
+  padding-right: 48px;   /* leave room for the eye button */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.password-toggle:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.password-toggle.revealed {
+  color: var(--brand);
+}
+
+[data-theme="dark"] .password-toggle.revealed {
+  color: var(--brand-lime);
+}

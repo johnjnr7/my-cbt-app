@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIM360 · Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <div id="admin-loading" class="admin-center">
+    <div class="spinner"></div>
+    <p>Checking access…</p>
+  </div>
+
+  <div id="admin-denied" class="admin-center hidden">
+    <h1>Access denied</h1>
+    <p id="admin-denied-msg">You don't have admin access.</p>
+    <a href="index.html" class="admin-link">← Back to app</a>
+  </div>
+
+  <div id="admin-app" class="admin-shell hidden">
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <div class="brand-logo"><span>3</span><span>6</span><span>0</span></div>
+        <div>
+          <h1>Admin</h1>
+          <p>CONTROL ROOM</p>
+        </div>
+      </div>
+
+      <nav class="admin-nav">
+        <button class="admin-nav-item active" data-tab="overview">📊 Overview</button>
+        <button class="admin-nav-item" data-tab="users">👥 Users</button>
+        <button class="admin-nav-item" data-tab="email">✉️ Bulk Email</button>
+        <button class="admin-nav-item" data-tab="activity">⚡ Activity</button>
+      </nav>
+
+      <div class="admin-sidebar-foot">
+        <a href="index.html" class="admin-link">← Back to app</a>
+        <button id="admin-signout" class="admin-link">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+
+      <section class="admin-tab active" id="tab-overview">
+        <header class="admin-header">
+          <div>
+            <h2>Overview</h2>
+            <p class="admin-sub">Live snapshot of your platform</p>
+          </div>
+          <button id="refresh-btn" class="admin-btn-ghost">↻ Refresh</button>
+        </header>
+
+        <div class="stat-grid">
+          <div class="stat-card"><span class="stat-label">Total Users</span><span class="stat-value" id="stat-total">—</span><span class="stat-sub" id="stat-total-sub">—</span></div>
+          <div class="stat-card stat-green"><span class="stat-label">Active Subs</span><span class="stat-value" id="stat-active">—</span><span class="stat-sub" id="stat-active-sub">—</span></div>
+          <div class="stat-card stat-yellow"><span class="stat-label">On Trial</span><span class="stat-value" id="stat-trial">—</span><span class="stat-sub" id="stat-trial-sub">—</span></div>
+          <div class="stat-card stat-red"><span class="stat-label">Expired</span><span class="stat-value" id="stat-expired">—</span><span class="stat-sub" id="stat-expired-sub">—</span></div>
+          <div class="stat-card stat-lime"><span class="stat-label">MRR</span><span class="stat-value" id="stat-mrr">—</span><span class="stat-sub">Monthly recurring</span></div>
+          <div class="stat-card"><span class="stat-label">New This Week</span><span class="stat-value" id="stat-new">—</span><span class="stat-sub">Signups last 7 days</span></div>
+        </div>
+
+        <div class="admin-panel-row">
+          <div class="admin-panel">
+            <h3>Activity — last 30 days</h3>
+            <div id="activity-chart" class="activity-chart"></div>
+          </div>
+          <div class="admin-panel">
+            <h3>Retention</h3>
+            <div class="retention-grid">
+              <div><span class="retention-num" id="dau-num">—</span><span class="retention-lbl">DAU</span></div>
+              <div><span class="retention-num" id="wau-num">—</span><span class="retention-lbl">WAU</span></div>
+              <div><span class="retention-num" id="mau-num">—</span><span class="retention-lbl">MAU</span></div>
+            </div>
+            <div class="retention-note" id="retention-note">—</div>
+          </div>
+        </div>
+
+        <div class="admin-panel">
+          <h3>Expiring in next 7 days</h3>
+          <div id="expiring-list" class="expiring-list"></div>
+        </div>
+      </section>
+
+      <section class="admin-tab" id="tab-users">
+        <header class="admin-header">
+          <div><h2>Users</h2><p class="admin-sub">Everyone who signed up</p></div>
+        </header>
+        <div class="users-filter">
+          <input type="text" id="user-search" placeholder="Search name or email…">
+          <select id="user-status-filter">
+            <option value="">All statuses</option>
+            <option value="active">Active</option>
+            <option value="trial">Trial</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+        <div class="users-table-wrap">
+          <table class="users-table">
+            <thead><tr><th>Name / Email</th><th>Status</th><th>Period Ends</th><th>Total Paid</th><th>Joined</th></tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-tab" id="tab-email">
+        <header class="admin-header">
+          <div><h2>Bulk Email</h2><p class="admin-sub">Message your students</p></div>
+        </header>
+
+        <div class="admin-panel">
+          <label class="admin-label">Recipients</label>
+          <select id="email-filter">
+            <option value="all">All users</option>
+            <option value="active">Active subscribers only</option>
+            <option value="trial">Free trial users only</option>
+            <option value="expired">Expired users (win-back)</option>
+          </select>
+          <p class="admin-help" id="recipient-count">—</p>
+        </div>
+
+        <div class="admin-panel" style="margin-top:16px;">
+          <label class="admin-label">Subject</label>
+          <input type="text" id="email-subject" placeholder="Class starts Monday at 7 PM">
+
+          <label class="admin-label" style="margin-top:16px;">Message</label>
+          <textarea id="email-body" rows="10" placeholder="Hey {{name}},&#10;&#10;Live class starts Monday at 7 PM. Don't miss it!"></textarea>
+          <p class="admin-help">Use <code>{{name}}</code> to personalise with the user's first name.</p>
+
+          <div class="email-actions">
+            <button id="email-send-btn" class="admin-btn-primary">Send now</button>
+            <span id="email-status" class="admin-help"></span>
+          </div>
+        </div>
+
+        <div class="admin-panel" style="margin-top:16px;">
+          <h3>Recent campaigns</h3>
+          <div id="campaigns-list"></div>
+        </div>
+      </section>
+
+      <section class="admin-tab" id="tab-activity">
+        <header class="admin-header">
+          <div><h2>Activity Feed</h2><p class="admin-sub">Live events from your platform</p></div>
+        </header>
+        <div id="activity-feed" class="activity-feed"></div>
+      </section>
+
+    </main>
+  </div>
+  <script defer src="js/supabase.js"></script>
+  <script defer src="js/admin.js"></script>
+</body>
+</html>
