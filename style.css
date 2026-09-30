@@ -1384,37 +1384,66 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
 
 /* ═══════════════ PRO VERIFIED BADGE (Facebook-style) ═══════════════ */
 
+/* ═══════════════ PRO VERIFIED BADGE (CSS-drawn, bulletproof) ═══════════════ */
 .verified-tick {
   display: inline-block;
+  position: relative;
   width: 18px;
   height: 18px;
   margin-left: 6px;
-  vertical-align: -3px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%231DA1F2' d='M12 1.5l2.09 1.87 2.77-.33 1.16 2.55 2.56 1.15-.33 2.78L22.5 12l-1.87 2.09.33 2.77-2.55 1.16-1.15 2.56-2.78-.33L12 22.5l-2.09-1.87-2.77.33-1.16-2.55-2.56-1.15.33-2.78L1.5 12l1.87-2.09-.33-2.77 2.55-1.16 1.15-2.56 2.78.33L12 1.5z'/><path fill='white' d='M10.5 15.5l-2.8-2.8 1.2-1.2 1.6 1.6 4.3-4.3 1.2 1.2z'/></svg>");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  border-radius: 50%;
+  background: #1DA1F2;
+  vertical-align: middle;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(29,161,242,0.4);
   animation: tickPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  filter: drop-shadow(0 1px 2px rgba(29,161,242,0.35));
 }
 
-@keyframes tickPop {
-  0%   { transform: scale(0) rotate(-45deg); }
-  60%  { transform: scale(1.25) rotate(5deg); }
-  100% { transform: scale(1) rotate(0deg); }
+/* White checkmark drawn with borders */
+.verified-tick::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 9px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  box-sizing: border-box;
 }
 
 .verified-tick.lg {
   width: 22px;
   height: 22px;
-  vertical-align: -4px;
+}
+
+.verified-tick.lg::after {
+  left: 7px;
+  top: 4px;
+  width: 6px;
+  height: 11px;
+  border-width: 0 2.5px 2.5px 0;
 }
 
 .verified-tick.sm {
   width: 14px;
   height: 14px;
   margin-left: 4px;
-  vertical-align: -2px;
+}
+
+.verified-tick.sm::after {
+  left: 4.5px;
+  top: 2px;
+  width: 4px;
+  height: 7px;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+@keyframes tickPop {
+  0%   { transform: scale(0); }
+  60%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 
 .auth-btn-inner {
@@ -1425,16 +1454,35 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
   padding-left: 4px;
 }
 
-.settings-avatar.pro-ring {
-  border: 2.5px solid #1DA1F2;
-  box-shadow: 0 0 0 4px rgba(29,161,242,0.18);
-}
-
 .pro-badge-name {
   display: inline-flex;
   align-items: center;
   gap: 0;
   font-weight: 700;
+}
+
+/* Mobile sizing */
+@media (max-width: 480px) {
+  .verified-tick {
+    width: 20px;
+    height: 20px;
+  }
+  .verified-tick::after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+  }
+  .verified-tick.lg {
+    width: 24px;
+    height: 24px;
+  }
+  .verified-tick.lg::after {
+    left: 8px;
+    top: 4px;
+    width: 7px;
+    height: 12px;
+  }
 }
 
 /* ═══════════════ MOBILE PRO SECTION IN SIDEBAR ═══════════════ */

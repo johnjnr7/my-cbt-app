@@ -115,6 +115,11 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   currentUser = session?.user || null;
   updateAuthUI();
   closeWelcomeModal();
+
+  // ⭐ Re-render streak + dashboard now that we know who the user is
+  if (typeof renderStreak === 'function') renderStreak();
+  if (typeof renderDashboard === 'function') renderDashboard();
+
   if (currentUser) {
     setTimeout(() => {
       pullProgressFromCloud().catch(e => console.warn('[Sync]', e));
@@ -134,18 +139,27 @@ async function pullProgressFromCloud() {
       .maybeSingle();
 
     if (error) { console.error('[Sync] Pull failed:', error.message); return; }
-    if (!data) return;
 
-    const localProgress = JSON.parse(localStorage.getItem('progress') || '{}');
-    const merged = mergeProgress(localProgress, data.data || {});
-    localStorage.setItem('progress', JSON.stringify(merged));
+    // Handle different user
+    if (lastUserId && lastUserId !== currentUser.id) {
+      console.log('[Sync] Different user — clearing old local data');
+      localStorage.removeItem(userKey('progress'));
+      localStorage.removeItem(userKey('streak'));
+    }
+    lastUserId = currentUser.id;
+    localStorage.setItem('aim360_last_user_id', currentUser.id);
 
-    const localStreak = JSON.parse(localStorage.getItem('streak') || '{"count":0,"lastDate":null}');
-    const cloudStreak = data.streak || { count: 0, lastDate: null };
-    const better = (cloudStreak.count > localStreak.count) ? cloudStreak : localStreak;
-    localStorage.setItem('streak', JSON.stringify(better));
+    if (!data) {
+      // NEW USER — start clean
+      setUserProgress({});
+      setUserStreak({ count: 0, lastDate: null });
+    } else {
+      // Existing user — pull cloud data
+      setUserProgress(data.data || {});
+      setUserStreak(data.streak || { count: 0, lastDate: null });
+    }
 
-    console.log('[Sync] Progress pulled');
+    console.log('[Sync] Progress pulled for', currentUser.email);
     if (typeof renderDashboard === 'function') renderDashboard();
     if (typeof renderStreak === 'function') renderStreak();
   } catch (e) {

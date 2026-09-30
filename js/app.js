@@ -19,6 +19,13 @@ let correctCount = 0;
 let answered = false;
 const dataCache = {};
 
+// ─── User-scoped localStorage helpers ──────────────────
+function scopedKey(key) {
+  return (typeof currentUser !== 'undefined' && currentUser)
+    ? `${key}_${currentUser.id}`
+    : key;
+}
+
 // ═══════════════════════════════════════════════════════
 // THEME
 // ═══════════════════════════════════════════════════════
@@ -70,7 +77,7 @@ function updateGreeting() {
 // ═══════════════════════════════════════════════════════
 function getStreak() {
   if (typeof getUserStreak === 'function') return getUserStreak();
-  try { return JSON.parse(localStorage.getItem('streak')) || { count: 0, lastDate: null }; }
+  try { return JSON.parse(localStorage.getItem(scopedKey('streak'))) || { count: 0, lastDate: null }; }
   catch { return { count: 0, lastDate: null }; }
 }
 
@@ -82,19 +89,20 @@ function updateStreak() {
   d.count = d.lastDate === yesterday ? d.count + 1 : 1;
   d.lastDate = today;
   if (typeof setUserStreak === 'function') setUserStreak(d);
-  else localStorage.setItem('streak', JSON.stringify(d));
+  else localStorage.setItem(scopedKey('streak'), JSON.stringify(d));
   return d;
 }
+
 function renderStreak() {
   const el = document.getElementById('streak-count');
   if (el) el.textContent = getStreak().count;
 }
 
 // ═══════════════════════════════════════════════════════
-// PRACTICE HISTORY
+// PRACTICE HISTORY (user-scoped)
 // ═══════════════════════════════════════════════════════
 function getPracticeDays() {
-  try { return JSON.parse(localStorage.getItem('practiceDays')) || []; }
+  try { return JSON.parse(localStorage.getItem(scopedKey('practiceDays'))) || []; }
   catch { return []; }
 }
 
@@ -105,19 +113,20 @@ function recordPracticeDay() {
     days.push(today);
     const cutoff = Date.now() - 365 * 86400000;
     const filtered = days.filter(d => new Date(d).getTime() >= cutoff);
-    localStorage.setItem('practiceDays', JSON.stringify(filtered));
+    localStorage.setItem(scopedKey('practiceDays'), JSON.stringify(filtered));
   }
 }
+
 // ═══════════════════════════════════════════════════════
-// BOOKMARKS
+// BOOKMARKS (user-scoped)
 // ═══════════════════════════════════════════════════════
 function getBookmarks() {
-  try { return JSON.parse(localStorage.getItem('bookmarks')) || []; }
+  try { return JSON.parse(localStorage.getItem(scopedKey('bookmarks'))) || []; }
   catch { return []; }
 }
 
 function saveBookmarks(list) {
-  localStorage.setItem('bookmarks', JSON.stringify(list));
+  localStorage.setItem(scopedKey('bookmarks'), JSON.stringify(list));
 }
 
 function isBookmarked(subject, topicId, questionIndex) {
@@ -135,13 +144,7 @@ function toggleBookmark(subject, topicId, questionIndex, questionText) {
     saveBookmarks(list);
     return false;
   } else {
-    list.push({
-      key,
-      subject,
-      topicId,
-      questionIndex,
-      questionText
-    });
+    list.push({ key, subject, topicId, questionIndex, questionText });
     saveBookmarks(list);
     return true;
   }
@@ -157,16 +160,17 @@ function removeBookmark(key) {
 // ═══════════════════════════════════════════════════════
 function getProgress() {
   if (typeof getUserProgress === 'function') return getUserProgress();
-  try { return JSON.parse(localStorage.getItem('progress')) || {}; }
+  try { return JSON.parse(localStorage.getItem(scopedKey('progress'))) || {}; }
   catch { return {}; }
 }
+
 function recordResult(topicId, correct, total) {
   const p = getProgress();
   if (!p[topicId]) p[topicId] = { correct: 0, total: 0 };
   p[topicId].correct += correct;
   p[topicId].total += total;
   if (typeof setUserProgress === 'function') setUserProgress(p);
-  else localStorage.setItem('progress', JSON.stringify(p));
+  else localStorage.setItem(scopedKey('progress'), JSON.stringify(p));
 }
 
 function getMastery(topicId) {
@@ -476,7 +480,7 @@ if (topicSelect) {
     const topicId = topicSelect.value;
     if (!topicId) return;
 
-    // ⭐ PAYWALL GATE
+    // PAYWALL GATE
     if (typeof canAccessTopics === 'function' && !canAccessTopics()) {
       document.getElementById('quiz-area').classList.add('hidden');
       if (typeof openPaywallModal === 'function') openPaywallModal();
@@ -497,6 +501,7 @@ if (topicSelect) {
 
     quizSummary.classList.add('hidden');
     quizArea.classList.remove('hidden');
+    document.querySelector('.selector')?.classList.remove('hidden'); // ensure selector visible
     renderQuestion();
   });
 }
@@ -517,7 +522,7 @@ function renderQuestion() {
   document.getElementById('question-text').textContent =
     `Q${currentIndex + 1}/${currentQuestions.length} — ${q.q}`;
 
-  // ⭐ Bookmark star
+  // Bookmark star
   const star = document.getElementById('bookmark-star');
   if (star && currentTopic) {
     const originalIdx = currentTopic.questions.findIndex(
@@ -530,7 +535,6 @@ function renderQuestion() {
     star.dataset.qIdx = qIdx;
     star.title = isSaved ? 'Remove bookmark' : 'Bookmark this question';
 
-    // Replace listener cleanly each render
     const newStar = star.cloneNode(true);
     star.parentNode.replaceChild(newStar, star);
 
@@ -541,7 +545,6 @@ function renderQuestion() {
       newStar.classList.toggle('saved', nowSaved);
       newStar.title = nowSaved ? 'Remove bookmark' : 'Bookmark this question';
 
-      // Pop animation
       newStar.classList.remove('pop');
       void newStar.offsetWidth;
       newStar.classList.add('pop');
@@ -588,7 +591,6 @@ function renderBookmarksView() {
 
   if (startBtn) startBtn.classList.remove('hidden');
 
-  // Group by subject
   const grouped = {};
   bookmarks.forEach(b => {
     if (!grouped[b.subject]) grouped[b.subject] = [];
@@ -637,7 +639,6 @@ function renderBookmarksView() {
 
   list.innerHTML = html;
 
-  // Click a card → remove bookmark
   list.querySelectorAll('.bookmark-card').forEach(card => {
     card.addEventListener('click', () => {
       const key = card.dataset.key;
@@ -649,7 +650,6 @@ function renderBookmarksView() {
   });
 }
 
-// Simple HTML escaper for bookmark previews
 function escapeHtmlText(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -696,7 +696,7 @@ function finishQuiz() {
 
   recordResult(currentTopic.id, correctCount, currentQuestions.length);
 
-    if (typeof loadSubscription === 'function') loadSubscription();
+  if (typeof loadSubscription === 'function') loadSubscription();
   updateStreak();
   recordPracticeDay();
   renderStreak();
@@ -734,6 +734,8 @@ function finishQuiz() {
   `;
 
   document.getElementById('summary-next-btn').addEventListener('click', () => {
+    // Restore selector so user can pick again
+    document.querySelector('.selector')?.classList.remove('hidden');
     subjectSelect.dispatchEvent(new Event('change'));
   });
 }
@@ -751,7 +753,9 @@ if (resetBtn) {
     const p = getProgress();
     const data = dataCache[sub];
     if (data) data.topics.forEach(t => delete p[t.id]);
-    localStorage.setItem('progress', JSON.stringify(p));
+
+    if (typeof setUserProgress === 'function') setUserProgress(p);
+    else localStorage.setItem(scopedKey('progress'), JSON.stringify(p));
 
     subjectSelect.dispatchEvent(new Event('change'));
     renderDashboard();
@@ -780,12 +784,12 @@ if (sidebarToggle && sidebar) {
 
   document.addEventListener('click', (e) => {
     // Close drawer when Go Pro button is tapped in sidebar
-document.addEventListener('click', (e) => {
-  if (window.innerWidth <= 900 &&
-      e.target.closest('#sub-status-mobile .sub-badge')) {
-    setTimeout(() => sidebar.classList.remove('open'), 100);
-  }
-});
+    if (window.innerWidth <= 900 &&
+        e.target.closest('#sub-status-mobile .sub-badge')) {
+      setTimeout(() => sidebar.classList.remove('open'), 100);
+      return;
+    }
+    // Close on backdrop click
     if (window.innerWidth <= 900 &&
         sidebar.classList.contains('open') &&
         !sidebar.contains(e.target) &&
@@ -860,7 +864,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Dark mode toggle
 if (darkToggle) {
   darkToggle.addEventListener('click', () => {
     const current = document.documentElement.getAttribute('data-theme');
@@ -868,7 +871,6 @@ if (darkToggle) {
   });
 }
 
-// Reminder toggle
 function updateReminderToggle() {
   if (!reminderToggle) return;
   const enabled = localStorage.getItem('reminderEnabled') === 'true' &&
@@ -952,15 +954,24 @@ function updateSettingsStatus() {
   settingsStatus.textContent = 'Notifications are off.';
 }
 
-// Reset all progress
 if (resetAllBtn) {
   resetAllBtn.addEventListener('click', () => {
     if (!confirm('Reset ALL progress? This wipes every subject, streak, and history. Cannot be undone.')) return;
     if (!confirm('Really sure? Everything will be deleted.')) return;
 
+    const uid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.id : null;
+
+    if (uid) {
+      localStorage.removeItem(`progress_${uid}`);
+      localStorage.removeItem(`streak_${uid}`);
+      localStorage.removeItem(`practiceDays_${uid}`);
+      localStorage.removeItem(`bookmarks_${uid}`);
+    }
+    // Also clear legacy keys
     localStorage.removeItem('progress');
     localStorage.removeItem('streak');
     localStorage.removeItem('practiceDays');
+    localStorage.removeItem('bookmarks');
 
     if (typeof pushProgressToCloud === 'function') pushProgressToCloud();
 
@@ -968,6 +979,7 @@ if (resetAllBtn) {
     location.reload();
   });
 }
+
 // ═══════════════════════════════════════════════════════
 // GOOGLE CALENDAR REMINDER
 // ═══════════════════════════════════════════════════════
@@ -978,19 +990,15 @@ if (gcalBtn) {
     const time = (reminderTimeInput && reminderTimeInput.value) || '20:00';
     const [hh, mm] = time.split(':').map(Number);
 
-    // Build today's date at the chosen time
     const start = new Date();
     start.setHours(hh, mm, 0, 0);
 
-    // If the time has already passed today, start tomorrow
     if (start.getTime() <= Date.now()) {
       start.setDate(start.getDate() + 1);
     }
 
-    // 30-minute event
     const end = new Date(start.getTime() + 30 * 60 * 1000);
 
-    // Format as YYYYMMDDTHHMMSS (local time, no Z)
     const fmt = (d) => {
       const pad = (n) => String(n).padStart(2, '0');
       return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
@@ -1003,14 +1011,17 @@ if (gcalBtn) {
       text: '🔥 AIM360 — Study Session',
       dates: dates,
       recur: 'RRULE:FREQ=DAILY',
-      details: 'Daily JAMB prep. Open AIM360 and keep your streak alive:\nhttps://my-cbt-app-seven.vercel.app'
+      details: 'Daily JAMB prep. Open AIM360 and keep your streak alive:\nhttps://aim360.vercel.app'
     });
 
     const url = `https://calendar.google.com/calendar/render?${params.toString()}`;
     window.open(url, '_blank');
   });
 }
-// Smart reminder logic
+
+// ═══════════════════════════════════════════════════════
+// SMART REMINDER
+// ═══════════════════════════════════════════════════════
 function hasPracticedToday() {
   const s = getStreak();
   return s.lastDate === new Date().toDateString();
@@ -1163,7 +1174,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-
 // ═══════════════════════════════════════════════════════
 // BOOKMARKS QUIZ MODE
 // ═══════════════════════════════════════════════════════
@@ -1175,7 +1185,6 @@ if (startBookmarksBtn) {
     const bookmarks = getBookmarks();
     if (bookmarks.length === 0) return;
 
-    // Build a question array from bookmarks
     const questions = [];
     bookmarks.forEach(b => {
       const data = dataCache[b.subject];
@@ -1194,13 +1203,11 @@ if (startBookmarksBtn) {
       return;
     }
 
-    // Switch to practice view
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelector('[data-view="practice"]').classList.add('active');
     document.getElementById('view-practice').classList.add('active');
 
-    // Enter bookmarks quiz mode
     bookmarksQuizMode = true;
     currentQuestions = shuffle(questions);
     currentIndex = 0;
@@ -1213,7 +1220,7 @@ if (startBookmarksBtn) {
 
     quizSummary.classList.add('hidden');
     quizArea.classList.remove('hidden');
-    document.querySelector('.selector').classList.add('hidden');
+    document.querySelector('.selector')?.classList.add('hidden');
     renderQuestion();
   });
 }
@@ -1221,7 +1228,8 @@ if (startBookmarksBtn) {
 const summaryNextBtn = document.getElementById('summary-next-btn');
 if (summaryNextBtn) {
   summaryNextBtn.addEventListener('click', () => {
-    if (currentTopic.id === '__bookmarks__') {
+    document.querySelector('.selector')?.classList.remove('hidden');
+    if (currentTopic && currentTopic.id === '__bookmarks__') {
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.querySelector('[data-view="bookmarks"]').classList.add('active');
@@ -1269,6 +1277,7 @@ if (welcomeModal) {
   const statusEl   = document.getElementById('welcome-status');
   const googleBtn  = document.getElementById('welcome-google');
   const guestBtn   = document.getElementById('welcome-guest');
+  const togglePwBtn = document.getElementById('toggle-password');
 
   function setMode(next) {
     mode = next;
@@ -1304,6 +1313,24 @@ if (welcomeModal) {
   if (guestBtn) {
     guestBtn.addEventListener('click', () => {
       modal.classList.add('hidden');
+    });
+  }
+
+  if (togglePwBtn) {
+    togglePwBtn.addEventListener('click', () => {
+      const isPassword = passInput.type === 'password';
+      passInput.type = isPassword ? 'text' : 'password';
+
+      const eyeOpen = togglePwBtn.querySelector('.eye-open');
+      const eyeClosed = togglePwBtn.querySelector('.eye-closed');
+      if (eyeOpen && eyeClosed) {
+        eyeOpen.style.display = isPassword ? 'none' : 'block';
+        eyeClosed.style.display = isPassword ? 'block' : 'none';
+      }
+
+      togglePwBtn.classList.toggle('revealed', isPassword);
+      togglePwBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+      togglePwBtn.setAttribute('title', isPassword ? 'Hide password' : 'Show password');
     });
   }
 
@@ -1361,27 +1388,6 @@ if (welcomeModal) {
   setMode('signup');
 })();
 
-  if (togglePwBtn) {
-    togglePwBtn.addEventListener('click', () => {
-      const isPassword = passInput.type === 'password';
-
-      // Toggle input type
-      passInput.type = isPassword ? 'text' : 'password';
-
-      // Swap eye icons
-      const eyeOpen = togglePwBtn.querySelector('.eye-open');
-      const eyeClosed = togglePwBtn.querySelector('.eye-closed');
-      if (eyeOpen && eyeClosed) {
-        eyeOpen.style.display = isPassword ? 'none' : 'block';
-        eyeClosed.style.display = isPassword ? 'block' : 'none';
-      }
-
-      // Color + accessibility
-      togglePwBtn.classList.toggle('revealed', isPassword);
-      togglePwBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-      togglePwBtn.setAttribute('title', isPassword ? 'Hide password' : 'Show password');
-    });
-  }
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
