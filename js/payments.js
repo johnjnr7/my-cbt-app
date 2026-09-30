@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════
 // AIM360 — Payments + Paywall
 // ═══════════════════════════════════════════════════════
-const PAYSTACK_PUBLIC_KEY = 'pk_test_150a78162ed8c0a4768f102a427c00561a2ee3ac';
+const PAYSTACK_PUBLIC_KEY = 'pk_live_8186ecdb1b8942a9c42b6fd333363980053903dd';
 const SUBSCRIPTION_PRICE_KOBO = 1000000;   // ₦10,000
 const FREE_TRIAL_TOPICS = 1;
 const SUPABASE_FN_URL = `${SUPABASE_URL}/functions/v1`;
