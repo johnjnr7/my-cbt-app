@@ -1381,3 +1381,112 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
 [data-theme="dark"] .password-toggle.revealed {
   color: var(--brand-lime);
 }
+
+/* ═══════════════ PRO VERIFIED BADGE (Facebook-style) ═══════════════ */
+
+.verified-tick {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  vertical-align: -3px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%231DA1F2' d='M12 1.5l2.09 1.87 2.77-.33 1.16 2.55 2.56 1.15-.33 2.78L22.5 12l-1.87 2.09.33 2.77-2.55 1.16-1.15 2.56-2.78-.33L12 22.5l-2.09-1.87-2.77.33-1.16-2.55-2.56-1.15.33-2.78L1.5 12l1.87-2.09-.33-2.77 2.55-1.16 1.15-2.56 2.78.33L12 1.5z'/><path fill='white' d='M10.5 15.5l-2.8-2.8 1.2-1.2 1.6 1.6 4.3-4.3 1.2 1.2z'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: tickPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: drop-shadow(0 1px 2px rgba(29,161,242,0.35));
+}
+
+@keyframes tickPop {
+  0%   { transform: scale(0) rotate(-45deg); }
+  60%  { transform: scale(1.25) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.verified-tick.lg {
+  width: 22px;
+  height: 22px;
+  vertical-align: -4px;
+}
+
+.verified-tick.sm {
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  vertical-align: -2px;
+}
+
+.auth-btn-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  padding-left: 4px;
+}
+
+.settings-avatar.pro-ring {
+  border: 2.5px solid #1DA1F2;
+  box-shadow: 0 0 0 4px rgba(29,161,242,0.18);
+}
+
+.pro-badge-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font-weight: 700;
+}
+
+/* ═══════════════ MOBILE PRO SECTION IN SIDEBAR ═══════════════ */
+
+/* Hide the mobile Pro section on desktop by default */
+.sidebar-pro { display: none; }
+
+/* On tablets & phones, hide the topbar Pro badge and show the sidebar one */
+@media (max-width: 900px) {
+  #sub-status {
+    display: none !important;
+  }
+
+  .sidebar-pro {
+    display: block;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .sidebar-pro .sidebar-pro-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 0 12px 10px;
+    display: block;
+  }
+
+  .sidebar-pro .sub-badge {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+  }
+
+  /* Bigger tap target when inside drawer */
+  .sidebar-pro .sub-badge.cta {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  .sidebar-pro .sub-badge.pro {
+    background: var(--brand-lime-soft);
+    color: var(--brand);
+  }
+
+  [data-theme="dark"] .sidebar-pro .sub-badge.pro {
+    background: rgba(201,242,107,0.14);
+    color: var(--brand-lime);
+  }
+}

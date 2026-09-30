@@ -779,6 +779,13 @@ if (sidebarToggle && sidebar) {
   });
 
   document.addEventListener('click', (e) => {
+    // Close drawer when Go Pro button is tapped in sidebar
+document.addEventListener('click', (e) => {
+  if (window.innerWidth <= 900 &&
+      e.target.closest('#sub-status-mobile .sub-badge')) {
+    setTimeout(() => sidebar.classList.remove('open'), 100);
+  }
+});
     if (window.innerWidth <= 900 &&
         sidebar.classList.contains('open') &&
         !sidebar.contains(e.target) &&

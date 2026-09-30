@@ -122,45 +122,7 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   }
 });
 
-async function pullProgressFromCloud() {
-  if (!currentUser) return;
-  try {
-    const { data, error } = await supabaseClient
-      .from('progress')
-      .select('data, streak')
-      .eq('user_id', currentUser.id)
-      .maybeSingle();
 
-    if (error) { console.error('[Sync] Pull failed:', error.message); return; }
-
-    // If this is a DIFFERENT user than last time, wipe old local data first
-    if (lastUserId && lastUserId !== currentUser.id) {
-      console.log('[Sync] Different user detected — clearing old local data');
-      localStorage.removeItem(userKey('progress'));
-      localStorage.removeItem(userKey('streak'));
-    }
-
-    // Update the "last user" marker
-    lastUserId = currentUser.id;
-    localStorage.setItem('aim360_last_user_id', currentUser.id);
-
-    // Use the cloud data as the source of truth
-    if (!data) {
-      // No cloud data yet → start clean for this user
-      setUserProgress({});
-      setUserStreak({ count: 0, lastDate: null });
-    } else {
-      setUserProgress(data.data || {});
-      setUserStreak(data.streak || { count: 0, lastDate: null });
-    }
-
-    console.log('[Sync] Progress pulled for', currentUser.email);
-    if (typeof renderDashboard === 'function') renderDashboard();
-    if (typeof renderStreak === 'function') renderStreak();
-  } catch (e) {
-    console.warn('[Sync] Pull error:', e);
-  }
-}
 
 async function pullProgressFromCloud() {
   if (!currentUser) return;
@@ -203,16 +165,26 @@ function mergeProgress(local, cloud) {
   return merged;
 }
 
-// ─── UI ───────────────────────────────────────────────
 function updateAuthUI() {
   const btn = document.getElementById('auth-btn');
   const txt = document.getElementById('auth-btn-text');
   const profileBlock = document.getElementById('settings-profile');
 
+  const isPro = typeof hasActiveSubscription === 'function' && hasActiveSubscription();
+
   if (btn && txt) {
     if (currentUser) {
       const name = getFirstName(currentUser);
-      txt.textContent = name;
+
+      // Blue verified tick next to name for Pro users
+            txt.innerHTML = isPro
+        ? `<span class="pro-badge-name">${escapeHtml(name)}<span class="verified-tick" title="Pro subscriber" aria-label="Verified"></span></span>`
+        : escapeHtml(name);
+
+      // Blue ring around the person icon for Pro users
+      const inner = btn.querySelector('.auth-btn-inner');
+      if (inner) inner.classList.toggle('pro-ring', isPro);
+
       btn.onclick = () => openSettings();
       btn.title = `${currentUser.email} — open settings`;
     } else {
@@ -235,7 +207,7 @@ function updateAuthUI() {
             ${photo ? '' : initial}
           </div>
           <div class="settings-profile-info">
-            <p class="settings-profile-name">${escapeHtml(name)}</p>
+                    <p class="settings-profile-name">${escapeHtml(name)}${isPro ? '<span class="verified-tick lg" title="Pro subscriber" aria-label="Verified"></span>' : ''}</p>
             <p class="settings-profile-email">${escapeHtml(email)}</p>
           </div>
         </div>

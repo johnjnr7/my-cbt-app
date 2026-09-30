@@ -8,8 +8,10 @@ const SUPABASE_FN_URL = `${SUPABASE_URL}/functions/v1`;
 
 let currentSubscription = null;
 
+// ─── Load subscription state ───────────────────────────
 async function loadSubscription() {
   if (!currentUser) { currentSubscription = null; updateSubscriptionUI(); return null; }
+
   const { data } = await supabaseClient
     .from('subscriptions')
     .select('*')
@@ -29,6 +31,7 @@ async function loadSubscription() {
   return data;
 }
 
+// ─── Paywall logic ─────────────────────────────────────
 function hasActiveSubscription() {
   if (!currentSubscription) return false;
   if (currentSubscription.status !== 'active') return false;
@@ -54,6 +57,7 @@ function canAccessTopics() {
   return hasActiveSubscription() || !trialUsedUp();
 }
 
+// ─── UI badge ──────────────────────────────────────────
 function updateSubscriptionUI() {
   const wrap = document.getElementById('sub-status');
   if (!wrap) return;
@@ -69,8 +73,12 @@ function updateSubscriptionUI() {
     wrap.innerHTML = `<button class="sub-badge cta">🔓 Go Pro · ₦10,000/mo</button>`;
     wrap.onclick = openPaywallModal;
   }
+
+  // ⭐ Refresh topbar so the blue tick appears/disappears immediately
+  if (typeof updateAuthUI === 'function') updateAuthUI();
 }
 
+// ─── Paywall modal ─────────────────────────────────────
 function openPaywallModal() {
   const modal = document.getElementById('paywall-modal');
   if (!modal) return;
@@ -87,6 +95,7 @@ function closePaywallModal() {
   document.getElementById('paywall-modal')?.classList.add('hidden');
 }
 
+// ─── Paystack checkout ─────────────────────────────────
 function openPaystack() {
   if (!currentUser) { signInWithGoogle?.(); return; }
 
@@ -144,6 +153,7 @@ async function verifyPayment(reference) {
   }
 }
 
+// ─── Activity log (for admin retention stats) ──────────
 async function logActivity(eventType, metadata = {}) {
   if (!currentUser) return;
   try {
@@ -153,6 +163,7 @@ async function logActivity(eventType, metadata = {}) {
   } catch {}
 }
 
+// ─── Wire up ───────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('paywall-x')?.addEventListener('click', closePaywallModal);
   document.getElementById('paywall-modal')?.addEventListener('click', (e) => {
@@ -165,12 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => logActivity('app_open'), 2000);
 });
 
+// Auth-aware loading
 if (typeof supabaseClient !== 'undefined') {
   supabaseClient.auth.onAuthStateChange(async (_event, session) => {
     currentUser = session?.user || null;
     if (currentUser) await loadSubscription();
     else { currentSubscription = null; updateSubscriptionUI(); }
   });
+
   (async () => {
     const { data: { session } } = await supabaseClient.auth.getSession();
     currentUser = session?.user || null;
