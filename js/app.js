@@ -59,6 +59,10 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 
     if (btn.dataset.view === 'dashboard') renderDashboard();
     if (btn.dataset.view === 'subjects') renderSubjectsView();
+    if (btn.dataset.view === 'bookmarks') renderBookmarksView();
+    if (btn.dataset.view === 'leaderboard' && typeof loadLeaderboard === 'function') {
+      loadLeaderboard('all');
+    }
   });
 });
 
@@ -114,9 +118,16 @@ function recordPracticeDay() {
     const cutoff = Date.now() - 365 * 86400000;
     const filtered = days.filter(d => new Date(d).getTime() >= cutoff);
     localStorage.setItem(scopedKey('practiceDays'), JSON.stringify(filtered));
+
+    // ⭐ Push to cloud so calendar syncs across devices
+    if (typeof pushProgressToCloud === 'function') {
+      setTimeout(() => pushProgressToCloud(), 500);
+    }
   }
 }
-
+if (typeof pushProgressToCloud === 'function') {
+  setTimeout(() => pushProgressToCloud(), 500);
+}
 // ═══════════════════════════════════════════════════════
 // BOOKMARKS (user-scoped)
 // ═══════════════════════════════════════════════════════
@@ -139,15 +150,23 @@ function toggleBookmark(subject, topicId, questionIndex, questionText) {
   const list = getBookmarks();
   const existing = list.findIndex(b => b.key === key);
 
+  let result;
   if (existing >= 0) {
     list.splice(existing, 1);
     saveBookmarks(list);
-    return false;
+    result = false;
   } else {
     list.push({ key, subject, topicId, questionIndex, questionText });
     saveBookmarks(list);
-    return true;
+    result = true;
   }
+
+  // ⭐ Push to cloud so bookmarks sync across devices
+  if (typeof pushProgressToCloud === 'function') {
+    setTimeout(() => pushProgressToCloud(), 500);
+  }
+
+  return result;
 }
 
 function removeBookmark(key) {
@@ -1388,6 +1407,140 @@ if (welcomeModal) {
   setMode('signup');
 })();
 
+
+// ═══════════════════════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════════════════════
+let lbCurrentFilter = 'all';
+let lbCachedData = [];
+
+async function loadLeaderboard(filter = 'all') {
+  const podium = document.getElementById('lb-podium');
+  const list = document.getElementById('lb-list');
+  const you = document.getElementById('lb-you');
+  if (!podium || !list || !you) return;
+
+  lbCurrentFilter = filter;
+  podium.innerHTML = '<div class="lb-loading">Loading…</div>';
+  list.innerHTML = '';
+  you.innerHTML = '';
+
+  try {
+    const { data, error } = await supabaseClient.rpc('get_leaderboard', {
+      p_filter: filter,
+      p_limit: 50
+    });
+
+    if (error) {
+      console.error('[Leaderboard]', error);
+      podium.innerHTML = '';
+      list.innerHTML = `<div class="lb-empty"><div class="lb-empty-icon">⚠️</div>Couldn't load leaderboard. Try again later.</div>`;
+      return;
+    }
+
+    lbCachedData = data || [];
+    renderLeaderboard();
+  } catch (e) {
+    console.error('[Leaderboard]', e);
+    podium.innerHTML = '';
+    list.innerHTML = `<div class="lb-empty"><div class="lb-empty-icon">⚠️</div>Couldn't load leaderboard.</div>`;
+  }
+}
+
+function renderLeaderboard() {
+  const podium = document.getElementById('lb-podium');
+  const list = document.getElementById('lb-list');
+  const you = document.getElementById('lb-you');
+  const myId = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.id : null;
+
+  if (lbCachedData.length === 0) {
+    podium.innerHTML = '';
+    list.innerHTML = `
+      <div class="lb-empty">
+        <div class="lb-empty-icon">🏆</div>
+        <strong>No scores yet</strong>
+        <p style="margin-top:8px">Be the first to finish a topic and claim the top spot.</p>
+      </div>`;
+    you.innerHTML = '';
+    return;
+  }
+
+  // Top 3 podium
+  const top3 = lbCachedData.slice(0, 3);
+  const medals = ['🥇', '🥈', '🥉'];
+  const classes = ['gold', 'silver', 'bronze'];
+
+  podium.innerHTML = '';
+  // Order: silver (2nd), gold (1st), bronze (3rd)
+  const order = [1, 0, 2];
+  order.forEach((dataIdx, pos) => {
+    const u = top3[dataIdx];
+    if (!u) return;
+    const initial = (u.display_name || '?').trim()[0].toUpperCase();
+    const avatarStyle = u.avatar_url ? `background-image: url('${u.avatar_url}'); background-color: transparent;` : '';
+    const tick = u.is_pro ? verifiedTickHtml() : '';
+    podium.innerHTML += `
+      <div class="lb-podium-card ${classes[dataIdx]}">
+        <div class="lb-medal">${medals[dataIdx]}</div>
+        <div class="lb-podium-avatar" style="${avatarStyle}">${u.avatar_url ? '' : initial}</div>
+        <div class="lb-podium-name">${escapeHtmlText(u.display_name || 'Anonymous')}${tick}</div>
+        <div class="lb-podium-score">${u.score}</div>
+        <div class="lb-podium-sub">🔥 ${u.streak_count}d streak</div>
+      </div>
+    `;
+  });
+
+  // Rank 4+
+  const rest = lbCachedData.slice(3);
+  list.innerHTML = rest.map(u => {
+    const initial = (u.display_name || '?').trim()[0].toUpperCase();
+    const avatarStyle = u.avatar_url ? `background-image: url('${u.avatar_url}'); background-color: transparent;` : '';
+    const tick = u.is_pro ? verifiedTickHtml() : '';
+    const me = myId && u.user_id === myId ? ' me' : '';
+    return `
+      <div class="lb-row${me}">
+        <span class="lb-rank">${u.rank}</span>
+        <div class="lb-avatar" style="${avatarStyle}">${u.avatar_url ? '' : initial}</div>
+        <span class="lb-name">${escapeHtmlText(u.display_name || 'Anonymous')}${tick}</span>
+        <span class="lb-streak">🔥 ${u.streak_count}</span>
+        <span class="lb-score">${u.score}</span>
+      </div>
+    `;
+  }).join('');
+
+  // "You" pinned row (if user not in top 50)
+  const myRow = lbCachedData.find(u => u.user_id === myId);
+  if (myRow && myRow.rank > 3) {
+    const initial = (myRow.display_name || '?').trim()[0].toUpperCase();
+    const avatarStyle = myRow.avatar_url ? `background-image: url('${myRow.avatar_url}'); background-color: transparent;` : '';
+    const tick = myRow.is_pro ? verifiedTickHtml() : '';
+    you.innerHTML = `
+      <div class="lb-row me">
+        <span class="lb-rank">${myRow.rank}</span>
+        <div class="lb-avatar" style="${avatarStyle}">${myRow.avatar_url ? '' : initial}</div>
+        <span class="lb-name">${escapeHtmlText(myRow.display_name || 'You')}${tick}</span>
+        <span class="lb-streak">🔥 ${myRow.streak_count}</span>
+        <span class="lb-score">${myRow.score}</span>
+      </div>
+    `;
+  } else {
+    you.innerHTML = '';
+  }
+}
+
+// Wire up filter buttons
+document.addEventListener('DOMContentLoaded', () => {
+  const filters = document.getElementById('lb-filters');
+  if (!filters) return;
+
+  filters.addEventListener('click', (e) => {
+    const btn = e.target.closest('.lb-filter');
+    if (!btn) return;
+    filters.querySelectorAll('.lb-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadLeaderboard(btn.dataset.filter);
+  });
+});
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════

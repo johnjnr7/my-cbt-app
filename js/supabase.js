@@ -45,6 +45,12 @@ function setUserStreak(s) {
   localStorage.setItem(userKey('streak'), JSON.stringify(s));
 }
 
+// ─── FACEBOOK-STYLE VERIFIED BADGE ────────────────────
+function verifiedTickHtml(size) {
+  const cls = 'verified-tick' + (size ? ' ' + size : '');
+  return `<span class="${cls}" title="Pro subscriber" aria-label="Verified"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#1877F2" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34z"/><path fill="#ffffff" d="M10.54 16.2l-3.9-3.91 1.41-1.41 2.49 2.49 5.29-5.77 1.47 1.36-6.76 7.24z"/></svg></span>`;
+}
+
 // ─── AUTH ─────────────────────────────────────────────
 async function signInWithGoogle() {
   const { error } = await supabaseClient.auth.signInWithOAuth({
@@ -63,7 +69,6 @@ async function signUpWithEmail(email, password) {
 
   if (error) return { error: error.message };
 
-  // Fire welcome email (fire and forget)
   if (data?.user) {
     fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`, {
       method: 'POST',
@@ -108,15 +113,12 @@ async function signOutUser() {
 }
 
 // ⚠️ CRITICAL: This listener must NOT be async and must NOT await DB work.
-// Supabase holds an auth lock while running listeners — awaiting inside
-// here deadlocks every subsequent DB call on the page.
 supabaseClient.auth.onAuthStateChange((event, session) => {
   console.log('[Auth]', event);
   currentUser = session?.user || null;
   updateAuthUI();
   closeWelcomeModal();
 
-  // ⭐ Re-render streak + dashboard now that we know who the user is
   if (typeof renderStreak === 'function') renderStreak();
   if (typeof renderDashboard === 'function') renderDashboard();
 
@@ -127,24 +129,50 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   }
 });
 
+// ═══════════════════════════════════════════════════════
+// SYNC
+// ═══════════════════════════════════════════════════════
+async function pushProgressToCloud() {
+  if (!currentUser) return;
 
+  const progress = getUserProgress();
+  const streak = getUserStreak();
+  const practiceDays = JSON.parse(localStorage.getItem(`practiceDays_${currentUser.id}`) || '[]');
+  const bookmarks = JSON.parse(localStorage.getItem(`bookmarks_${currentUser.id}`) || '[]');
+
+  const { error } = await supabaseClient
+    .from('progress')
+    .upsert({
+      user_id: currentUser.id,
+      data: progress,
+      streak: streak,
+      practice_days: practiceDays,
+      bookmarks: bookmarks,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' });
+
+  if (error) console.error('[Sync] Push failed:', error.message);
+  else console.log('[Sync] Progress pushed for', currentUser.email);
+}
 
 async function pullProgressFromCloud() {
   if (!currentUser) return;
   try {
     const { data, error } = await supabaseClient
       .from('progress')
-      .select('data, streak')
+      .select('data, streak, practice_days, bookmarks')
       .eq('user_id', currentUser.id)
       .maybeSingle();
 
     if (error) { console.error('[Sync] Pull failed:', error.message); return; }
 
-    // Handle different user
+    // Handle different user — clear the OLD user's keys
     if (lastUserId && lastUserId !== currentUser.id) {
       console.log('[Sync] Different user — clearing old local data');
-      localStorage.removeItem(userKey('progress'));
-      localStorage.removeItem(userKey('streak'));
+      localStorage.removeItem(`progress_${lastUserId}`);
+      localStorage.removeItem(`streak_${lastUserId}`);
+      localStorage.removeItem(`practiceDays_${lastUserId}`);
+      localStorage.removeItem(`bookmarks_${lastUserId}`);
     }
     lastUserId = currentUser.id;
     localStorage.setItem('aim360_last_user_id', currentUser.id);
@@ -153,32 +181,45 @@ async function pullProgressFromCloud() {
       // NEW USER — start clean
       setUserProgress({});
       setUserStreak({ count: 0, lastDate: null });
-    } else {
-      // Existing user — pull cloud data
-      setUserProgress(data.data || {});
-      setUserStreak(data.streak || { count: 0, lastDate: null });
+      localStorage.setItem(`practiceDays_${currentUser.id}`, '[]');
+      localStorage.setItem(`bookmarks_${currentUser.id}`, '[]');
+      return;
     }
 
-    console.log('[Sync] Progress pulled for', currentUser.email);
+    // ─── PROGRESS: cloud wins (contains quiz scores) ───
+    setUserProgress(data.data || {});
+
+    // ─── STREAK: keep the better one ───
+    const localStreak = getUserStreak();
+    const cloudStreak = data.streak || { count: 0, lastDate: null };
+    setUserStreak(cloudStreak.count > localStreak.count ? cloudStreak : localStreak);
+
+    // ─── PRACTICE DAYS: MERGE local + cloud (union of dates) ───
+    const cloudDays = data.practice_days || [];
+    const localDays = JSON.parse(localStorage.getItem(`practiceDays_${currentUser.id}`) || '[]');
+    const mergedDays = Array.from(new Set([...cloudDays, ...localDays]));
+    localStorage.setItem(`practiceDays_${currentUser.id}`, JSON.stringify(mergedDays));
+
+    // ─── BOOKMARKS: MERGE local + cloud (union by key) ───
+    const cloudBookmarks = data.bookmarks || [];
+    const localBookmarks = JSON.parse(localStorage.getItem(`bookmarks_${currentUser.id}`) || '[]');
+    const bookmarkMap = new Map();
+    [...localBookmarks, ...cloudBookmarks].forEach(b => bookmarkMap.set(b.key, b));
+    const mergedBookmarks = Array.from(bookmarkMap.values());
+    localStorage.setItem(`bookmarks_${currentUser.id}`, JSON.stringify(mergedBookmarks));
+
+    console.log('[Sync] Progress pulled for', currentUser.email,
+                `(days: ${mergedDays.length}, bookmarks: ${mergedBookmarks.length})`);
+
     if (typeof renderDashboard === 'function') renderDashboard();
     if (typeof renderStreak === 'function') renderStreak();
+    if (typeof renderBookmarksView === 'function') renderBookmarksView();
   } catch (e) {
     console.warn('[Sync] Pull error:', e);
   }
 }
 
-function mergeProgress(local, cloud) {
-  const merged = { ...cloud };
-  for (const id in local) {
-    if (!merged[id]) merged[id] = local[id];
-    else merged[id] = {
-      correct: Math.max(local[id].correct, merged[id].correct),
-      total: Math.max(local[id].total, merged[id].total)
-    };
-  }
-  return merged;
-}
-
+// ─── UI ───────────────────────────────────────────────
 function updateAuthUI() {
   const btn = document.getElementById('auth-btn');
   const txt = document.getElementById('auth-btn-text');
@@ -189,16 +230,9 @@ function updateAuthUI() {
   if (btn && txt) {
     if (currentUser) {
       const name = getFirstName(currentUser);
-
-      // Blue verified tick next to name for Pro users
-            txt.innerHTML = isPro
-        ? `<span class="pro-badge-name">${escapeHtml(name)}<span class="verified-tick" title="Pro subscriber" aria-label="Verified"></span></span>`
+      txt.innerHTML = isPro
+        ? `<span class="pro-badge-name">${escapeHtml(name)}${verifiedTickHtml()}</span>`
         : escapeHtml(name);
-
-      // Blue ring around the person icon for Pro users
-      const inner = btn.querySelector('.auth-btn-inner');
-      if (inner) inner.classList.toggle('pro-ring', isPro);
-
       btn.onclick = () => openSettings();
       btn.title = `${currentUser.email} — open settings`;
     } else {
@@ -221,7 +255,7 @@ function updateAuthUI() {
             ${photo ? '' : initial}
           </div>
           <div class="settings-profile-info">
-                    <p class="settings-profile-name">${escapeHtml(name)}${isPro ? '<span class="verified-tick lg" title="Pro subscriber" aria-label="Verified"></span>' : ''}</p>
+            <p class="settings-profile-name">${escapeHtml(name)}${isPro ? verifiedTickHtml('lg') : ''}</p>
             <p class="settings-profile-email">${escapeHtml(email)}</p>
           </div>
         </div>
@@ -261,3 +295,10 @@ function escapeHtml(s) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[c]));
 }
+
+// Re-render topbar after everything is loaded
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (typeof updateAuthUI === 'function') updateAuthUI();
+  }, 600);
+});

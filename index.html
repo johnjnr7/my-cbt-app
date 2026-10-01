@@ -35,6 +35,9 @@
         </div>
       </div>
 
+        <!-- ═══════════ SUBSCRIPTION (mobile only) ═══════════ -->
+  <div class="sidebar-sub" id="sub-status-mobile"></div>
+
       <p class="nav-label">Learn</p>
 
       <nav class="nav">
@@ -51,14 +54,20 @@
           <span>Practice</span>
         </button>
 
+        <button class="nav-item" data-view="exam">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+  <span>Mock Exam</span>
+</button>
+
+<button class="nav-item" data-view="leaderboard">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9H4a2 2 0 0 1-2-2V4h4M18 9h2a2 2 0 0 0 2-2V4h-4M6 4h12v6a6 6 0 0 1-12 0zM12 16v4M8 22h8"/></svg>
+  <span>Leaderboard</span>
+</button>
         <button class="nav-item" data-view="bookmarks">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
   <span>Bookmarks</span>
 </button>
       </nav>
-
-      <!-- ═══════════ PRO STATUS (MOBILE ONLY) ═══════════ -->
-<div class="sidebar-pro" id="sub-status-mobile"></div>
     </aside>
 
     <div class="main-wrap">
@@ -69,14 +78,11 @@
 
         <div class="topbar-right">
           <button id="auth-btn" class="reminder-btn" aria-label="Sign in">
-  <span class="auth-btn-inner">
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-      <circle cx="12" cy="7" r="4"/>
-    </svg>
-    <span id="auth-btn-text">Sign in</span>
-  </span>
-</button>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span id="auth-btn-text">Sign in</span>
           </button>
 
           <button class="streak-badge" id="streak-badge" title="View streak calendar">
@@ -85,6 +91,7 @@
           </button>
 
                     <div id="sub-status"></div>
+
           <button id="settings-btn" class="icon-btn" aria-label="Settings">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="12" cy="12" r="3"/>
@@ -210,6 +217,128 @@
           <div id="quiz-summary" class="panel hidden"></div>
         </section>
 
+        <section id="view-exam" class="view">
+  <div class="hero-head">
+    <div>
+      <h2 class="greeting">Mock Exam</h2>
+      <p class="subtitle">Mix subjects, set your own timer, and simulate the real thing.</p>
+    </div>
+  </div>
+
+  <!-- SETUP -->
+  <div id="exam-setup" class="panel">
+    <h3>Choose your exam</h3>
+
+    <div class="exam-field">
+      <label class="exam-label">Subjects</label>
+      <div class="exam-subjects" id="exam-subjects"></div>
+    </div>
+
+    <div class="exam-field">
+      <label class="exam-label">Number of questions</label>
+      <div class="exam-pill-row" id="exam-count-row">
+        <button class="exam-pill" data-count="10">10</button>
+        <button class="exam-pill active" data-count="20">20</button>
+        <button class="exam-pill" data-count="40">40</button>
+        <button class="exam-pill" data-count="60">60</button>
+      </div>
+    </div>
+
+    <div class="exam-field">
+      <label class="exam-label">Time limit</label>
+      <div class="exam-pill-row" id="exam-time-row">
+        <button class="exam-pill" data-time="10">10 min</button>
+        <button class="exam-pill active" data-time="20">20 min</button>
+        <button class="exam-pill" data-time="40">40 min</button>
+        <button class="exam-pill" data-time="60">60 min</button>
+      </div>
+    </div>
+
+    <button class="cta-btn" id="exam-start-btn">Start exam →</button>
+  </div>
+
+  <!-- RUNNING -->
+  <div id="exam-running" class="panel hidden">
+    <div class="exam-top">
+      <div class="exam-timer" id="exam-timer">--:--</div>
+      <div class="exam-progress" id="exam-progress">Q 0 / 0</div>
+      <button class="exam-calc-btn" id="exam-calc-btn" title="Open calculator">🧮 Calc</button>
+    </div>
+
+    <div class="exam-question-wrap">
+      <p id="exam-question"></p>
+      <div id="exam-options"></div>
+    </div>
+
+    <div class="exam-nav-btns">
+      <button id="exam-prev-btn" class="btn-ghost">← Previous</button>
+      <button id="exam-flag-btn" class="btn-ghost">⚑ Flag</button>
+      <button id="exam-next-btn" class="cta-btn">Next →</button>
+    </div>
+
+    <div class="exam-navigator" id="exam-navigator"></div>
+
+    <button id="exam-submit-btn" class="btn-ghost exam-submit">Submit exam</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="exam-results" class="panel hidden"></div>
+
+  <!-- CALCULATOR -->
+  <div id="calc-panel" class="calc-panel hidden">
+    <div class="calc-head">
+      <span>Calculator</span>
+      <button id="calc-close" class="calc-close" aria-label="Close">×</button>
+    </div>
+    <div class="calc-display" id="calc-display">0</div>
+    <div class="calc-grid">
+      <button class="calc-btn calc-fn" data-action="clear">C</button>
+      <button class="calc-btn calc-fn" data-action="backspace">⌫</button>
+      <button class="calc-btn calc-fn" data-action="sqrt">√</button>
+      <button class="calc-btn calc-op" data-op="÷">÷</button>
+
+      <button class="calc-btn" data-num="7">7</button>
+      <button class="calc-btn" data-num="8">8</button>
+      <button class="calc-btn" data-num="9">9</button>
+      <button class="calc-btn calc-op" data-op="×">×</button>
+
+      <button class="calc-btn" data-num="4">4</button>
+      <button class="calc-btn" data-num="5">5</button>
+      <button class="calc-btn" data-num="6">6</button>
+      <button class="calc-btn calc-op" data-op="-">−</button>
+
+      <button class="calc-btn" data-num="1">1</button>
+      <button class="calc-btn" data-num="2">2</button>
+      <button class="calc-btn" data-num="3">3</button>
+      <button class="calc-btn calc-op" data-op="+">+</button>
+
+      <button class="calc-btn calc-zero" data-num="0">0</button>
+      <button class="calc-btn" data-num=".">.</button>
+      <button class="calc-btn calc-eq" data-action="equals">=</button>
+    </div>
+  </div>
+</section>
+
+<section id="view-leaderboard" class="view">
+  <div class="hero-head">
+    <div>
+      <h2 class="greeting">Leaderboard</h2>
+      <p class="subtitle">See how you stack up. Top scorers update live.</p>
+    </div>
+  </div>
+
+  <div class="lb-filters" id="lb-filters">
+    <button class="lb-filter active" data-filter="all">All</button>
+    <button class="lb-filter" data-filter="maths">Mathematics</button>
+    <button class="lb-filter" data-filter="physics">Physics</button>
+    <button class="lb-filter" data-filter="english">English</button>
+    <button class="lb-filter" data-filter="chemistry">Chemistry</button>
+  </div>
+
+  <div id="lb-podium" class="lb-podium"></div>
+  <div id="lb-list" class="lb-list"></div>
+  <div id="lb-you" class="lb-you"></div>
+</section>
         <section id="view-bookmarks" class="view">
   <div class="hero-head">
     <div>
@@ -249,40 +378,7 @@
               </button>
             </div>
 
-            <!-- Reminder -->
-            <div class="settings-row">
-              <div class="settings-row-label">
-                <span class="settings-icon">🔔</span>
-                <span>Daily reminder</span>
-              </div>
-              <button id="reminder-toggle" class="toggle-switch" role="switch">
-                <span class="toggle-knob"></span>
-              </button>
-            </div>
-
-            <div class="settings-sub">
-              <label class="modal-label">
-                Reminder time
-                <input type="time" id="reminder-time-input" value="20:00" />
-              </label>
-              <p class="note" id="settings-status">Notifications are off.</p>
-            </div>
-
-            <div class="settings-divider"></div>
-
-                    <!-- Google Calendar reminder -->
-        <div class="settings-row" style="flex-direction: column; align-items: stretch; gap: 8px;">
-          <div class="settings-row-label">
-            <span class="settings-icon">📅</span>
-            <span>Google Calendar reminder</span>
-          </div>
-          <p class="note" style="margin: 0; padding-left: 36px;">
-            Get a daily email + phone notification from Google, even when this app is closed.
-          </p>
-          <button id="gcal-btn" class="settings-signout" style="margin-left: 36px; margin-top: 4px;">
-            Add to Google Calendar
-          </button>
-        </div>
+            
 
         <div class="settings-divider"></div>
 
@@ -290,10 +386,6 @@
         <button id="reset-all-btn" class="settings-danger">
           🗑️ Reset all progress
         </button>
-            <!-- Reset -->
-            <button id="reset-all-btn" class="settings-danger">
-              🗑️ Reset all progress
-            </button>
           </div>
         </div>
 
@@ -310,10 +402,18 @@
             </div>
 
             <div class="calendar-nav">
-              <button id="calendar-prev" class="calendar-arrow">←</button>
-              <h4 id="calendar-title">Month Year</h4>
-              <button id="calendar-next" class="calendar-arrow">→</button>
-            </div>
+  <button id="calendar-prev" class="calendar-arrow" aria-label="Previous month">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </button>
+  <h4 id="calendar-title">Month Year</h4>
+  <button id="calendar-next" class="calendar-arrow" aria-label="Next month">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </button>
+</div>
 
             <div id="calendar-grid" class="calendar-grid"></div>
 
@@ -384,8 +484,6 @@
     </p>
   </div>
 </div>
-
-
         <!-- ═══════════ PAYWALL MODAL ═══════════ -->
         <div id="paywall-modal" class="modal-overlay hidden">
           <div class="modal-card welcome-card">
@@ -422,6 +520,7 @@
 
      <script defer src="js/app.js"></script>
   <script defer src="js/supabase.js"></script>
-  <script defer src="js/payments.js?v=2"></script>
+  <script defer src="js/payments.js"></script>
+    <script defer src="js/exam.js"></script>
 </body>
 </html>

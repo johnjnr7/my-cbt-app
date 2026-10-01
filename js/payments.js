@@ -59,22 +59,42 @@ function canAccessTopics() {
 
 // ─── UI badge ──────────────────────────────────────────
 function updateSubscriptionUI() {
-  const wrap = document.getElementById('sub-status');
-  if (!wrap) return;
+  const targets = [
+    document.getElementById('sub-status'),        // topbar (desktop)
+    document.getElementById('sub-status-mobile')  // sidebar (mobile)
+  ].filter(Boolean);
+
+  if (targets.length === 0) return;
+
+  let html = '';
+  let onclick = null;
 
   if (hasActiveSubscription()) {
     const end = new Date(currentSubscription.current_period_end);
-    wrap.innerHTML = `<span class="sub-badge pro" title="Renews ${end.toLocaleDateString()}">💎 Pro</span>`;
-    wrap.onclick = null;
+    html = `<span class="sub-badge pro" title="Renews ${end.toLocaleDateString()}">💎 Pro</span>`;
   } else if (!currentUser) {
-    wrap.innerHTML = `<button class="sub-badge cta">Sign in to go Pro</button>`;
-    wrap.onclick = () => signInWithGoogle?.();
+    html = `<button class="sub-badge cta">Sign in to go Pro</button>`;
+    onclick = () => signInWithGoogle?.();
   } else {
-    wrap.innerHTML = `<button class="sub-badge cta">🔓 Go Pro · ₦10,000/mo</button>`;
-    wrap.onclick = openPaywallModal;
+    html = `<button class="sub-badge cta">🔓 Go Pro · ₦10,000/mo</button>`;
+    onclick = openPaywallModal;
   }
 
-  // ⭐ Refresh topbar so the blue tick appears/disappears immediately
+  targets.forEach(el => {
+    // Sidebar version gets a section label
+    if (el.id === 'sub-status-mobile') {
+      el.innerHTML = `<span class="sidebar-sub-label">Subscription</span>${html}`;
+    } else {
+      el.innerHTML = html;
+    }
+
+    if (onclick) {
+      const btn = el.querySelector('.sub-badge');
+      if (btn) btn.onclick = onclick;
+    }
+  });
+
+  // Refresh topbar tick/name
   if (typeof updateAuthUI === 'function') updateAuthUI();
 }
 
