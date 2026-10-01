@@ -173,7 +173,7 @@ function renderUsers(users) {
     const isActive = u.status === 'active' && end && end > now;
     const status = isActive ? 'active' : (u.status === 'trial' ? 'trial' : 'expired');
     return `<tr>
-      <td><div class="user-name">${esc(u.full_name || '—')}</div><div class="user-email">${esc(u.email || '')}</div></td>
+     <td><div class="user-name">${esc(u.full_name || (u.email ? u.email.split('@')[0] : 'Anonymous'))}</div><div class="user-email">${esc(u.email || '')}</div></td>
       <td><span class="status-pill status-${status}">${status}</span></td>
       <td>${end ? fmtDate(end) : '—'}</td>
       <td>₦${((u.total_paid || 0) / 100).toLocaleString()}</td>
