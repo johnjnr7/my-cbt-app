@@ -51,7 +51,7 @@ serve(async (req) => {
 
     for (const r of recipientsList) {
       if (!r.email) continue;
-      const firstName = (r.full_name || '').split(' ')[0] || 'there';
+      const firstName = (r.full_name || '').split(' ')[0] || 'superhuman';
       const html = renderEmail(body.replace(/\{\{name\}\}/g, firstName), firstName);
       try {
         const res = await fetch('https://api.resend.com/emails', {

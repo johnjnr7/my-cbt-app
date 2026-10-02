@@ -1260,17 +1260,21 @@ if (summaryNextBtn) {
   });
 }
 
-// Close welcome modal on backdrop click or Escape
+// Welcome modal — block dismissal when not signed in
 const welcomeModal = document.getElementById('welcome-modal');
 if (welcomeModal) {
   welcomeModal.addEventListener('click', (e) => {
-    if (e.target.id === 'welcome-modal') {
+    // Only close if user is signed in
+    if (e.target.id === 'welcome-modal' && typeof currentUser !== 'undefined' && currentUser) {
       welcomeModal.classList.add('hidden');
     }
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !welcomeModal.classList.contains('hidden')) {
-      welcomeModal.classList.add('hidden');
+      // Only close if user is signed in
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        welcomeModal.classList.add('hidden');
+      }
     }
   });
 }
@@ -1295,7 +1299,6 @@ if (welcomeModal) {
   const passInput  = document.getElementById('welcome-password');
   const statusEl   = document.getElementById('welcome-status');
   const googleBtn  = document.getElementById('welcome-google');
-  const guestBtn   = document.getElementById('welcome-guest');
   const togglePwBtn = document.getElementById('toggle-password');
 
   function setMode(next) {
@@ -1327,12 +1330,6 @@ if (welcomeModal) {
 
   if (googleBtn) {
     googleBtn.addEventListener('click', () => signInWithGoogle());
-  }
-
-  if (guestBtn) {
-    guestBtn.addEventListener('click', () => {
-      modal.classList.add('hidden');
-    });
   }
 
   if (togglePwBtn) {
@@ -1485,7 +1482,7 @@ function renderLeaderboard() {
         <div class="lb-podium-avatar" style="${avatarStyle}">${u.avatar_url ? '' : initial}</div>
         <div class="lb-podium-name">${escapeHtmlText(u.display_name || 'Anonymous')}${tick}</div>
         <div class="lb-podium-score">${u.score}</div>
-        <div class="lb-podium-sub">🔥 ${u.streak_count}d streak</div>
+        <div class="lb-podium-sub">🔥 ${u.streak_count} days streak</div>
       </div>
     `;
   });
@@ -1541,6 +1538,30 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLeaderboard(btn.dataset.filter);
   });
 });
+// ═══════════════════════════════════════════════════════
+// FORCE SIGN-IN ON PAGE LOAD
+// ═══════════════════════════════════════════════════════
+(async function forceSignIn() {
+  // Wait for auth state to settle
+  await new Promise(r => setTimeout(r, 800));
+
+  if (typeof currentUser === 'undefined' || !currentUser) {
+    const modal = document.getElementById('welcome-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
+})();
+
+// Also re-show if user signs out
+if (typeof supabaseClient !== 'undefined' && supabaseClient?.auth) {
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT') {
+      setTimeout(() => {
+        const modal = document.getElementById('welcome-modal');
+        if (modal) modal.classList.remove('hidden');
+      }, 100);
+    }
+  });
+}
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
