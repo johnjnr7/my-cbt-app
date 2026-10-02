@@ -47,6 +47,18 @@ function initExamSetup() {
 }
 
 async function startExam() {
+  // ── ACCESS GATE ──────────────────────────
+  const access = await getUserAccess();
+  if (!access) {
+    alert('Please sign in to start an exam.');
+    return;
+  }
+  if (!access.canTakeExam) {
+    showUpgradeModal("You've used your free exam attempt. Upgrade to unlock unlimited exams.");
+    return;
+  }
+  // ── END GATE ─────────────────────────────
+
   const selected = [];
   document.querySelectorAll('#exam-subjects input:checked').forEach(cb => selected.push(cb.value));
 
@@ -93,14 +105,22 @@ async function startExam() {
   examState.startedAt = Date.now();
   examState.finished = false;
 
+  // ── MARK THIS ATTEMPT FOR UNPAID USERS ───
+  if (!access.isPaid) {
+    await recordExamAttempt();
+  }
+  // ── END MARK ─────────────────────────────
+
   document.getElementById('exam-setup').classList.add('hidden');
   document.getElementById('exam-results').classList.add('hidden');
   document.getElementById('exam-running').classList.remove('hidden');
 
+  if (!access.isPaid) {
+  await recordExamAttempt();
+}
   renderExamQuestion();
   startExamTimer();
 }
-
 function startExamTimer() {
   if (examState.timerInterval) clearInterval(examState.timerInterval);
   updateExamTimerDisplay();

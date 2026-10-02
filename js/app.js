@@ -1417,6 +1417,25 @@ async function loadLeaderboard(filter = 'all') {
   const you = document.getElementById('lb-you');
   if (!podium || !list || !you) return;
 
+  // ── ACCESS GATE ──────────────────────────
+const access = await getUserAccess();
+if (!access?.canSeeLeaderboard) {
+  podium.innerHTML = '';
+  list.innerHTML = `
+    <div class="lb-empty">
+      <div class="lb-empty-icon">🔒</div>
+      <strong>Leaderboard is for paid members</strong>
+      <p style="margin-top:8px">Upgrade to see how you rank against other scholars.</p>
+      <button onclick="showUpgradeModal('Unlock the leaderboard to see where you stand.')"
+        style="margin-top:16px;background:#0d4a35;color:#c9f26b;border:none;padding:12px 24px;border-radius:10px;font-weight:700;cursor:pointer;">
+        Upgrade Now
+      </button>
+    </div>`;
+  you.innerHTML = '';
+  return;
+}
+// ── END GATE ─────────────────────────────
+
   lbCurrentFilter = filter;
   podium.innerHTML = '<div class="lb-loading">Loading…</div>';
   list.innerHTML = '';
