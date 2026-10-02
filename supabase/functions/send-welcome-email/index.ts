@@ -51,7 +51,7 @@ serve(async (req) => {
       <p style="margin:0 0 14px;line-height:1.6;color:#0a1a12;">
         Your <strong>first topic is free</strong>. When you're ready to unlock everything, upgrade to Pro for ₦10,000/month.
       </p>
-      <a href="https://aim360.vercel.app" style="display:inline-block;background:#c9f26b;color:#0d4a35;padding:14px 24px;border-radius:10px;text-decoration:none;font-weight:700;margin-top:12px;">
+      <a href="https://www.aim360.com.ng/" style="display:inline-block;background:#c9f26b;color:#0d4a35;padding:14px 24px;border-radius:10px;text-decoration:none;font-weight:700;margin-top:12px;">
         Start learning →
       </a>
       <hr style="border:none;border-top:1px solid #e4e7e2;margin:28px 0 16px;">
