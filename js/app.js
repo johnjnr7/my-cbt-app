@@ -1557,6 +1557,67 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLeaderboard(btn.dataset.filter);
   });
 });
+
+// ── Cancel subscription button ──
+document.getElementById('cancel-subscription-btn')?.addEventListener('click', async () => {
+  if (!confirm("Cancel auto-renewal? You'll keep access until the end of your current billing period.")) return;
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) return alert('Please sign in first.');
+
+  const btn = document.getElementById('cancel-subscription-btn');
+  btn.disabled = true;
+  btn.textContent = 'Cancelling…';
+
+  try {
+    const res = await fetch(
+      'https://usukzxzrarlbaluscvzo.supabase.co/functions/v1/cancel-subscription',
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      }
+    );
+    const result = await res.json();
+
+    if (result.success) {
+      alert(result.message);
+      btn.textContent = 'Auto-Renewal Cancelled';
+      btn.style.opacity = '0.6';
+    } else {
+      alert('Error: ' + (result.error || 'Could not cancel'));
+      btn.disabled = false;
+      btn.textContent = 'Cancel Auto-Renewal';
+    }
+  } catch (e) {
+    alert('Network error. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Cancel Auto-Renewal';
+  }
+});
+
+// Show/hide the button based on subscription state
+async function refreshCancelButton() {
+  const btn = document.getElementById('cancel-subscription-btn');
+  if (!btn) return;
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) { btn.style.display = 'none'; return; }
+
+  const { data: sub } = await supabaseClient
+    .from('subscriptions')
+    .select('status, cancel_at_period_end')
+    .eq('user_id', session.user.id)
+    .maybeSingle();
+
+  const shouldShow =
+    sub?.status === 'active' &&
+    !sub?.cancel_at_period_end;
+
+  btn.style.display = shouldShow ? 'inline-block' : 'none';
+}
+
+// Run whenever the page loads
+document.addEventListener('DOMContentLoaded', refreshCancelButton);
 // ═══════════════════════════════════════════════════════
 // FORCE SIGN-IN ON PAGE LOAD
 // ═══════════════════════════════════════════════════════
