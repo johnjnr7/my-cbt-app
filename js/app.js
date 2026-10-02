@@ -1302,26 +1302,26 @@ if (welcomeModal) {
   const togglePwBtn = document.getElementById('toggle-password');
 
   function setMode(next) {
-    mode = next;
-    statusEl.textContent = '';
-    statusEl.className = 'welcome-status';
+  mode = next;
+  statusEl.textContent = '';
+  statusEl.className = 'welcome-status';
 
-    if (mode === 'signup') {
-      titleEl.textContent = 'Join AIM360';
-      subtitleEl.textContent = 'Create an account to sync progress across all your devices.';
-      submitBtn.textContent = 'Create account';
-      switchText.textContent = 'Already have an account?';
-      switchCta.textContent = 'Login';
-      passInput.setAttribute('autocomplete', 'new-password');
-    } else {
-      titleEl.textContent = 'Welcome back';
-      subtitleEl.textContent = 'Sign in to pick up where you left off.';
-      submitBtn.textContent = 'Sign in';
-      switchText.textContent = "Don't have an account?";
-      switchCta.textContent = 'Sign up';
-      passInput.setAttribute('autocomplete', 'current-password');
-    }
+  if (mode === 'signup') {
+    titleEl.textContent = 'Join AIM360';
+    subtitleEl.textContent = 'Create an account to sync progress across all your devices.';
+    submitBtn.textContent = 'Create account';
+    switchText.textContent = 'Already have an account?';
+    switchCta.textContent = 'Login';
+    passInput.setAttribute('autocomplete', 'new-password');
+  } else {
+    titleEl.textContent = 'Welcome back';
+    subtitleEl.textContent = 'Sign in to pick up where you left off.';
+    submitBtn.textContent = 'Sign in';
+    switchText.textContent = "Don't have an account?";
+    switchCta.textContent = 'Sign up';
+    passInput.setAttribute('autocomplete', 'current-password');
   }
+}
 
   switchBtn.addEventListener('click', (e) => {
     e.preventDefault();
