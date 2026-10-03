@@ -82,6 +82,7 @@ async function signUpWithEmail(email, password) {
   }
 
   return { success: true, user: data.user };
+  await refreshEverythingAfterLogin();
 }
 
 async function signInWithEmail(email, password) {
@@ -90,6 +91,10 @@ async function signInWithEmail(email, password) {
     password
   });
   if (error) return { error: error.message };
+
+  // ← THE FIX: refresh everything before returning
+  await refreshEverythingAfterLogin();
+
   return { success: true, user: data.user };
 }
 

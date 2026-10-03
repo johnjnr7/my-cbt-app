@@ -26,6 +26,19 @@ function scopedKey(key) {
     : key;
 }
 
+async function refreshEverythingAfterLogin() {
+  // Run loaders in parallel — they're independent
+  const tasks = [];
+
+  if (typeof loadLeaderboard === 'function')  tasks.push(loadLeaderboard('all'));
+  if (typeof loadProfileStats === 'function') tasks.push(loadProfileStats());
+  if (typeof loadDashboard === 'function')    tasks.push(loadDashboard());
+  if (typeof updateHeaderUser === 'function') tasks.push(updateHeaderUser());
+  if (typeof loadSubjects === 'function')     tasks.push(loadSubjects());
+  if (typeof loadProgress === 'function')     tasks.push(loadProgress());
+
+  await Promise.allSettled(tasks);
+}
 // ═══════════════════════════════════════════════════════
 // THEME
 // ═══════════════════════════════════════════════════════
@@ -860,6 +873,7 @@ function openSettings() {
   updateDarkToggle();
   updateReminderToggle();
   updateSettingsStatus();
+  loadProfileStats();
   if (typeof updateAuthUI === 'function') updateAuthUI();
 }
 
@@ -1641,6 +1655,40 @@ if (typeof supabaseClient !== 'undefined' && supabaseClient?.auth) {
       }, 100);
     }
   });
+}
+
+async function loadProfileStats() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) return;
+
+  const { data, error } = await supabaseClient
+    .from('progress')
+    .select('streak, data')
+    .eq('user_id', session.user.id)
+    .maybeSingle();
+
+  if (error || !data) {
+    document.getElementById('stat-streak').textContent = '0';
+    document.getElementById('stat-xp').textContent = '0';
+    return;
+  }
+
+  // Streak
+  const streak = data.streak?.count ?? 0;
+  document.getElementById('stat-streak').textContent = streak;
+
+  // XP — sum every topic's `correct` value × 20
+  let totalCorrect = 0;
+  if (data.data && typeof data.data === 'object') {
+    for (const key of Object.keys(data.data)) {
+      const topic = data.data[key];
+      if (topic && typeof topic.correct === 'number') {
+        totalCorrect += topic.correct;
+      }
+    }
+  }
+  const totalXP = totalCorrect * 20;
+  document.getElementById('stat-xp').textContent = totalXP;
 }
 // ═══════════════════════════════════════════════════════
 // INIT

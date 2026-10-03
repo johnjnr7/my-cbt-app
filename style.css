@@ -1985,6 +1985,75 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
   color: var(--muted);
 }
 
+/* ── Profile statistics cards ── */
+.profile-stats {
+  margin: 24px 0;
+}
+
+.profile-stats-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+}
+
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: #0f1d17;              /* dark green-black, matches your theme */
+  border: 1px solid #1e2f26;
+  border-radius: 14px;
+  transition: border-color 0.15s ease;
+}
+
+.stat-card:hover {
+  border-color: #2a4034;
+}
+
+.stat-icon {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6b7d77;
+  font-weight: 500;
+}
+
+/* Mobile — single column on very narrow screens */
+@media (max-width: 380px) {
+  .profile-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ─── Mobile tweaks ─── */
 @media (max-width: 600px) {
   .lb-podium { gap: 6px; }
