@@ -1690,6 +1690,213 @@ async function loadProfileStats() {
   const totalXP = totalCorrect * 20;
   document.getElementById('stat-xp').textContent = totalXP;
 }
+
+// ═══════════════════════════════════════════════
+// STREAK & MILESTONES MODAL
+// ═══════════════════════════════════════════════
+
+const STREAK_MILESTONES = [
+  { days: 3,   name: 'Getting Started',   icon: '🌱', desc: '3-day practice streak' },
+  { days: 7,   name: 'One Week Strong',   icon: '🔥', desc: '7-day practice streak' },
+  { days: 14,  name: 'Two-Week Grinder',  icon: '💪', desc: '14-day practice streak' },
+  { days: 30,  name: 'One Month Focused', icon: '🏆', desc: '30-day practice streak' },
+  { days: 60,  name: 'Unstoppable',       icon: '💎', desc: '60-day practice streak' },
+  { days: 100, name: 'JAMB Legend',       icon: '👑', desc: '100-day practice streak' },
+];
+
+let streakModalData = null;
+let streakModalViewDate = new Date();
+
+async function openStreakModal() {
+  const modal = document.getElementById('streak-modal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  await loadStreakModalData();
+  renderStreakModal();
+}
+
+function closeStreakModal() {
+  const modal = document.getElementById('streak-modal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function loadStreakModalData() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    streakModalData = null;
+    return;
+  }
+
+  const { data: progress } = await supabaseClient
+    .from('progress')
+    .select('streak, data, practice_days, all_time_best_streak')
+    .eq('user_id', session.user.id)
+    .maybeSingle();
+
+  if (!progress) {
+    streakModalData = null;
+    return;
+  }
+
+  const days = parsePracticeDays(progress.practice_days);
+
+  let totalCorrect = 0;
+  if (progress.data && typeof progress.data === 'object') {
+    for (const key of Object.keys(progress.data)) {
+      const t = progress.data[key];
+      if (t && typeof t.correct === 'number') totalCorrect += t.correct;
+    }
+  }
+
+  const streak = progress.streak?.count ?? 0;
+  const best = Math.max(progress.all_time_best_streak || 0, streak);
+
+  streakModalData = {
+    streak,
+    best,
+    days,
+    totalXP: totalCorrect * 20,
+  };
+}
+
+function parsePracticeDays(raw) {
+  const set = new Set();
+  if (!raw) return set;
+
+  const MONTHS = {
+    jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+    jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12'
+  };
+
+  function normalize(str) {
+    if (!str) return null;
+    str = String(str).trim();
+
+    // Already YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}/.test(str)) return str.slice(0, 10);
+
+    // "Wed Sep 30 2026" format
+    const parts = str.split(/\s+/);
+    if (parts.length >= 4) {
+      const month = MONTHS[parts[1].toLowerCase().slice(0, 3)];
+      const day = parts[2].padStart(2, '0');
+      const year = parts[3];
+      if (month && day && year) return `${year}-${month}-${day}`;
+    }
+    return null;
+  }
+
+  const add = (val) => {
+    const norm = normalize(val);
+    if (norm) set.add(norm);
+  };
+
+  if (Array.isArray(raw)) {
+    raw.forEach(add);
+  } else if (typeof raw === 'object') {
+    Object.keys(raw).forEach(k => { if (raw[k]) add(k); });
+  }
+  return set;
+}
+
+function renderStreakModal() {
+  const d = streakModalData;
+  if (!d) {
+    document.getElementById('streak-days-grid').innerHTML =
+      '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#6b7d77;">Sign in to see your streak</div>';
+    return;
+  }
+
+  renderStreakCalendar(d.days);
+
+  document.getElementById('streak-best').textContent = `${d.best} Days`;
+
+  const unlocked = STREAK_MILESTONES.filter(m => d.streak >= m.days).length;
+  const total = STREAK_MILESTONES.length;
+
+  document.getElementById('streak-unlocks').textContent = `${unlocked} Medals`;
+  document.getElementById('streak-milestone-count').textContent =
+    `${unlocked} / ${total} Unlocked`;
+
+  const list = document.getElementById('streak-milestones-list');
+  list.innerHTML = '';
+  STREAK_MILESTONES.forEach(m => {
+    const isUnlocked = d.streak >= m.days;
+    list.innerHTML += `
+      <div class="streak-milestone ${isUnlocked ? 'unlocked' : ''}">
+        <div class="streak-milestone-icon">${m.icon}</div>
+        <div class="streak-milestone-info">
+          <div class="streak-milestone-name">${m.name}</div>
+          <div class="streak-milestone-desc">${m.desc}</div>
+        </div>
+        <div class="streak-milestone-requirement">${m.days} Days</div>
+      </div>
+    `;
+  });
+}
+
+function renderStreakCalendar(daysSet) {
+  const view = streakModalViewDate;
+  const year = view.getFullYear();
+  const month = view.getMonth();
+
+  const monthNames = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+                      'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  document.getElementById('streak-month-label').textContent =
+    `${monthNames[month]} ${year}`;
+
+  const firstDay = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let startOffset = firstDay.getDay() - 1;
+  if (startOffset < 0) startOffset = 6;
+
+  const todayKey = fmtDate(new Date());
+
+  const grid = document.getElementById('streak-days-grid');
+  grid.innerHTML = '';
+
+  for (let i = 0; i < startOffset; i++) {
+    grid.innerHTML += '<div class="streak-day empty"></div>';
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateKey = fmtDate(new Date(year, month, day));
+    const done = daysSet.has(dateKey);
+    const isToday = dateKey === todayKey;
+    grid.innerHTML += `
+      <div class="streak-day ${done ? 'done' : ''} ${isToday ? 'today' : ''}">
+        ${done ? '✓' : day}
+      </div>
+    `;
+  }
+}
+
+function fmtDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('streak-prev-month')?.addEventListener('click', () => {
+    streakModalViewDate.setMonth(streakModalViewDate.getMonth() - 1);
+    if (streakModalData) renderStreakCalendar(streakModalData.days);
+  });
+    document.getElementById('streak-badge')?.addEventListener('click', openStreakModal);
+  document.getElementById('streak-next-month')?.addEventListener('click', () => {
+    streakModalViewDate.setMonth(streakModalViewDate.getMonth() + 1);
+    if (streakModalData) renderStreakCalendar(streakModalData.days);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeStreakModal();
+  });
+});
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════

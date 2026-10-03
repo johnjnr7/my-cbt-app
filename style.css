@@ -2072,3 +2072,262 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
   .lb-streak { font-size: 0.72rem; }
   .lb-rank { width: 24px; font-size: 0.8rem; }
 }
+
+/* ═══ STREAK & MILESTONES MODAL ═══ */
+.streak-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.streak-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+}
+.streak-modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #0a1410;
+  border: 1px solid #1e2f26;
+  border-radius: 20px;
+  margin: 20px;
+  color: #fff;
+}
+.streak-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #1e2f26;
+}
+.streak-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.streak-modal-close {
+  background: #1a2420;
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #6b7d77;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.streak-modal-close:hover { color: #fff; }
+.streak-modal-body {
+  padding: 20px 24px 28px;
+}
+
+/* Calendar */
+.streak-calendar {
+  background: #0f1d17;
+  border: 1px solid #1e2f26;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.streak-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.streak-month-label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #a8b8b2;
+}
+.streak-calendar-controls { display: flex; gap: 6px; }
+.streak-nav-btn {
+  background: #1a2420;
+  border: none;
+  color: #c9f26b;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.streak-nav-btn:hover { background: #253a30; }
+.streak-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.streak-weekdays span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7d77;
+  letter-spacing: 0.05em;
+}
+.streak-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.streak-day {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7d77;
+  background: #0d1a14;
+}
+.streak-day.done {
+  background: #c9f26b;
+  color: #0a1410;
+  box-shadow: 0 0 12px rgba(201, 242, 107, 0.35);
+}
+.streak-day.today {
+  outline: 2px solid #c9f26b;
+  outline-offset: 2px;
+}
+.streak-day.empty { visibility: hidden; }
+.streak-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 12px;
+  font-size: 11px;
+  color: #a8b8b2;
+}
+.streak-legend > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.streak-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.streak-dot-done { background: #c9f26b; }
+.streak-dot-missed { background: #2a3a32; }
+
+/* Stat cards */
+.streak-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.streak-stat-card {
+  background: #0f1d17;
+  border: 1px solid #1e2f26;
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-align: center;
+}
+.streak-stat-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #6b7d77;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.streak-stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+/* Milestones */
+.streak-milestones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #6b7d77;
+  text-transform: uppercase;
+}
+.streak-milestones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.streak-milestone {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #0f1d17;
+  border: 1px solid #1e2f26;
+  border-radius: 14px;
+  transition: border-color 0.15s;
+}
+.streak-milestone.unlocked {
+  border-color: #c9f26b;
+  background: linear-gradient(135deg, #0f1d17 0%, #16241a 100%);
+}
+.streak-milestone-icon {
+  font-size: 26px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d1a14;
+  border-radius: 50%;
+  flex-shrink: 0;
+  filter: grayscale(1) opacity(0.5);
+}
+.streak-milestone.unlocked .streak-milestone-icon {
+  filter: none;
+  background: rgba(201, 242, 107, 0.1);
+}
+.streak-milestone-info { flex: 1; min-width: 0; }
+.streak-milestone-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.streak-milestone-desc {
+  font-size: 12px;
+  color: #6b7d77;
+}
+.streak-milestone-requirement {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7d77;
+  flex-shrink: 0;
+}
+.streak-milestone.unlocked .streak-milestone-requirement {
+  color: #c9f26b;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .streak-modal-panel { border-radius: 16px; }
+  .streak-modal-body { padding: 16px 16px 24px; }
+  .streak-milestone { padding: 12px; gap: 10px; }
+  .streak-milestone-icon { width: 38px; height: 38px; font-size: 22px; }
+}

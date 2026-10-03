@@ -536,6 +536,58 @@
     </div>
   </div>
 
+  <!-- ═══ STREAK & MILESTONES MODAL ═══ -->
+<div id="streak-modal" class="streak-modal" style="display:none;">
+  <div class="streak-modal-backdrop" onclick="closeStreakModal()"></div>
+  <div class="streak-modal-panel">
+    <div class="streak-modal-header">
+      <h2>Streak &amp; Milestones</h2>
+      <button class="streak-modal-close" onclick="closeStreakModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="streak-modal-body">
+      <div class="streak-calendar">
+        <div class="streak-calendar-header">
+          <div class="streak-month-label" id="streak-month-label">OCTOBER 2026</div>
+          <div class="streak-calendar-controls">
+            <button class="streak-nav-btn" id="streak-prev-month">‹</button>
+            <button class="streak-nav-btn" id="streak-next-month">›</button>
+          </div>
+        </div>
+        <div class="streak-weekdays">
+          <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+        </div>
+        <div class="streak-days" id="streak-days-grid"></div>
+        <div class="streak-legend">
+          <span><span class="streak-dot streak-dot-done"></span> Completed</span>
+          <span><span class="streak-dot streak-dot-missed"></span> Missed</span>
+        </div>
+      </div>
+
+      <div class="streak-stats">
+        <div class="streak-stat-card">
+          <div class="streak-stat-label">All-Time Best</div>
+          <div class="streak-stat-value" id="streak-best">0 Days</div>
+        </div>
+        <div class="streak-stat-card">
+          <div class="streak-stat-label">Total Unlocks</div>
+          <div class="streak-stat-value" id="streak-unlocks">0 Medals</div>
+        </div>
+      </div>
+
+      <div class="streak-milestones-header">
+        <span>STREAK MILESTONES</span>
+        <span id="streak-milestone-count">0 / 12 Unlocked</span>
+      </div>
+      <div class="streak-milestones-list" id="streak-milestones-list"></div>
+    </div>
+  </div>
+</div>
+
      <script defer src="js/app.js"></script>
   <script defer src="js/supabase.js"></script>
   <script defer src="js/payments.js"></script>
