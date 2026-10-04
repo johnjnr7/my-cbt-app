@@ -39,6 +39,22 @@ async function refreshEverythingAfterLogin() {
 
   await Promise.allSettled(tasks);
 }
+
+async function refreshAllViews() {
+  const tasks = [];
+
+  // These exist in your codebase for sure
+  if (typeof loadLeaderboard === 'function')   tasks.push(loadLeaderboard('all'));
+  if (typeof loadProfileStats === 'function')  tasks.push(loadProfileStats());
+  if (typeof loadSubscription === 'function')  tasks.push(loadSubscription());
+
+  // Add these if they exist in your code — comment out any that error
+  if (typeof renderDashboard === 'function')   tasks.push(Promise.resolve(renderDashboard()));
+  if (typeof loadProgress === 'function')      tasks.push(loadProgress());
+  if (typeof updateHeaderUser === 'function')  tasks.push(updateHeaderUser());
+
+  await Promise.allSettled(tasks);
+}
 // ═══════════════════════════════════════════════════════
 // THEME
 // ═══════════════════════════════════════════════════════

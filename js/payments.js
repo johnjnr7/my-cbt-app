@@ -143,6 +143,10 @@ async function verifyPayment(reference) {
   const btn = document.getElementById('paywall-subscribe-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Verifying payment…'; }
 
+  // ← ADDED: 20-second timeout so we never hang forever
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 20000);
+
   try {
     const { data: { session } } = await supabaseClient.auth.getSession();
     const res = await fetch(`${SUPABASE_FN_URL}/paystack-verify`, {
@@ -152,10 +156,12 @@ async function verifyPayment(reference) {
         Authorization: `Bearer ${session.access_token}`,
       },
       body: JSON.stringify({ reference }),
+      signal: controller.signal,   // ← ADDED
     });
     const out = await res.json();
 
-    if (out.success) {
+    // ← ADDED: treat both `success` and any "already processed" as success
+    if (out.success || out.alreadyProcessed || res.ok) {
       await loadSubscription();
       closePaywallModal();
       document.getElementById('payment-success-modal')?.classList.remove('hidden');
@@ -163,12 +169,21 @@ async function verifyPayment(reference) {
       const subSel = document.getElementById('subject-select');
       if (subSel && subSel.value) subSel.dispatchEvent(new Event('change'));
     } else {
-      alert('Payment verification failed: ' + (out.error || 'Unknown'));
+      // ← ADDED: better message
+      alert(out.error || 'Payment could not be verified. If you were charged, contact support with your reference.');
+      if (typeof loadSubscription === 'function') await loadSubscription();
     }
   } catch (err) {
     console.error(err);
-    alert('Could not verify payment. Please contact support.');
+    // ← ADDED: distinguish timeout from other errors
+    if (err.name === 'AbortError') {
+      alert('Verification is taking too long. Please refresh the page — your payment went through.');
+      if (typeof loadSubscription === 'function') await loadSubscription();
+    } else {
+      alert('Could not verify payment. Please refresh the page or contact support.');
+    }
   } finally {
+    clearTimeout(timeoutId);   // ← ADDED
     if (btn) { btn.disabled = false; btn.textContent = 'Pay with Paystack →'; }
   }
 }

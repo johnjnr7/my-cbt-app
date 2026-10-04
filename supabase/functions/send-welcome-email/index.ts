@@ -47,6 +47,7 @@ serve(async (req) => {
         <li>Practice 4 subjects: Maths, Physics, English, Chemistry</li>
         <li>Track your streak and progress</li>
         <li>Unlock topics as you master them</li>
+        <li>Virtual Classroom Access (Weekly Sessions)</li>
       </ul>
       <p style="margin:0 0 14px;line-height:1.6;color:#0a1a12;">
         Your <strong>first topic is free</strong>. When you're ready to unlock everything, upgrade to Pro for ₦10,000/month.

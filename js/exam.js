@@ -113,11 +113,8 @@ async function startExam() {
 
   document.getElementById('exam-setup').classList.add('hidden');
   document.getElementById('exam-results').classList.add('hidden');
-  document.getElementById('exam-running').classList.remove('hidden');
+    document.getElementById('exam-running').classList.remove('hidden');
 
-  if (!access.isPaid) {
-  await recordExamAttempt();
-}
   renderExamQuestion();
   startExamTimer();
 }
@@ -260,8 +257,12 @@ function finishExam(timeUp) {
     document.getElementById('exam-setup').classList.remove('hidden');
   });
 
-  if (typeof logActivity === 'function') {
+    if (typeof logActivity === 'function') {
     logActivity('exam_completed', { correct, total, pct });
+  }
+
+  if (typeof refreshAllViews === 'function') {
+    refreshAllViews().catch(err => console.error('refreshAllViews failed:', err));
   }
 }
 

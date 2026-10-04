@@ -32,9 +32,12 @@ serve(async (req) => {
     if (!reference) return json({ error: 'Missing reference' }, 400);
 
     const { data: existing } = await sb
-      .from('payments').select('id').eq('reference', reference).maybeSingle();
-    if (existing) return json({ error: 'Reference already used' }, 409);
-
+  .from('payments').select('id').eq('reference', reference).maybeSingle();
+    if (existing) {
+      // Already processed — probably by the webhook that fired first.
+      // This is success, not an error.
+      return json({ success: true, alreadyProcessed: true, reference });
+    }
     const res = await fetch(
       `https://api.paystack.co/transaction/verify/${reference}`,
       { headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY}` } }
