@@ -36,6 +36,7 @@ async function refreshEverythingAfterLogin() {
   if (typeof updateHeaderUser === 'function') tasks.push(updateHeaderUser());
   if (typeof loadSubjects === 'function')     tasks.push(loadSubjects());
   if (typeof loadProgress === 'function')     tasks.push(loadProgress());
+  if (typeof renderPromoTimer === 'function')  tasks.push(renderPromoTimer());
 
   await Promise.allSettled(tasks);
 }
@@ -1946,6 +1947,71 @@ const observer = new MutationObserver(() => {
   }
 });
 
+let promoCountdownInterval = null;
+
+async function renderPromoTimer() {
+  const banner = document.getElementById('promo-timer-banner');
+  const el = document.getElementById('promo-timer-countdown');
+  if (!banner || !el) return;
+
+  if (promoCountdownInterval) {
+    clearInterval(promoCountdownInterval);
+    promoCountdownInterval = null;
+  }
+
+  if (typeof currentUser === 'undefined' || !currentUser) {
+    banner.style.display = 'none';
+    return;
+  }
+
+  try {
+    const { data: sub } = await supabaseClient
+      .from('subscriptions')
+      .select('promo_expires_at, status, current_period_end')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
+
+    if (!sub) { banner.style.display = 'none'; return; }
+
+    const now = new Date();
+
+    const isPaid =
+      sub.status === 'active' &&
+      sub.current_period_end &&
+      new Date(sub.current_period_end) > now;
+
+    const onPromo =
+      !isPaid &&
+      sub.promo_expires_at &&
+      new Date(sub.promo_expires_at) > now;
+
+    if (!onPromo) { banner.style.display = 'none'; return; }
+
+    banner.style.display = 'flex';
+
+    const update = () => {
+      const ms = new Date(sub.promo_expires_at) - new Date();
+      if (ms <= 0) {
+        el.textContent = 'Expired';
+        banner.style.display = 'none';
+        if (promoCountdownInterval) clearInterval(promoCountdownInterval);
+        return;
+      }
+      const totalSec = Math.floor(ms / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      el.textContent = `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+    };
+
+    update();
+    promoCountdownInterval = setInterval(update, 1000);   // every second now
+  } catch (e) {
+    console.warn('[PromoTimer] error:', e);
+    banner.style.display = 'none';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('welcome-modal');
   if (modal) {
@@ -1953,7 +2019,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-
+// Run promo timer after auth state is ready
+// After DOM is fully loaded and auth has had time to initialize
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (typeof renderPromoTimer === 'function') renderPromoTimer();
+  }, 1500);
+});
 
 // ═══════════════════════════════════════════════════════
 // INIT

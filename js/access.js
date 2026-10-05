@@ -10,27 +10,37 @@ async function getUserAccess() {
 
   const { data, error } = await supabaseClient
     .from('subscriptions')
-    .select('status, current_period_end, exam_attempts, practice_attempts')
+    .select('status, current_period_end, exam_attempts, practice_attempts, promo_expires_at')
     .eq('user_id', user.id)
     .maybeSingle();
 
   if (error || !data) return null;
 
+  const now = new Date();
+
   const isPaid =
     data.status === 'active' &&
     data.current_period_end &&
-    new Date(data.current_period_end) > new Date();
+    new Date(data.current_period_end) > now;
 
-  const examAttempts = data.exam_attempts || 0;
-  const practiceAttempts = data.practice_attempts || 0;
+  const onPromo =
+    !isPaid &&
+    data.promo_expires_at &&
+    new Date(data.promo_expires_at) > now;
+
+  const hasFullAccess = isPaid || onPromo;
 
   return {
     isPaid,
-    examAttempts,
-    practiceAttempts,
-    canTakeExam: isPaid || examAttempts < 1,
-    canTakePractice: isPaid || practiceAttempts < 1,
-    canSeeLeaderboard: isPaid,
+    onPromo,
+    promoExpiresAt: data.promo_expires_at ? new Date(data.promo_expires_at) : null,
+
+    canTakeExam:       hasFullAccess || (data.exam_attempts || 0) < 1,
+    canTakePractice:   hasFullAccess || (data.practice_attempts || 0) < 1,
+    canSeeLeaderboard: hasFullAccess,
+
+    // Tick stays payer-only
+    showTick: isPaid,
   };
 }
 
