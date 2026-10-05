@@ -94,6 +94,9 @@ function openWelcomeModal() {
     return;
   }
   modal.classList.remove('hidden');
+
+    // ← ADD THIS
+  if (typeof renderPromoBanner === 'function') renderPromoBanner();
 }
 
 function closeWelcomeModal() {

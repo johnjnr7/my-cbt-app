@@ -115,3 +115,12 @@ function renderWelcome(name: string) {
     </div>
   </body></html>`;
 }
+
+<div style="background:linear-gradient(135deg,#0d4a35 0%,#1a5c42 100%);border:1px solid #c9f26b;border-radius:12px;padding:16px;margin:20px 0;text-align:center;">
+  <div style="font-size:13px;font-weight:800;color:#c9f26b;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;">
+    🎉 Early Bird Bonus
+  </div>
+  <div style="font-size:14px;color:#fff;line-height:1.5;">
+    You've got <strong>24 hours of full Pro access</strong> — leaderboard, unlimited exams, everything. Enjoy it!
+  </div>
+</div>

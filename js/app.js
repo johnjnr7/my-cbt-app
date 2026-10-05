@@ -1913,6 +1913,48 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') closeStreakModal();
   });
 });
+
+async function renderPromoBanner() {
+  const banner = document.getElementById('promo-banner');
+  const spotsEl = document.getElementById('promo-spots');
+  if (!banner || !spotsEl) return;
+
+  try {
+    const { data, error } = await supabaseClient.rpc('get_early_promo_spots_left');
+    if (error) {
+      console.warn('[Promo] count failed:', error.message);
+      return;
+    }
+
+    const spots = data ?? 0;
+    if (spots > 0) {
+      spotsEl.textContent = spots;
+      banner.style.display = 'block';
+    } else {
+      banner.style.display = 'none';
+    }
+  } catch (e) {
+    console.warn('[Promo] error:', e);
+  }
+}
+
+// Refresh promo banner whenever the welcome modal becomes visible
+const observer = new MutationObserver(() => {
+  const modal = document.getElementById('welcome-modal');
+  if (modal && !modal.classList.contains('hidden')) {
+    if (typeof renderPromoBanner === 'function') renderPromoBanner();
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('welcome-modal');
+  if (modal) {
+    observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+  }
+});
+
+
+
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
