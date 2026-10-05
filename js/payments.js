@@ -190,12 +190,20 @@ async function verifyPayment(reference) {
 
 // ─── Activity log (for admin retention stats) ──────────
 async function logActivity(eventType, metadata = {}) {
-  if (!currentUser) return;
   try {
-    await supabaseClient.from('activity_log').insert({
-      user_id: currentUser.id, event_type: eventType, metadata,
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session?.user) return;   // no session → silently skip
+
+    const { error } = await supabaseClient.from('activity_log').insert({
+      user_id: session.user.id,   // read from session, never stale
+      event_type: eventType,
+      metadata,
     });
-  } catch {}
+
+    if (error) console.warn('[Activity]', eventType, error.message);
+  } catch (e) {
+    console.warn('[Activity] threw:', e);
+  }
 }
 
 // ─── Wire up ───────────────────────────────────────────

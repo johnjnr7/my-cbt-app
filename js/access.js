@@ -92,13 +92,9 @@ function showTrialWelcomeModal() {
 
 // ---------- Increment helpers ----------
 async function recordExamAttempt() {
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (!session?.user) return;
-  await supabaseClient.rpc('increment_exam_attempt', { uid: session.user.id });
+  await supabaseClient.rpc('increment_exam_attempt');
 }
 
 async function recordPracticeAttempt() {
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (!session?.user) return;
-  await supabaseClient.rpc('increment_practice_attempt', { uid: session.user.id });
+  await supabaseClient.rpc('increment_practice_attempt');
 }

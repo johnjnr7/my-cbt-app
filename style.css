@@ -2046,6 +2046,20 @@ select option:disabled { color: var(--muted); opacity: 0.5; }
   font-weight: 500;
 }
 
+footer {
+  padding: 30px 0;
+  border-top: 1px solid #1e2f26;
+  position: relative;
+}
+footer .footer-text {
+  text-align: center;
+  font-size: 1rem;
+}
+footer .footer-text a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
 /* Mobile — single column on very narrow screens */
 @media (max-width: 380px) {
   .profile-stats-grid {

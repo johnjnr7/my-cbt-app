@@ -69,20 +69,9 @@ async function signUpWithEmail(email, password) {
 
   if (error) return { error: error.message };
 
-  if (data?.user) {
-    fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        userId: data.user.id,
-        name: email.split('@')[0]
-      })
-    }).catch(err => console.warn('Welcome email failed:', err));
-  }
+  await refreshEverythingAfterLogin();
 
   return { success: true, user: data.user };
-  await refreshEverythingAfterLogin();
 }
 
 async function signInWithEmail(email, password) {
@@ -90,9 +79,9 @@ async function signInWithEmail(email, password) {
     email,
     password
   });
+
   if (error) return { error: error.message };
 
-  // ← THE FIX: refresh everything before returning
   await refreshEverythingAfterLogin();
 
   return { success: true, user: data.user };
