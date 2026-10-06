@@ -246,18 +246,18 @@ function updateAuthUI() {
       const photo = getAvatarUrl(currentUser);
       const initial = (getFirstName(currentUser)[0] || '?').toUpperCase();
 
-      profileBlock.innerHTML = `
-        <div class="settings-profile-row">
-          <div class="settings-avatar" style="${photo ? `background-image: url('${photo}')` : ''}">
-            ${photo ? '' : initial}
-          </div>
-          <div class="settings-profile-info">
-            <p class="settings-profile-name">${escapeHtml(name)}${isPro ? verifiedTickHtml('lg') : ''}</p>
-            <p class="settings-profile-email">${escapeHtml(email)}</p>
-          </div>
-        </div>
-        <button id="signout-btn" class="settings-signout">Sign out</button>
-      `;
+     profileBlock.innerHTML = `
+  <div class="settings-profile-row">
+    <div class="settings-avatar" data-initial="${initial}">
+      ${photo ? `<img src="${photo}" referrerpolicy="no-referrer" alt="" onerror="this.remove()">` : ''}
+    </div>
+    <div class="settings-profile-info">
+      <p class="settings-profile-name">${escapeHtml(name)}${isPro ? verifiedTickHtml('lg') : ''}</p>
+      <p class="settings-profile-email">${escapeHtml(email)}</p>
+    </div>
+  </div>
+  <button id="signout-btn" class="settings-signout">Sign out</button>
+`;
       document.getElementById('signout-btn').onclick = signOutUser;
     } else {
       profileBlock.innerHTML = `

@@ -1,6 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
+
 <head>
+
+  <script>
+  // FORCE dark mode — no switching allowed
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.documentElement.style.colorScheme = 'dark';
+  try {
+    localStorage.removeItem('theme');
+    localStorage.removeItem('aim360_theme');
+    localStorage.removeItem('color-theme');
+    localStorage.removeItem('theme-preference');
+  } catch (e) {}
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0d4a35" />
@@ -46,6 +59,19 @@
 
 <link rel="stylesheet" href="style.css" />
   <title>AIM360 — JAMB Prep</title>
+
+  <script>
+  (function() {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.style.colorScheme = 'dark';
+    try {
+      localStorage.removeItem('theme');
+      localStorage.removeItem('aim360_theme');
+      localStorage.removeItem('color-theme');
+      localStorage.removeItem('theme-preference');
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
@@ -428,18 +454,6 @@
 </section>
 
             <div class="settings-divider"></div>
-
-            <!-- Dark mode -->
-            <div class="settings-row">
-              <div class="settings-row-label">
-                <span class="settings-icon">🌙</span>
-                <span>Dark mode</span>
-              </div>
-              <button id="dark-toggle" class="toggle-switch" role="switch">
-                <span class="toggle-knob"></span>
-              </button>
-            </div>
-
             
 
         <div class="settings-divider"></div>
@@ -552,38 +566,54 @@
   </div>
 
   <!-- ═══ STREAK & MILESTONES MODAL ═══ -->
+   <!-- ═══ STREAK & MILESTONES MODAL ═══ -->
 <div id="streak-modal" class="streak-modal" style="display:none;">
   <div class="streak-modal-backdrop" onclick="closeStreakModal()"></div>
   <div class="streak-modal-panel">
-    <div class="streak-modal-header">
-      <h2>Streak &amp; Milestones</h2>
-      <button class="streak-modal-close" onclick="closeStreakModal()" aria-label="Close">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <path d="M18 6 6 18M6 6l12 12"/>
+    <button class="streak-modal-close" onclick="closeStreakModal()" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <div class="streak-hero">
+      <div class="streak-ring-wrap">
+        <svg class="streak-ring" viewBox="0 0 160 160">
+          <circle class="streak-ring-bg" cx="80" cy="80" r="70" />
+          <circle class="streak-ring-fill" id="streak-ring-fill" cx="80" cy="80" r="70" />
         </svg>
-      </button>
+        <div class="streak-ring-number" id="streak-ring-number">0</div>
+      </div>
+
+      <div class="streak-percent" id="streak-percent">0%</div>
+      <div class="streak-label">Day Streak</div>
+
+      <div class="streak-user" id="streak-user">
+        <span id="streak-user-name">Guest</span>
+        <span id="streak-user-tick"></span>
+      </div>
+
+      <div class="streak-badge-pill" id="streak-badge-pill" style="display:none;">
+        <span class="streak-badge-icon" id="streak-badge-icon">🔥</span>
+        <span class="streak-badge-name" id="streak-badge-name">Getting Started</span>
+      </div>
     </div>
 
-    <div class="streak-modal-body">
+    <div class="streak-body">
       <div class="streak-calendar">
         <div class="streak-calendar-header">
           <div class="streak-month-label" id="streak-month-label">OCTOBER 2026</div>
           <div class="streak-calendar-controls">
-            <button class="streak-nav-btn" id="streak-prev-month" aria-label="Previous month">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-       fill="none" stroke="currentColor" stroke-width="2.5"
-       stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="15 18 9 12 15 6"/>
-  </svg>
-</button>
-
-<button class="streak-nav-btn" id="streak-next-month" aria-label="Next month">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-       fill="none" stroke="currentColor" stroke-width="2.5"
-       stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="9 18 15 12 9 6"/>
-  </svg>
-</button>
+            <button class="streak-nav-btn" id="streak-prev-month" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <button class="streak-nav-btn" id="streak-next-month" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
           </div>
         </div>
         <div class="streak-weekdays">
@@ -607,14 +637,17 @@
         </div>
       </div>
 
-      <div class="streak-milestones-header">
-        <span>STREAK MILESTONES</span>
-        <span id="streak-milestone-count">0 / 12 Unlocked</span>
-      </div>
-      <div class="streak-milestones-list" id="streak-milestones-list"></div>
+      <button class="streak-toggle-milestones" id="streak-toggle-milestones" onclick="toggleStreakMilestones()">
+        View all milestones ▾
+      </button>
+
+      <div class="streak-milestones-list" id="streak-milestones-list" style="display:none;"></div>
     </div>
   </div>
 </div>
+
+          </div>
+        </div>
 
      <script defer src="js/app.js"></script>
   <script defer src="js/supabase.js"></script>

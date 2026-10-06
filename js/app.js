@@ -59,7 +59,7 @@ async function refreshAllViews() {
 // ═══════════════════════════════════════════════════════
 // THEME
 // ═══════════════════════════════════════════════════════
-const savedTheme = localStorage.getItem('theme') || 'light';
+const savedTheme = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
 function applyTheme(next) {
@@ -1827,21 +1827,61 @@ function renderStreakModal() {
     return;
   }
 
+  // ── Ring & percent ──
+  const streak = d.streak || 0;
+
+  // Next milestone (or 100 for legend)
+  const nextMilestone = STREAK_MILESTONES.find(m => m.days > streak);
+  const goal = nextMilestone ? nextMilestone.days : 100;
+  const pct = Math.min(100, Math.round((streak / goal) * 100));
+
+  const ring = document.getElementById('streak-ring-fill');
+  if (ring) {
+    const circumference = 2 * Math.PI * 70;   // r = 70
+    const offset = circumference - (pct / 100) * circumference;
+    ring.style.strokeDasharray = circumference;
+    ring.style.strokeDashoffset = offset;
+  }
+  document.getElementById('streak-ring-number').textContent = streak;
+  document.getElementById('streak-percent').textContent = `${pct}%`;
+
+  // ── User name + tick ──
+  const userEl = document.getElementById('streak-user-name');
+  const tickEl = document.getElementById('streak-user-tick');
+  if (currentUser) {
+    userEl.textContent = getFullName(currentUser);
+    tickEl.innerHTML = (typeof verifiedTickHtml === 'function')
+      ? verifiedTickHtml()
+      : '';
+  } else {
+    userEl.textContent = 'Guest';
+    tickEl.innerHTML = '';
+  }
+
+  // ── Badge pill (highest unlocked) ──
+  const unlocked = STREAK_MILESTONES.filter(m => streak >= m.days);
+  const highest = unlocked[unlocked.length - 1];
+  const pill = document.getElementById('streak-badge-pill');
+  if (highest) {
+    document.getElementById('streak-badge-icon').textContent = highest.icon;
+    document.getElementById('streak-badge-name').textContent = highest.name;
+    pill.style.display = 'inline-flex';
+  } else {
+    pill.style.display = 'none';
+  }
+
+  // ── Calendar ──
   renderStreakCalendar(d.days);
 
+  // ── Stats ──
   document.getElementById('streak-best').textContent = `${d.best} Days`;
+  document.getElementById('streak-unlocks').textContent = `${unlocked.length} Medals`;
 
-  const unlocked = STREAK_MILESTONES.filter(m => d.streak >= m.days).length;
-  const total = STREAK_MILESTONES.length;
-
-  document.getElementById('streak-unlocks').textContent = `${unlocked} Medals`;
-  document.getElementById('streak-milestone-count').textContent =
-    `${unlocked} / ${total} Unlocked`;
-
+  // ── Milestones list ──
   const list = document.getElementById('streak-milestones-list');
   list.innerHTML = '';
   STREAK_MILESTONES.forEach(m => {
-    const isUnlocked = d.streak >= m.days;
+    const isUnlocked = streak >= m.days;
     list.innerHTML += `
       <div class="streak-milestone ${isUnlocked ? 'unlocked' : ''}">
         <div class="streak-milestone-icon">${m.icon}</div>
@@ -1853,6 +1893,16 @@ function renderStreakModal() {
       </div>
     `;
   });
+}
+
+function toggleStreakMilestones() {
+  const list = document.getElementById('streak-milestones-list');
+  const btn = document.getElementById('streak-toggle-milestones');
+  if (!list) return;
+
+  const visible = list.style.display !== 'none';
+  list.style.display = visible ? 'none' : 'flex';
+  btn.textContent = visible ? 'View all milestones ▾' : 'Hide milestones ▴';
 }
 
 function renderStreakCalendar(daysSet) {
