@@ -215,9 +215,16 @@ function getProgress() {
 
 function recordResult(topicId, correct, total) {
   const p = getProgress();
-  if (!p[topicId]) p[topicId] = { correct: 0, total: 0 };
-  p[topicId].correct += correct;
-  p[topicId].total += total;
+  const prev = p[topicId];
+
+  // Keep the BEST attempt (highest percentage) — not the sum
+  const newPct = total > 0 ? correct / total : 0;
+  const prevPct = prev && prev.total > 0 ? prev.correct / prev.total : 0;
+
+  if (!prev || newPct >= prevPct) {
+    p[topicId] = { correct, total };
+  }
+
   if (typeof setUserProgress === 'function') setUserProgress(p);
   else localStorage.setItem(scopedKey('progress'), JSON.stringify(p));
 }
