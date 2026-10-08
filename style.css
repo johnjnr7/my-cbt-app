@@ -2370,6 +2370,36 @@ footer .footer-text a {
   border-color: #c9f26b;
 }
 
+
+/* Sign in button in settings modal (signed-out state) */
+.settings-signin-btn,
+#settings-signin-btn {
+  background: #c9f26b;
+  color: #0a1410;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 16px;
+  transition: transform 0.1s ease, background 0.15s ease;
+  font-family: inherit;
+}
+
+.settings-signin-btn:hover,
+#settings-signin-btn:hover {
+  background: #d6f77f;
+  transform: translateY(-1px);
+}
+
+.settings-signin-btn:active,
+#settings-signin-btn:active {
+  transform: translateY(0);
+}
+
+
 /* Milestones list */
 .streak-milestones-list {
   display: flex;

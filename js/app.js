@@ -861,6 +861,13 @@ if (sidebarToggle && sidebar) {
 const continueBtn = document.getElementById('continue-btn');
 if (continueBtn) {
   continueBtn.addEventListener('click', () => {
+    // ── SIGN-IN GATE ──
+    if (typeof currentUser === 'undefined' || !currentUser) {
+      document.getElementById('welcome-modal')?.classList.remove('hidden');
+      return;
+    }
+    // ── END GATE ──
+
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelector('[data-view="practice"]').classList.add('active');
@@ -1596,90 +1603,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ── Cancel subscription button ──
-document.getElementById('cancel-subscription-btn')?.addEventListener('click', async () => {
-  if (!confirm("Cancel auto-renewal? You'll keep access until the end of your current billing period.")) return;
-
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (!session) return alert('Please sign in first.');
-
-  const btn = document.getElementById('cancel-subscription-btn');
-  btn.disabled = true;
-  btn.textContent = 'Cancelling…';
-
-  try {
-    const res = await fetch(
-      'https://usukzxzrarlbaluscvzo.supabase.co/functions/v1/cancel-subscription',
-      {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      }
-    );
-    const result = await res.json();
-
-    if (result.success) {
-      alert(result.message);
-      btn.textContent = 'Auto-Renewal Cancelled';
-      btn.style.opacity = '0.6';
-    } else {
-      alert('Error: ' + (result.error || 'Could not cancel'));
-      btn.disabled = false;
-      btn.textContent = 'Cancel Auto-Renewal';
-    }
-  } catch (e) {
-    alert('Network error. Please try again.');
-    btn.disabled = false;
-    btn.textContent = 'Cancel Auto-Renewal';
-  }
-});
-
-// Show/hide the button based on subscription state
-async function refreshCancelButton() {
-  const btn = document.getElementById('cancel-subscription-btn');
-  if (!btn) return;
-
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (!session) { btn.style.display = 'none'; return; }
-
-  const { data: sub } = await supabaseClient
-    .from('subscriptions')
-    .select('status, cancel_at_period_end')
-    .eq('user_id', session.user.id)
-    .maybeSingle();
-
-  const shouldShow =
-    sub?.status === 'active' &&
-    !sub?.cancel_at_period_end;
-
-  btn.style.display = shouldShow ? 'inline-block' : 'none';
-}
-
-// Run whenever the page loads
-document.addEventListener('DOMContentLoaded', refreshCancelButton);
-// ═══════════════════════════════════════════════════════
-// FORCE SIGN-IN ON PAGE LOAD
-// ═══════════════════════════════════════════════════════
-(async function forceSignIn() {
-  // Wait for auth state to settle
-  await new Promise(r => setTimeout(r, 800));
-
-  if (typeof currentUser === 'undefined' || !currentUser) {
-    const modal = document.getElementById('welcome-modal');
-    if (modal) modal.classList.remove('hidden');
-  }
-})();
-
-// Also re-show if user signs out
-if (typeof supabaseClient !== 'undefined' && supabaseClient?.auth) {
-  supabaseClient.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_OUT') {
-      setTimeout(() => {
-        const modal = document.getElementById('welcome-modal');
-        if (modal) modal.classList.remove('hidden');
-      }, 100);
-    }
-  });
-}
 
 async function loadProfileStats() {
   const { data: { session } } = await supabaseClient.auth.getSession();
