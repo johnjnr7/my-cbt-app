@@ -2019,6 +2019,54 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// ═══════════════════════════════════════════
+// PWA INSTALL PROMPT
+// ═══════════════════════════════════════════
+let deferredInstallPrompt = null;
+
+// Chrome fires this when the app becomes installable
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+
+  // Don't show if user already dismissed or already installed
+  if (localStorage.getItem('pwa_dismissed') === '1') return;
+  if (window.matchMedia('(display-mode: standalone)').matches) return;
+  if (navigator.standalone === true) return;   // iOS
+
+  // Delay the popup a bit so it doesn't feel sudden
+  setTimeout(() => {
+    const popup = document.getElementById('pwa-install-prompt');
+    if (popup) popup.style.display = 'block';
+  }, 4000);
+});
+
+// Install button
+document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  console.log('[PWA] Install choice:', outcome);
+  deferredInstallPrompt = null;
+  document.getElementById('pwa-install-prompt').style.display = 'none';
+  if (outcome === 'accepted') {
+    localStorage.setItem('pwa_installed', '1');
+  }
+});
+
+// "Not now" button — remembers dismissal for 7 days
+document.getElementById('pwa-install-later')?.addEventListener('click', () => {
+  document.getElementById('pwa-install-prompt').style.display = 'none';
+  const until = Date.now() + 7 * 24 * 60 * 60 * 1000;
+  localStorage.setItem('pwa_dismissed_until', until.toString());
+});
+
+// If app was installed, hide popup forever
+window.addEventListener('appinstalled', () => {
+  localStorage.setItem('pwa_installed', '1');
+  document.getElementById('pwa-install-prompt').style.display = 'none';
+});
+
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
