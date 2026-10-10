@@ -2374,7 +2374,7 @@ footer .footer-text a {
 /* Sign in button in settings modal (signed-out state) */
 .settings-signin-btn,
 #settings-signin-btn {
-  background: #c9f26b;
+  background: var(--brand-2);
   color: #0a1410;
   border: none;
   padding: 14px 28px;

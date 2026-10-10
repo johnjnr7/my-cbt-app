@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a3d2a"/>
+      <stop offset="100%" stop-color="#0d4a35"/>
+    </linearGradient>
+    <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c9f26b"/>
+      <stop offset="100%" stop-color="#8fe045"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect x="0" y="0" width="512" height="512" rx="120" ry="120" fill="url(#bgGrad)"/>
+
+  <!-- Decorative outer arc suggesting 360° -->
+  <path d="M 256 76 A 180 180 0 1 1 88 196"
+        fill="none"
+        stroke="url(#arcGrad)"
+        stroke-width="3"
+        stroke-linecap="round"
+        opacity="0.35"/>
+
+  <!-- Inner subtle ring -->
+  <circle cx="256" cy="256" r="140" fill="none" stroke="#c9f26b" stroke-width="1" opacity="0.12"/>
+
+  <!-- The "360" mark -->
+  <text x="256" y="322"
+        text-anchor="middle"
+        font-family="-apple-system, 'Segoe UI', system-ui, sans-serif"
+        font-size="200"
+        font-weight="800"
+        letter-spacing="-16"
+        filter="url(#glow)">
+    <tspan fill="#c9f26b">3</tspan><tspan fill="#ffffff">6</tspan><tspan fill="#c9f26b">0</tspan>
+  </text>
+
+  <!-- Small dot accent (like a compass needle marker) -->
+  <circle cx="256" cy="404" r="6" fill="#c9f26b" opacity="0.9"/>
+</svg>
