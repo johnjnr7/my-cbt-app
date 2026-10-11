@@ -18,29 +18,28 @@ async function getUserAccess() {
 
   const now = new Date();
 
+  // Real paid access
   const isPaid =
     data.status === 'active' &&
     data.current_period_end &&
     new Date(data.current_period_end) > now;
 
+  // Promo access (24h, no tick)
   const onPromo =
     !isPaid &&
     data.promo_expires_at &&
     new Date(data.promo_expires_at) > now;
 
-  const hasFullAccess = isPaid || onPromo;
+  const hasAccess = isPaid || onPromo;
 
   return {
     isPaid,
     onPromo,
-    promoExpiresAt: data.promo_expires_at ? new Date(data.promo_expires_at) : null,
-
-    canTakeExam:       hasFullAccess || (data.exam_attempts || 0) < 1,
-    canTakePractice:   hasFullAccess || (data.practice_attempts || 0) < 1,
-    canSeeLeaderboard: hasFullAccess,
-
-    // Tick stays payer-only
-    showTick: isPaid,
+    hasAccess,
+    canTakeExam:       hasAccess || (data.exam_attempts || 0) < 1,
+    canTakePractice:   hasAccess || (data.practice_attempts || 0) < 1,
+    canSeeLeaderboard: hasAccess,
+    showTick: isPaid,           // ← tick ONLY for paid, never promo
   };
 }
 
