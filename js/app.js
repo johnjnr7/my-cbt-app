@@ -2001,23 +2001,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Run promo timer after auth state is ready
 // After DOM is fully loaded and auth has had time to initialize
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    if (typeof renderPromoTimer === 'function') renderPromoTimer();
-  }, 1500);
-});
+
 
 // ═══════════════════════════════════════════
 // PWA — Service Worker registration
 // ═══════════════════════════════════════════
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+// ═══════════════════════════════════════════
+// MASTER PAGE LOAD SEQUENCE
+// ═══════════════════════════════════════════
+window.addEventListener('load', () => {
+  
+  // 1. Register PWA Service Worker
+  if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/service-worker.js')
       .then((reg) => console.log('[PWA] Service worker registered:', reg.scope))
       .catch((err) => console.warn('[PWA] SW registration failed:', err));
-  });
-}
+  }
+
+  // 2. Wait 800ms for Supabase Auth to load the session
+  setTimeout(() => {
+    
+    // 3. Update the header (Name, Tick, Pro badge)
+    if (typeof updateAuthUI === 'function') updateAuthUI();
+    
+    // 4. Update the Promo Timer (if they have one)
+    if (typeof renderPromoTimer === 'function') renderPromoTimer();
+
+    // 5. FORCE SIGN-IN: If no user is logged in, pop the modal
+    if (typeof currentUser === 'undefined' || !currentUser) {
+      const modal = document.getElementById('welcome-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+  }, 800);
+});
 
 // ═══════════════════════════════════════════
 // PWA INSTALL PROMPT
@@ -2066,6 +2084,37 @@ window.addEventListener('appinstalled', () => {
   localStorage.setItem('pwa_installed', '1');
   document.getElementById('pwa-install-prompt').style.display = 'none';
 });
+
+
+// ═══════════════════════════════════════════
+// GLOBAL SIGN-IN GATE FOR NAVIGATION
+// ═══════════════════════════════════════════
+document.addEventListener('click', (e) => {
+  const navItem = e.target.closest('.nav-item');
+  if (!navItem) return;
+  
+  // Get which view they are trying to open
+  const view = navItem.getAttribute('data-view');
+  
+  // The pages that require an account
+  const protectedViews = ['practice', 'exam', 'leaderboard', 'bookmarks'];
+  
+  if (protectedViews.includes(view)) {
+    // If no user is logged in
+    if (typeof currentUser === 'undefined' || !currentUser) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Show the signup modal
+      const modal = document.getElementById('welcome-modal');
+      if (modal) modal.classList.remove('hidden');
+      
+      // Reset the active visual state back to dashboard
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-view="dashboard"]').classList.add('active');
+    }
+  }
+}, true); // 'true' means it intercepts before your normal navigation code runs
 
 // ═══════════════════════════════════════════════════════
 // INIT
