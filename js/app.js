@@ -551,7 +551,7 @@ if (topicSelect) {
     }
 
     currentTopic = topic;
-    currentQuestions = shuffle([...topic.questions]);
+    currentQuestions = topic.questions.map(shuffleQuestionOptions);
     currentIndex = 0;
     correctCount = 0;
 

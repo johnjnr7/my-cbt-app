@@ -95,7 +95,10 @@ async function startExam() {
     return;
   }
 
-  const picked = shuffle([...pool]).slice(0, Math.min(examState.count, pool.length));
+// Shuffle the questions, then shuffle the options for each picked question
+const picked = shuffle([...pool])
+  .slice(0, Math.min(examState.count, pool.length))
+  .map(shuffleQuestionOptions); 
 
   examState.questions = picked;
   examState.answers = new Array(picked.length).fill(null);
@@ -397,4 +400,29 @@ function initCalculator() {
   if (closeBtn) {
     closeBtn.addEventListener('click', () => panel.classList.add('hidden'));
   }
+}
+
+// Shuffle multiple-choice options and update the correct answer index
+function shuffleQuestionOptions(question) {
+  if (!question || !question.options || question.answer === undefined) return question;
+
+  // 1. Get the text of the correct answer
+  const correctText = question.options[question.answer];
+
+  // 2. Create a copy and shuffle it (Fisher-Yates algorithm)
+  const shuffled = [...question.options];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // 3. Find the new index of the correct text
+  const newAnswerIndex = shuffled.indexOf(correctText);
+
+  // 4. Return the updated question object
+  return {
+    ...question,
+    options: shuffled,
+    answer: newAnswerIndex
+  };
 }
