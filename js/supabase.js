@@ -214,6 +214,13 @@ async function pullProgressFromCloud() {
   } catch (e) {
     console.warn('[Sync] Pull error:', e);
   }
+
+  // Inside pullProgressFromCloud, after setUserStreak(...)
+
+// Trigger the milestone check!
+if (typeof checkAndShowMilestone === 'function') {
+  checkAndShowMilestone(mergedStreak.count); // or cloudStreak.count
+}
 }
 
 // ─── UI ───────────────────────────────────────────────

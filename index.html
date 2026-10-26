@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AIM360">
 <meta name="mobile-web-app-capable" content="yes">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
   // FORCE dark mode — no switching allowed
   document.documentElement.setAttribute('data-theme', 'dark');
@@ -682,6 +682,45 @@
     <button id="pwa-install-btn" style="flex:1; background:#c9f26b; color:#0a1410; border:none; padding:10px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">
       Install
     </button>
+  </div>
+</div>
+
+<!-- ═══ MILESTONE POPUP ═══ -->
+<div id="milestone-popup" class="modal-overlay hidden">
+  <div class="modal-card" style="text-align: center; max-width: 400px;">
+    <button class="modal-x" onclick="document.getElementById('milestone-popup').classList.add('hidden')">×</button>
+    <div style="font-size: 60px; margin-bottom: 10px;" id="milestone-icon">🔥</div>
+    <h2 style="font-size: 24px; margin-bottom: 8px; color: #c9f26b;">Milestone Unlocked!</h2>
+    <h3 style="font-size: 20px; margin-bottom: 16px;" id="milestone-name">One Week Strong</h3>
+    <p style="color: #6b7d77; margin-bottom: 24px;">You reached a <strong id="milestone-days">7</strong> day streak. Keep pushing!</p>
+    
+    <button id="share-milestone-btn" class="cta-btn" style="width: 100%; margin-bottom: 12px;">Share to Social Media</button>
+    <button class="btn-ghost" style="width: 100%;" onclick="document.getElementById('milestone-popup').classList.add('hidden')">Keep Pushing</button>
+  </div>
+</div>
+
+<!-- ═══ HIDDEN SHARE CARD (Rendered off-screen) ═══ -->
+<div id="share-card-wrapper" style="position: absolute; left: -9999px; top: -9999px;">
+  <div id="share-card" style="width: 1080px; height: 1080px; background: linear-gradient(135deg, #0a1410 0%, #0d4a35 100%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; position: relative;">
+    
+    <!-- Brand Header -->
+    <div style="position: absolute; top: 60px; display: flex; align-items: center; gap: 12px;">
+      <div style="background: #c9f26b; color: #0a1410; padding: 8px 16px; border-radius: 12px; font-weight: 900; font-size: 32px;">360</div>
+      <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px;">AIM360</div>
+    </div>
+
+    <!-- Milestone Content -->
+    <div style="font-size: 160px; margin-bottom: 20px;" id="share-icon">🔥</div>
+    <h1 style="font-size: 80px; margin: 0; color: #c9f26b; font-weight: 900;" id="share-streak">7 Day Streak</h1>
+    <h2 style="font-size: 50px; margin: 20px 0 40px 0; font-weight: 700;" id="share-title">One Week Strong</h2>
+    
+    <!-- User Name -->
+    <div style="background: rgba(255,255,255,0.1); padding: 16px 40px; border-radius: 50px; border: 1px solid rgba(201, 242, 107, 0.3);">
+      <p style="font-size: 36px; margin: 0; font-weight: 600;" id="share-name">John Edheke</p>
+    </div>
+
+    <!-- Footer Link -->
+    <p style="position: absolute; bottom: 60px; font-size: 28px; color: #6b7d77; font-weight: 600;">aim360.com.ng</p>
   </div>
 </div>
 

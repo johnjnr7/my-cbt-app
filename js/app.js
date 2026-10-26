@@ -214,7 +214,8 @@ function getProgress() {
 }
 
 function recordResult(topicId, correct, total) {
-  const p = getProgress();
+  // 1. Use getUserProgress (the cloud-synced one) instead of getProgress
+  const p = typeof getUserProgress === 'function' ? getUserProgress() : getProgress();
   const prev = p[topicId];
 
   // Keep the BEST attempt (highest percentage) — not the sum
@@ -225,8 +226,21 @@ function recordResult(topicId, correct, total) {
     p[topicId] = { correct, total };
   }
 
-  if (typeof setUserProgress === 'function') setUserProgress(p);
-  else localStorage.setItem(scopedKey('progress'), JSON.stringify(p));
+  // 2. Save locally
+  if (typeof setUserProgress === 'function') {
+    setUserProgress(p);
+  } else {
+    localStorage.setItem(scopedKey('progress'), JSON.stringify(p));
+  }
+
+  // 3. 🔥 CRITICAL FIX: Force push to Supabase immediately!
+  if (typeof pushProgressToCloud === 'function') {
+    pushProgressToCloud().then(() => {
+      console.log(`[Progress] Successfully saved ${topicId} to database!`);
+    }).catch(err => {
+      console.error("[Progress] Failed to save to database:", err);
+    });
+  }
 }
 
 function getMastery(topicId) {
@@ -302,7 +316,33 @@ async function renderDashboard() {
     perSubject[sub] = { mastered: m, total: data.topics.length };
   }
 
-  drawDonut(stats);
+  // ── GATE THE OVERALL PROGRESS CARD ──
+  const access = typeof getUserAccess === 'function' ? await getUserAccess() : null;
+  const isPaid = access?.isPaid === true; 
+
+  const chartCanvas = document.getElementById('donut-chart');
+  if (chartCanvas) {
+    // Find the whole white card that holds the chart
+    const panel = chartCanvas.closest('.panel'); 
+    
+    if (panel) {
+      if (isPaid) {
+        panel.style.display = ''; // Show card
+        drawDonut(stats);         // Draw chart
+      } else {
+        panel.style.display = 'none'; // Hide the ENTIRE card for free users
+      }
+    } else {
+      // Fallback just in case
+      if (isPaid) drawDonut(stats); 
+      else chartCanvas.style.display = 'none';
+    }
+  } else {
+    // If the canvas isn't on the page yet, just draw it normally
+    drawDonut(stats);
+  }
+  // ───────────────────────────────────
+
   renderSubjectRows(perSubject);
   renderTargetProjection(stats);
   renderFocusCard();
@@ -404,35 +444,84 @@ function renderTargetProjection(stats) {
 }
 
 async function renderFocusCard() {
-  for (const sub of SUBJECTS) {
-    const data = await loadSubject(sub);
-    const sorted = getSortedTopics(sub);
-    for (let i = 0; i < sorted.length; i++) {
-      const t = sorted[i];
-      if (getMastery(t.id) !== 'mastered') {
-        const titleEl = document.getElementById('focus-title');
-        const metaEl = document.getElementById('focus-meta');
-        const descEl = document.getElementById('focus-desc');
-        if (titleEl) titleEl.textContent = t.name;
-        if (metaEl) {
-          metaEl.innerHTML =
-            `<span>${SUBJECT_LABELS[sub]}</span><span class="dot">•</span>` +
-            `<span>Topic ${i + 1} of ${sorted.length}</span><span class="dot">•</span>` +
-            `<span>+20 XP</span>`;
+  try {
+    // 1. Check access first
+    const access = typeof getUserAccess === 'function' ? await getUserAccess() : null;
+    const isPaid = access?.isPaid === true;
+
+    for (const sub of SUBJECTS) {
+      const data = await loadSubject(sub);
+      const sorted = getSortedTopics(sub);
+      
+      for (let i = 0; i < sorted.length; i++) {
+        const t = sorted[i];
+        
+        if (getMastery(t.id) !== 'mastered') {
+          
+          // ── GATE: Free users only get Topic 1 (index 0) of each subject ──
+          if (!isPaid && i >= 1) {
+            const titleEl = document.getElementById('focus-title');
+            const metaEl = document.getElementById('focus-meta');
+            const descEl = document.getElementById('focus-desc');
+            
+            if (titleEl) titleEl.textContent = '🔒 Premium Topic';
+            if (metaEl) {
+              metaEl.innerHTML = `
+                <span>${SUBJECT_LABELS[sub]}</span>
+                <span class="dot">•</span>
+                <span>Topic ${i + 1} of ${sorted.length}</span>
+              `;
+            }
+            if (descEl) {
+              descEl.innerHTML = `You've unlocked your 4 free topics. Upgrade to Pro to continue learning and unlock all topics.`;
+              
+              const continueBtn = document.getElementById('continue-btn');
+              if (continueBtn) {
+                // Remove old listeners and replace with paywall trigger
+                const newBtn = continueBtn.cloneNode(true);
+                continueBtn.parentNode.replaceChild(newBtn, continueBtn);
+                newBtn.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  openPaywallModal();
+                });
+              }
+            }
+            return; // Stop searching
+          }
+
+          // If it's Topic 1 (or is paid), show normal topic
+          const titleEl = document.getElementById('focus-title');
+          const metaEl = document.getElementById('focus-meta');
+          const descEl = document.getElementById('focus-desc');
+          
+          if (titleEl) titleEl.textContent = t.name;
+          if (metaEl) {
+            metaEl.innerHTML =
+              `<span>${SUBJECT_LABELS[sub]}</span><span class="dot">•</span>` +
+              `<span>Topic ${i + 1} of ${sorted.length}</span><span class="dot">•</span>` +
+              `<span>+20 XP</span>`;
+          }
+          if (descEl) {
+            descEl.textContent =
+              `Work through ${t.questions ? t.questions.length : 0} exam-style questions. ` +
+              `Score 80% to unlock the next topic.`;
+          }
+          return; // Stop searching
         }
-        if (descEl) {
-          descEl.textContent =
-            `Work through ${t.questions ? t.questions.length : 0} exam-style questions. ` +
-            `Score 80% to unlock the next topic.`;
-        }
-        return;
       }
     }
+    
+    // If they finished everything
+    const titleEl = document.getElementById('focus-title');
+    const descEl = document.getElementById('focus-desc');
+    if (titleEl) titleEl.textContent = 'All topics mastered 🎉';
+    if (descEl) descEl.textContent = 'Switch to full mock exams and lock in your 360+.';
+
+  } catch (err) {
+    console.error("[Focus Card Error]", err);
+    const titleEl = document.getElementById('focus-title');
+    if (titleEl) titleEl.textContent = 'Error loading topic';
   }
-  const titleEl = document.getElementById('focus-title');
-  const descEl = document.getElementById('focus-desc');
-  if (titleEl) titleEl.textContent = 'All topics mastered 🎉';
-  if (descEl) descEl.textContent = 'Switch to full mock exams and lock in your 360+.';
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2115,6 +2204,121 @@ document.addEventListener('click', (e) => {
     }
   }
 }, true); // 'true' means it intercepts before your normal navigation code runs
+
+
+// ═══════════════════════════════════════════
+// GATE PRACTICE DROPDOWN FOR FREE USERS
+// ═══════════════════════════════════════════
+document.addEventListener('change', async (e) => {
+  // Check if the changed element is the topic dropdown
+  if (e.target.id === 'topic-select') {
+    
+    const access = typeof getUserAccess === 'function' ? await getUserAccess() : null;
+    if (access?.isPaid) return; // Pro users can do whatever they want
+
+    // If they somehow bypassed the 'disabled' attribute and selected a locked topic
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    
+    // If the option is not math-01 (Topic 1) and not the placeholder
+    if (selectedOption.value !== '--' && selectedOption.value !== 'math-01' && !selectedOption.value.endsWith('-01')) {
+      
+      // Revert their selection back to Topic 1 (or the placeholder)
+      e.target.value = 'math-01'; // or '--'
+      
+      // Show the paywall
+      openPaywallModal();
+    }
+  }
+}, true);
+
+
+// ═══════════════════════════════════════════
+// MILESTONE SHARE FEATURE
+// ═══════════════════════════════════════════
+
+const MILESTONES_TO_SHARE = [
+  { days: 3,   icon: '🌱', name: 'Getting Started' },
+  { days: 7,   icon: '🔥', name: 'One Week Strong' },
+  { days: 14,  icon: '💪', name: 'Two-Week Grinder' },
+  { days: 30,  icon: '🏆', name: 'One Month Focused' },
+  { days: 60,  icon: '💎', name: 'Unstoppable' },
+  { days: 100, icon: '👑', name: 'JAMB Legend' }
+];
+
+async function checkAndShowMilestone(streakCount) {
+  if (typeof currentUser === 'undefined' || !currentUser) return;
+
+  // Find the highest milestone they've reached
+  const achieved = MILESTONES_TO_SHARE.filter(m => streakCount >= m.days).pop();
+  if (!achieved) return;
+
+  // Check if we've already shown this milestone to them
+  const lastShown = parseInt(localStorage.getItem('last_milestone_shown') || '0', 10);
+  if (lastShown >= achieved.days) return; // Already saw it
+
+  // Populate the popup
+  document.getElementById('milestone-icon').textContent = achieved.icon;
+  document.getElementById('milestone-name').textContent = achieved.name;
+  document.getElementById('milestone-days').textContent = streakCount;
+
+  // Populate the hidden share card
+  document.getElementById('share-icon').textContent = achieved.icon;
+  document.getElementById('share-streak').textContent = `${streakCount} Day Streak`;
+  document.getElementById('share-title').textContent = achieved.name;
+  document.getElementById('share-name').textContent = getFirstName(currentUser);
+
+  // Show popup
+  document.getElementById('milestone-popup').classList.remove('hidden');
+
+  // Remember that we showed this milestone so we don't annoy them again
+  localStorage.setItem('last_milestone_shown', achieved.days.toString());
+}
+
+// Handle the "Share" button click
+document.getElementById('share-milestone-btn')?.addEventListener('click', async () => {
+  const btn = document.getElementById('share-milestone-btn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Generating image...';
+
+  try {
+    const cardElement = document.getElementById('share-card');
+    
+    // Generate the image
+    const canvas = await html2canvas(cardElement, { scale: 1, useCORS: true });
+    
+    // Convert to Blob
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      
+      const file = new File([blob], 'aim360-streak.png', { type: 'image/png' });
+
+      // Try to use Native Mobile Share (WhatsApp, Twitter, Instagram)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'My AIM360 Streak!',
+          text: 'I am grinding for my 360 in JAMB! 🚀'
+        });
+      } else {
+        // Fallback for Desktop: Download the image
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `aim360-streak-${achieved?.days || 'milestone'}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+        alert('Image downloaded! You can now post it on Twitter, WhatsApp, or Instagram.');
+      }
+
+      btn.textContent = originalText;
+    }, 'image/png');
+
+  } catch (err) {
+    console.error('Error generating image:', err);
+    alert('Could not generate image. Please try again.');
+    btn.textContent = originalText;
+  }
+});
 
 // ═══════════════════════════════════════════════════════
 // INIT
